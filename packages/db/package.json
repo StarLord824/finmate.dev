@@ -1,5 +1,5 @@
 {
-  "name": "db",
+  "name": "@repo/db",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,13 @@
     "./prismaClient": "./src/index.ts"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "prisma generate && prisma db push",
+    "build": "prisma generate",
+    "generate": "prisma generate",
+    "migrate": "prisma migrate dev",
+    "migrate-dev": "prisma migrate dev",
+    "migrate-deploy": "prisma migrate deploy"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +22,7 @@
     "@repo/typescript-config": "workspace:*"
   },
   "dependencies": {
+    "@prisma/client": "6.16.1",
     "prisma": "^6.16.1"
   }
 }
