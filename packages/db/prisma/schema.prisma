@@ -8,25 +8,32 @@ datasource db {
 }
 
 model Article {
-  id          String   @id @default(uuid())
-  title       String
-  link        String
-  source      String
-  author      String?
-  publishedAt DateTime
-  summary     String?
-  content     String?
-  tags        String[]
-  imageUrl    String?
-  fingerprint String   @unique
-  createdAt   DateTime @default(now())
-  bookmarks   User[]   @relation("UserBookmarks")
+  id           String   @id @default(uuid())
+  title        String
+  link         String   @unique
+  source       String
+  author       String?
+  publishedAt  DateTime
+  ingestedAt   DateTime @default(now())
+  summary      String?
+  content      String?
+  imageUrl     String?
+  fingerprint  String   @unique
+  tags         String[] @default([])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([publishedAt])
+  // @@fulltext([title, summary, content], map: "article_fulltext") // Prisma 5+ supports fulltext in some DBs; keep or remove depending on PG version
 }
 
-model User {
-  id          String    @id @default(uuid())
-  email       String    @unique
-  preferences Json?
-  bookmarks   Article[] @relation("UserBookmarks")
-  createdAt   DateTime  @default(now())
+model Source {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  url       String
+  type      String
+  tags      String[] @default([])
+  active    Boolean  @default(true)
+  schedule  String?
+  createdAt DateTime @default(now())
 }
