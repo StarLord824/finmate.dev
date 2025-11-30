@@ -1,0 +1,148 @@
+{
+  "sources": [
+    {
+      "name": "MarketWatch - Top Stories",
+      "type": "rss",
+      "url": "https://feeds.marketwatch.com/marketwatch/topstories/",
+      "tags": ["markets", "analysis"],
+      "active": true,
+      "schedule": "*/20 * * * *"
+    },
+    {
+      "name": "CNBC Finance",
+      "type": "rss",
+      "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html",
+      "tags": ["markets", "economy", "business"],
+      "active": true,
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "name": "Yahoo Finance - Top Stories",
+      "type": "rss",
+      "url": "https://feeds.finance.yahoo.com/rss/2.0/headline?s=yhoo&region=US&lang=en-US",
+      "tags": ["markets", "stocks", "economy"],
+      "active": true,
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "name": "Investopedia - Markets",
+      "type": "rss",
+      "url": "https://www.investopedia.com/feedbuilder/feed/getfeed/?feedName=market-news",
+      "tags": ["education", "markets"],
+      "active": true,
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "name": "Motley Fool",
+      "type": "rss",
+      "url": "https://www.fool.com/feeds/index.aspx?id=foolwatch",
+      "tags": ["investing", "stocks", "analysis"],
+      "active": true,
+      "schedule": "*/20 * * * *"
+    },
+    {
+      "name": "Seeking Alpha",
+      "type": "rss",
+      "url": "https://seekingalpha.com/market_currents.xml",
+      "tags": ["investing", "analysis"],
+      "active": true,
+      "schedule": "*/20 * * * *"
+    },
+    {
+      "name": "MoneyControl (India)",
+      "type": "rss",
+      "url": "https://www.moneycontrol.com/rss/latestnews.xml",
+      "tags": ["india", "markets", "stocks"],
+      "active": true,
+      "schedule": "*/20 * * * *"
+    },
+    {
+      "name": "Financial Samurai",
+      "type": "rss",
+      "url": "https://www.financialsamurai.com/feed/",
+      "tags": ["personal finance", "investing"],
+      "active": true,
+      "schedule": "*/60 * * * *"
+    },
+    {
+      "name": "A Wealth of Common Sense",
+      "type": "rss",
+      "url": "https://awealthofcommonsense.com/feed/",
+      "tags": ["analysis", "markets"],
+      "active": true,
+      "schedule": "*/90 * * * *"
+    },
+    {
+      "name": "Of Dollars And Data",
+      "type": "rss",
+      "url": "https://ofdollarsanddata.com/feed/",
+      "tags": ["data", "investing"],
+      "active": true,
+      "schedule": "*/120 * * * *"
+    },
+    {
+      "name": "The Reformed Broker",
+      "type": "rss",
+      "url": "https://thereformedbroker.com/feed/",
+      "tags": ["analysis", "markets"],
+      "active": true,
+      "schedule": "*/120 * * * *"
+    },
+    {
+      "name": "Meb Faber Research",
+      "type": "rss",
+      "url": "https://mebfaber.com/feed/",
+      "tags": ["investing", "macro"],
+      "active": true,
+      "schedule": "*/120 * * * *"
+    },
+    {
+      "name": "Collaborative Fund",
+      "type": "rss",
+      "url": "https://collabfund.com/feed.xml",
+      "tags": ["behavior economics", "analysis"],
+      "active": true,
+      "schedule": "*/180 * * * *"
+    },
+    {
+      "name": "CFA Institute Blog",
+      "type": "rss",
+      "url": "https://blogs.cfainstitute.org/feed/",
+      "tags": ["macro", "analysis"],
+      "active": true,
+      "schedule": "*/180 * * * *"
+    },
+    {
+      "name": "CoinDesk",
+      "type": "rss",
+      "url": "https://www.coindesk.com/arc/outboundfeeds/rss/",
+      "tags": ["crypto", "fintech"],
+      "active": true,
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "name": "Blockworks",
+      "type": "rss",
+      "url": "https://blockworks.co/feed",
+      "tags": ["crypto", "macro"],
+      "active": true,
+      "schedule": "*/20 * * * *"
+    },
+    {
+      "name": "FRED Blog",
+      "type": "rss",
+      "url": "https://fredblog.stlouisfed.org/feed/",
+      "tags": ["macro", "data"],
+      "active": true,
+      "schedule": "*/240 * * * *"
+    },
+    {
+      "name": "IMF Blog",
+      "type": "rss",
+      "url": "https://blogs.imf.org/feed/",
+      "tags": ["macro", "global finance"],
+      "active": true,
+      "schedule": "*/240 * * * *"
+    }
+  ]
+}

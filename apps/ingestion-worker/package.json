@@ -5,15 +5,24 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "run-once": "ts-node src/run-once.ts"
   },
   "dependencies": {
-    "dotenv": "^16.0.0"
+    "@repo/db": "workspace:*",
+    "@types/he": "^1.2.3",
+    "axios": "^1.13.2",
+    "cron": "^4.3.5",
+    "dayjs": "^1.11.19",
+    "dotenv": "^16.0.0",
+    "he": "^1.2.0",
+    "pino": "^10.1.0",
+    "rss-parser": "^3.13.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "ts-node": "^10.0.0",
+    "@repo/typescript-config": "workspace:*",
     "@types/node": "^20.0.0",
-    "@repo/typescript-config": "workspace:*"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
   }
 }
