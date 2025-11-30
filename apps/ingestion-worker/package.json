@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc -b",
     "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "prisma migrate dev --name init",
     "run-once": "ts-node src/run-once.ts"
   },
   "dependencies": {
@@ -17,7 +19,8 @@
     "dotenv": "^16.0.0",
     "he": "^1.2.0",
     "pino": "^10.1.0",
-    "rss-parser": "^3.13.0"
+    "rss-parser": "^3.13.0",
+    "ts-node-dev": "^2.0.0"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
