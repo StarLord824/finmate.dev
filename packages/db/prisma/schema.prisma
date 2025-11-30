@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,103 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Article {
+  id          String   @id @default(uuid())
+  title       String
+  link        String
+  source      String
+  author      String?
+  publishedAt DateTime
+  summary     String?
+  content     String?
+  tags        String[]
+  imageUrl    String?
+  fingerprint String   @unique
+  createdAt   DateTime @default(now())
+  bookmarks   User[]   @relation("UserBookmarks")
+}
 
 model User {
-  id          String       @id @default(cuid())
-  email       String       @unique
-  username    String?      @unique
-  password    String       // if using auth lib, can be replaced with providerId
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  wallets     Wallet[]
-  preferences Preference?
-  transactions Transaction[]
-}
-
-model Wallet {
-  id          String        @id @default(cuid())
-  user        User          @relation(fields: [userId], references: [id])
-  userId      String
-  provider    String        // e.g. "binance", "metamask", "bank"
-  address     String?       // for crypto
-  balance     Float         @default(0)
-  currency    String        // e.g. "USD", "INR", "ETH", "BTC"
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  transactions Transaction[]
-}
-
-model Transaction {
-  id          String    @id @default(cuid())
-  user        User      @relation(fields: [userId], references: [id])
-  userId      String
-  wallet      Wallet?   @relation(fields: [walletId], references: [id])
-  walletId    String?
-  type        TransactionType
-  amount      Float
-  currency    String
-  category    String?   // "investment", "expense", "income"
-  description String?
+  id          String    @id @default(uuid())
+  email       String    @unique
+  preferences Json?
+  bookmarks   Article[] @relation("UserBookmarks")
   createdAt   DateTime  @default(now())
-}
-
-enum TransactionType {
-  INCOME
-  EXPENSE
-  TRANSFER
-  INVESTMENT
-}
-
-model Asset {
-  id          String       @id @default(cuid())
-  symbol      String       @unique // e.g. "BTC", "AAPL"
-  name        String
-  type        AssetType    // STOCK, CRYPTO, ETF, etc.
-  price       Float
-  currency    String
-  updatedAt   DateTime     @updatedAt
-  news        News[]
-  recommendations Recommendation[]
-}
-
-enum AssetType {
-  STOCK
-  CRYPTO
-  ETF
-  COMMODITY
-  FOREX
-}
-
-model News {
-  id        String   @id @default(cuid())
-  asset     Asset?   @relation(fields: [assetId], references: [id])
-  assetId   String?
-  title     String
-  url       String
-  source    String
-  publishedAt DateTime
-}
-
-model Recommendation {
-  id        String   @id @default(cuid())
-  asset     Asset    @relation(fields: [assetId], references: [id])
-  assetId   String
-  rating    Rating   // BUY, SELL, HOLD
-  analyst   String?
-  createdAt DateTime @default(now())
-}
-
-enum Rating {
-  BUY
-  SELL
-  HOLD
-}
-
-model Preference {
-  id          String   @id @default(cuid())
-  user        User     @relation(fields: [userId], references: [id])
-  userId      String   @unique
-  theme       String   @default("light")
-  subscribed  Boolean  @default(true)
-  currency    String   @default("USD")
 }
