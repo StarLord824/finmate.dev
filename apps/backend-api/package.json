@@ -4,17 +4,29 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc -b",
+    "start": "node dist/server.js",
+    "prisma:generate": "prisma generate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@repo/db": "workspace:*",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
-    "express": "^5.1.0"
+    "@types/morgan": "^1.9.10",
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*"
+    "@repo/typescript-config": "workspace:^"
   }
 }
