@@ -1,135 +1,321 @@
-# Turborepo starter
+# FinMate.dev 📈
 
-This Turborepo starter is maintained by the Turborepo core team.
+> A modern, personalized finance news aggregator - your daily.dev for finance.
 
-## Using this example
+FinMate.dev is a full-stack finance news platform that aggregates, curates, and personalizes financial content from multiple sources. Built with a modern tech stack and designed for scalability.
 
-Run the following command:
+![FinMate Banner](https://via.placeholder.com/1200x300/008A6F/FFFFFF?text=FinMate.dev+-+Your+Finance+News+Hub)
 
-```sh
-npx create-turbo@latest
-```
+## ✨ Features
 
-## What's inside?
+- 🎯 **Personalized Feed** - AI-powered content recommendations based on your interests
+- 🔍 **Smart Search** - Find articles across all sources instantly
+- 📱 **Auto-Scrolling Bento Grid** - Modern, engaging UI with varying card sizes
+- 🏷️ **Category Filtering** - Markets, Investing, Crypto, Economy, and more
+- 📰 **Multi-Source Aggregation** - Bloomberg, WSJ, Reuters, and more
+- 🔖 **Bookmarks** - Save articles for later reading
+- 🌓 **Dark Mode** - Easy on the eyes, day or night
+- ⚡ **Real-time Updates** - Stay current with the latest financial news
 
-This Turborepo includes the following packages/apps:
+## 🏗️ Architecture
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+This is a **Turborepo monorepo** with the following structure:
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+finmate.dev/
+├── apps/
+│   ├── backend-api/          # Express + Prisma API (Port 4000)
+│   ├── frontend-web/          # Next.js 14 App Router (Port 3000)
+│   └── ingestion-worker/      # Article scraping & processing
+├── packages/
+│   └── db/                    # Shared Prisma schema
+└── docker-compose.yml         # PostgreSQL database
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+### Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | Next.js 14, React 19, TailwindCSS, Framer Motion |
+| **Backend** | Express.js, Prisma ORM, TypeScript |
+| **Database** | PostgreSQL (Docker) |
+| **Worker** | Node.js, RSS/API scraping |
+| **Monorepo** | Turborepo, pnpm workspaces |
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Node.js** >= 18
+- **pnpm** >= 9.0.0
+- **Docker** (for PostgreSQL)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/StarLord824/finmate.dev.git
+   cd finmate.dev
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Set up environment variables**
+   
+   Create `.env` files in each app:
+   
+   **`apps/backend-api/.env`**
+   ```env
+   DATABASE_URL="postgresql://finmate:finmate123@localhost:5432/finmate_db"
+   PORT=4000
+   NODE_ENV=development
+   ```
+   
+   **`apps/frontend-web/.env.local`**
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:4000
+   ```
+   
+   **`apps/ingestion-worker/.env`**
+   ```env
+   DATABASE_URL="postgresql://finmate:finmate123@localhost:5432/finmate_db"
+   ```
+
+4. **Start the database**
+   ```bash
+   pnpm db:up
+   ```
+
+5. **Run database migrations**
+   ```bash
+   cd packages/db
+   pnpm prisma migrate dev
+   cd ../..
+   ```
+
+6. **Start all services** 🎉
+   ```bash
+   pnpm dev:all
+   ```
+
+That's it! Your services will be running at:
+- 🌐 Frontend: http://localhost:3000
+- 🔌 Backend API: http://localhost:4000
+- 🗄️ PostgreSQL: localhost:5432
+
+## 📜 Available Scripts
+
+### Root Level Scripts
+
+| Script | Description |
+|--------|-------------|
+| `pnpm dev:all` | 🚀 **Start everything** (DB + Backend + Worker + Frontend) |
+| `pnpm dev:backend` | Start backend API only |
+| `pnpm dev:worker` | Start ingestion worker only |
+| `pnpm dev:frontend` | Start frontend only |
+| `pnpm db:up` | Start PostgreSQL database |
+| `pnpm db:down` | Stop PostgreSQL database |
+| `pnpm db:logs` | View database logs |
+| `pnpm build` | Build all apps |
+| `pnpm lint` | Lint all apps |
+| `pnpm format` | Format code with Prettier |
+
+### Individual App Scripts
+
+**Backend API**
+```bash
+cd apps/backend-api
+pnpm dev          # Start dev server
+pnpm build        # Build for production
+pnpm start        # Start production server
+```
+
+**Frontend Web**
+```bash
+cd apps/frontend-web
+pnpm dev          # Start dev server
+pnpm build        # Build for production
+pnpm start        # Start production server
+```
+
+**Ingestion Worker**
+```bash
+cd apps/ingestion-worker
+pnpm dev          # Start worker
+pnpm build        # Build for production
+pnpm start        # Start production worker
+```
+
+## 🗄️ Database Management
+
+### Prisma Commands
+
+```bash
+cd packages/db
+
+# Generate Prisma Client
+pnpm prisma generate
+
+# Create a new migration
+pnpm prisma migrate dev --name migration_name
+
+# Apply migrations
+pnpm prisma migrate deploy
+
+# Open Prisma Studio (DB GUI)
+pnpm prisma studio
+
+# Reset database (⚠️ deletes all data)
+pnpm prisma migrate reset
+```
+
+### Database Schema
+
+The main entities:
+
+- **Article** - News articles with metadata
+- **Source** - News sources (Bloomberg, WSJ, etc.)
+- **Tag** - Categories and topics
+- **User** - User accounts (future)
+- **Bookmark** - Saved articles (future)
+
+## 🎨 Frontend Features
+
+### Bento Grid Layout
+- Auto-scrolling feed with pause-on-hover
+- Varying card sizes (1x1, 2x1, 1x2, 2x2)
+- Smooth animations and transitions
+- Responsive design (mobile → desktop)
+
+### Filters & Search
+- Category filtering (Markets, Crypto, etc.)
+- Source filtering (Bloomberg, WSJ, etc.)
+- Real-time search across all articles
+- Infinite scroll with cursor-based pagination
+
+### Article Cards
+- Image headers with gradient overlays
+- Tags, source, reading time
+- Bookmark, share, and external link actions
+- Opens in new tab
+
+## 🔌 API Endpoints
+
+### Feed
+```
+GET /feed?limit=20&after=ISO_DATE&tags=Markets,Crypto&sources=Bloomberg
+```
+
+### Article Detail
+```
+GET /article/:id
+```
+
+### Search
+```
+GET /search?q=bitcoin
+```
+
+### Health Check
+```
+GET /health
+```
+
+## 🛠️ Development
+
+### Project Structure
 
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+apps/backend-api/
+├── src/
+│   ├── routes/          # API routes
+│   ├── services/        # Business logic
+│   ├── middleware/      # Express middleware
+│   └── index.ts         # Entry point
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+apps/frontend-web/
+├── app/                 # Next.js App Router
+│   ├── page.tsx         # Home (feed)
+│   ├── article/[id]/    # Article detail
+│   ├── search/          # Search page
+│   └── settings/        # User settings
+├── components/          # React components
+└── lib/                 # Utilities & types
+
+apps/ingestion-worker/
+├── src/
+│   ├── scrapers/        # Source scrapers
+│   ├── processors/      # Content processing
+│   └── index.ts         # Worker entry
 ```
 
-### Develop
+### Adding a New Source
 
-To develop all apps and packages, run the following command:
+1. Create scraper in `apps/ingestion-worker/src/scrapers/`
+2. Add source configuration
+3. Implement article fetching logic
+4. Test and deploy
 
-```
-cd my-turborepo
+### Code Quality
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+```bash
+# Type checking
+pnpm check-types
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+# Linting
+pnpm lint
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+# Formatting
+pnpm format
 ```
 
-### Remote Caching
+## 🚢 Deployment
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+### Backend & Worker
+- Deploy to any Node.js hosting (Railway, Render, Fly.io)
+- Set environment variables
+- Run migrations: `pnpm prisma migrate deploy`
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+### Frontend
+- Deploy to Vercel (recommended)
+- Set `NEXT_PUBLIC_API_URL` environment variable
+- Automatic deployments from main branch
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+### Database
+- Use managed PostgreSQL (Neon, Supabase, Railway)
+- Update `DATABASE_URL` in all apps
 
-```
-cd my-turborepo
+## 🤝 Contributing
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
+Contributions are welcome! Please follow these steps:
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## 📝 License
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+This project is licensed under the MIT License.
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
+## 🙏 Acknowledgments
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
+- Inspired by [daily.dev](https://daily.dev)
+- Built with [Turborepo](https://turbo.build)
+- UI components styled with [TailwindCSS](https://tailwindcss.com)
 
-## Useful Links
+## 📧 Contact
 
-Learn more about the power of Turborepo:
+**StarLord824** - [@StarLord824](https://github.com/StarLord824)
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+Project Link: [https://github.com/StarLord824/finmate.dev](https://github.com/StarLord824/finmate.dev)
+
+---
+
+<div align="center">
+  <strong>Made with ❤️ for the finance community</strong>
+</div>

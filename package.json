@@ -4,11 +4,19 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:all": "concurrently \"pnpm db:up\" \"pnpm dev:backend\" \"pnpm dev:worker\" \"pnpm dev:frontend\" --names \"DB,API,WORKER,WEB\" --prefix-colors \"blue,green,yellow,cyan\"",
+    "dev:backend": "pnpm --filter backend-api dev",
+    "dev:worker": "pnpm --filter ingestion-worker dev",
+    "dev:frontend": "pnpm --filter frontend-web dev",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f postgres",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "prettier": "^3.6.2",
     "turbo": "^2.5.5",
     "typescript": "5.8.3"

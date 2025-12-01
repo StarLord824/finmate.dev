@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
-import { FeedCard } from "@/components/FeedCard";
+import { BentoGrid } from "@/components/BentoGrid";
 import { FiltersPanel } from "@/components/FiltersPanel";
 import { FeedSkeleton } from "@/components/Skeletons";
 import { EmptyState } from "@/components/EmptyState";
@@ -61,11 +61,13 @@ export default function Home(): ReactElement {
   };
 
   const handleCategoryToggle = (category: Category) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
+    setSelectedCategories((prev) => {
+      const newCategories = prev.includes(category)
         ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
+        : [...prev, category];
+      console.log("Selected categories:", newCategories);
+      return newCategories;
+    });
   };
 
   const handleSourceToggle = (source: string) => {
@@ -106,8 +108,8 @@ export default function Home(): ReactElement {
 
       <main className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
-          {/* Feed */}
-          <div className="space-y-4">
+          {/* Feed - Bento Grid */}
+          <div>
             {isLoading ? (
               <FeedSkeleton count={8} />
             ) : isError ? (
@@ -120,28 +122,22 @@ export default function Home(): ReactElement {
             ) : allArticles.length === 0 ? (
               <EmptyState />
             ) : (
-              <>
-                {allArticles.map((article, index) => (
-                  <FeedCard
-                    key={article.id}
-                    article={article}
-                    index={index}
-                    onBookmarkToggle={handleBookmarkToggle}
-                  />
-                ))}
+              <BentoGrid
+                articles={allArticles}
+                onBookmarkToggle={handleBookmarkToggle}
+              />
+            )}
 
-                {isFetchingNextPage && (
-                  <div className="flex justify-center py-8">
-                    <Loader2 className="h-8 w-8 animate-spin text-accent" />
-                  </div>
-                )}
+            {isFetchingNextPage && (
+              <div className="flex justify-center py-8">
+                <Loader2 className="h-8 w-8 animate-spin text-accent" />
+              </div>
+            )}
 
-                {!hasNextPage && allArticles.length > 0 && (
-                  <div className="text-center py-8 text-muted text-sm">
-                    You've reached the end of the feed
-                  </div>
-                )}
-              </>
+            {!hasNextPage && allArticles.length > 0 && (
+              <div className="text-center py-8 text-muted text-sm">
+                You've reached the end of the feed
+              </div>
             )}
           </div>
 
