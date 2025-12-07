@@ -1,10 +1,11 @@
 "use client";
 
 import { ReactElement, useState } from "react";
-// import { motion } from "framer-motion";
-import { ChevronDown, Plus } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { ChevronDown, Plus, Loader2, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CATEGORIES, type Category } from "@/lib/types";
+import { apiClient } from "@/lib/api-client";
+import type { Category } from "@/lib/types";
 
 interface FiltersPanelProps {
   selectedCategories: Category[];
@@ -12,19 +13,6 @@ interface FiltersPanelProps {
   selectedSources: string[];
   onSourceToggle: (source: string) => void;
 }
-
-const MOCK_SOURCES = [
-  "Bloomberg",
-  "Financial Times",
-  "WSJ",
-  "Reuters",
-  "CNBC",
-  "MarketWatch",
-  "Seeking Alpha",
-  "The Motley Fool",
-  "Investopedia",
-  "CoinDesk",
-];
 
 export function FiltersPanel({
   selectedCategories,
@@ -35,7 +23,21 @@ export function FiltersPanel({
   const [showAllSources, setShowAllSources] = useState(false);
   const [watchlistTicker, setWatchlistTicker] = useState("");
 
-  const displayedSources = showAllSources ? MOCK_SOURCES : MOCK_SOURCES.slice(0, 8);
+  // Fetch categories from backend
+  const { data: categories = [], isLoading: categoriesLoading, error: categoriesError } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => apiClient.getCategories(),
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+  });
+
+  // Fetch sources from backend
+  const { data: sources = [], isLoading: sourcesLoading, error: sourcesError } = useQuery({
+    queryKey: ["sources"],
+    queryFn: () => apiClient.getSources(),
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+  });
+
+  const displayedSources = showAllSources ? sources : sources.slice(0, 8);
 
   const handleAddToWatchlist = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,65 +52,95 @@ export function FiltersPanel({
       {/* Categories */}
       <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-4">
         <h3 className="font-semibold text-sm mb-3 text-foreground">Categories</h3>
-        <div className="flex flex-wrap gap-2">
-          {CATEGORIES.map((category) => {
-            const isSelected = selectedCategories.includes(category);
-            return (
-              <button
-                key={category}
-                onClick={() => onCategoryToggle(category)}
-                className={cn(
-                  "px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200",
-                  isSelected
-                    ? "bg-accent text-white shadow-sm"
-                    : "bg-light-bg dark:bg-dark-bg text-muted hover:text-accent hover:bg-accent/10 border border-light-border dark:border-dark-border"
-                )}
-              >
-                {category}
-              </button>
-            );
-          })}
-        </div>
+        
+        {categoriesLoading ? (
+          <div className="flex items-center justify-center py-4">
+            <Loader2 className="h-5 w-5 animate-spin text-muted" />
+          </div>
+        ) : categoriesError ? (
+          <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 py-2">
+            <AlertCircle className="h-4 w-4" />
+            <span>Failed to load categories</span>
+          </div>
+        ) : categories.length === 0 ? (
+          <p className="text-sm text-muted py-2">No categories available</p>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => {
+              const isSelected = selectedCategories.includes(category);
+              return (
+                <button
+                  key={category}
+                  onClick={() => onCategoryToggle(category)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200",
+                    isSelected
+                      ? "bg-accent text-white shadow-sm"
+                      : "bg-light-bg dark:bg-dark-bg text-muted hover:text-accent hover:bg-accent/10 border border-light-border dark:border-dark-border"
+                  )}
+                >
+                  {category}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Sources */}
       <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-4">
         <h3 className="font-semibold text-sm mb-3 text-foreground">Sources</h3>
-        <div className="space-y-2">
-          {displayedSources.map((source) => {
-            const isSelected = selectedSources.includes(source);
-            return (
-              <label
-                key={source}
-                className="flex items-center gap-2 cursor-pointer group"
-              >
-                <input
-                  type="checkbox"
-                  checked={isSelected}
-                  onChange={() => onSourceToggle(source)}
-                  className="w-4 h-4 rounded border-muted text-accent focus:ring-2 focus:ring-accent/50 cursor-pointer"
-                />
-                <span className="text-sm text-muted group-hover:text-foreground transition-colors">
-                  {source}
-                </span>
-              </label>
-            );
-          })}
-        </div>
+        
+        {sourcesLoading ? (
+          <div className="flex items-center justify-center py-4">
+            <Loader2 className="h-5 w-5 animate-spin text-muted" />
+          </div>
+        ) : sourcesError ? (
+          <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 py-2">
+            <AlertCircle className="h-4 w-4" />
+            <span>Failed to load sources</span>
+          </div>
+        ) : sources.length === 0 ? (
+          <p className="text-sm text-muted py-2">No sources available</p>
+        ) : (
+          <>
+            <div className="space-y-2">
+              {displayedSources.map((source) => {
+                const isSelected = selectedSources.includes(source.name);
+                return (
+                  <label
+                    key={source.id}
+                    className="flex items-center gap-2 cursor-pointer group"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => onSourceToggle(source.name)}
+                      className="w-4 h-4 rounded border-muted text-accent focus:ring-2 focus:ring-accent/50 cursor-pointer"
+                    />
+                    <span className="text-sm text-muted group-hover:text-foreground transition-colors">
+                      {source.name}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
 
-        {MOCK_SOURCES.length > 8 && (
-          <button
-            onClick={() => setShowAllSources(!showAllSources)}
-            className="flex items-center gap-1 text-sm text-accent hover:text-accent-dark mt-3 transition-colors"
-          >
-            <span>{showAllSources ? "Show less" : "Show more"}</span>
-            <ChevronDown
-              className={cn(
-                "h-4 w-4 transition-transform",
-                showAllSources && "rotate-180"
-              )}
-            />
-          </button>
+            {sources.length > 8 && (
+              <button
+                onClick={() => setShowAllSources(!showAllSources)}
+                className="flex items-center gap-1 text-sm text-accent hover:text-accent-dark mt-3 transition-colors"
+              >
+                <span>{showAllSources ? "Show less" : "Show more"}</span>
+                <ChevronDown
+                  className={cn(
+                    "h-4 w-4 transition-transform",
+                    showAllSources && "rotate-180"
+                  )}
+                />
+              </button>
+            )}
+          </>
         )}
       </div>
 

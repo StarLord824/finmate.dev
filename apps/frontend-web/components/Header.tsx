@@ -1,11 +1,13 @@
 "use client";
 
-import { Search, Bookmark, Menu, TrendingUp } from "lucide-react";
+import { Search, Bookmark, Menu, TrendingUp, LogOut, User as UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { apiClient } from "@/lib/api-client";
+import { authClient } from "@/lib/auth-client";
 import type { Article } from "@/lib/types";
 import type { ReactElement } from "react";
 
@@ -14,11 +16,17 @@ interface HeaderProps {
 }
 
 export function Header({ onMenuClick }: HeaderProps): ReactElement {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Article[]>([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  // Get session data
+  const { data: session } = authClient.useSession();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +36,9 @@ export function Header({ onMenuClick }: HeaderProps): ReactElement {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setIsSearchOpen(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false);
       }
     };
 
@@ -74,6 +85,12 @@ export function Header({ onMenuClick }: HeaderProps): ReactElement {
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [isSearchOpen]);
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    router.push("/");
+    router.refresh();
+  };
 
   return (
     <header
@@ -155,28 +172,98 @@ export function Header({ onMenuClick }: HeaderProps): ReactElement {
 
         {/* Right Actions */}
         <div className="flex items-center gap-2">
-          <Link
-            href="/settings"
-            className="p-2 rounded-lg hover:bg-accent/10 transition-colors relative group"
-            aria-label="Bookmarks"
-          >
-            <Bookmark className="h-5 w-5 text-muted group-hover:text-accent transition-colors" />
-          </Link>
+          {session?.user ? (
+            <>
+              <Link
+                href="/settings"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors relative group"
+                aria-label="Bookmarks"
+              >
+                <Bookmark className="h-5 w-5 text-muted group-hover:text-accent transition-colors" />
+              </Link>
 
-          <button
-            onClick={onMenuClick}
-            className="lg:hidden p-2 rounded-lg hover:bg-accent/10 transition-colors"
-            aria-label="Menu"
-          >
-            <Menu className="h-5 w-5 text-muted" />
-          </button>
+              <button
+                onClick={onMenuClick}
+                className="lg:hidden p-2 rounded-lg hover:bg-accent/10 transition-colors"
+                aria-label="Menu"
+              >
+                <Menu className="h-5 w-5 text-muted" />
+              </button>
 
-          <Link
-            href="/settings"
-            className="hidden sm:block px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-dark transition-colors font-medium text-sm"
-          >
-            Sign In
-          </Link>
+              {/* User Menu */}
+              <div ref={userMenuRef} className="relative">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center gap-2 p-2 rounded-lg hover:bg-accent/10 transition-colors"
+                >
+                  {session.user.image ? (
+                    <img
+                      src={session.user.image}
+                      alt={session.user.name || "User"}
+                      className="h-8 w-8 rounded-full"
+                    />
+                  ) : (
+                    <div className="h-8 w-8 rounded-full bg-accent/20 flex items-center justify-center">
+                      <UserIcon className="h-4 w-4 text-accent" />
+                    </div>
+                  )}
+                  <span className="hidden sm:block text-sm font-medium">
+                    {session.user.name || session.user.email}
+                  </span>
+                </button>
+
+                <AnimatePresence>
+                  {showUserMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute right-0 mt-2 w-48 bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-lg shadow-lg overflow-hidden"
+                    >
+                      <Link
+                        href="/settings"
+                        onClick={() => setShowUserMenu(false)}
+                        className="block px-4 py-3 hover:bg-accent/5 transition-colors text-sm"
+                      >
+                        Settings
+                      </Link>
+                      <button
+                        onClick={handleSignOut}
+                        className="w-full text-left px-4 py-3 hover:bg-accent/5 transition-colors text-sm flex items-center gap-2 text-red-600 dark:text-red-400"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Sign Out
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={onMenuClick}
+                className="lg:hidden p-2 rounded-lg hover:bg-accent/10 transition-colors"
+                aria-label="Menu"
+              >
+                <Menu className="h-5 w-5 text-muted" />
+              </button>
+
+              <Link
+                href="/login"
+                className="hidden sm:block px-4 py-2 text-sm font-medium text-muted hover:text-accent transition-colors"
+              >
+                Sign In
+              </Link>
+
+              <Link
+                href="/signup"
+                className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-dark transition-colors font-medium text-sm"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

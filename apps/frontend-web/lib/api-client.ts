@@ -1,4 +1,4 @@
-import type { Article, FeedResponse, SearchResult, UserPreferences } from "./types";
+import type { Article, FeedResponse, SearchResult, UserPreferences, CategoriesResponse, SourcesResponse } from "./types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
@@ -65,6 +65,17 @@ class ApiClient {
       method: "POST",
       body: JSON.stringify({ articleId, isBookmarked }),
     });
+  }
+
+  // Meta endpoints
+  async getCategories(): Promise<string[]> {
+    const response = await this.fetch<CategoriesResponse>("/meta/categories");
+    return response.data;
+  }
+
+  async getSources(): Promise<SourcesResponse["data"]> {
+    const response = await this.fetch<SourcesResponse>("/meta/sources");
+    return response.data;
   }
 }
 

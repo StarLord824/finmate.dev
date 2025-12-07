@@ -1,17 +1,31 @@
 // src/routes/user.ts
 import express from "express";
 import { upsertUserPreferences, addBookmark, removeBookmark, getBookmarks } from "../services/user.service";
+import { authMiddleware, AuthRequest } from "../middleware/auth";
 
 const router: express.Router = express.Router();
 
 /**
- * POST /user/preferences
- * body: { userId: string, categories?: string[], sources?: string[] }
+ * GET /user/me
+ * Get current user info
  */
-router.post("/preferences", async (req, res, next) => {
+router.get("/me", authMiddleware, async (req: AuthRequest, res, next) => {
   try {
-    const { userId, categories, sources } = req.body;
-    if (!userId) return res.status(400).json({ error: "userId_required" });
+    res.json({ data: req.user });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * POST /user/preferences
+ * body: { categories?: string[], sources?: string[] }
+ * Requires authentication
+ */
+router.post("/preferences", authMiddleware, async (req: AuthRequest, res, next) => {
+  try {
+    const { categories, sources } = req.body;
+    const userId = req.user!.id;
     const user = await upsertUserPreferences(userId, { categories, sources });
     res.json({ data: user });
   } catch (err) {
@@ -21,13 +35,19 @@ router.post("/preferences", async (req, res, next) => {
 
 /**
  * POST /user/bookmark
- * body: { userId, articleId, action: "add"|"remove" }
+ * body: { articleId, isBookmarked: boolean }
+ * Requires authentication
  */
-router.post("/bookmark", async (req, res, next) => {
+router.post("/bookmark", authMiddleware, async (req: AuthRequest, res, next) => {
   try {
-    const { userId, articleId, action } = req.body;
-    if (!userId || !articleId || !action) return res.status(400).json({ error: "missing_params" });
-    if (action === "add") {
+    const { articleId, isBookmarked } = req.body;
+    const userId = req.user!.id;
+    
+    if (!articleId || typeof isBookmarked !== "boolean") {
+      return res.status(400).json({ error: "missing_params" });
+    }
+
+    if (isBookmarked) {
       const user = await addBookmark(userId, articleId);
       return res.json({ data: user });
     } else {
@@ -40,12 +60,13 @@ router.post("/bookmark", async (req, res, next) => {
 });
 
 /**
- * GET /user/bookmarks?userId=...
+ * GET /user/bookmarks
+ * Get user's bookmarked articles
+ * Requires authentication
  */
-router.get("/bookmarks", async (req, res, next) => {
+router.get("/bookmarks", authMiddleware, async (req: AuthRequest, res, next) => {
   try {
-    const userId = String(req.query.userId || "");
-    if (!userId) return res.status(400).json({ error: "userId_required" });
+    const userId = req.user!.id;
     const articles = await getBookmarks(userId);
     res.json({ data: articles });
   } catch (err) {

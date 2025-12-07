@@ -14,18 +14,18 @@ export const auth = betterAuth({
   },
   
   // Social OAuth providers
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-      enabled: !!process.env.GOOGLE_CLIENT_ID,
-    },
-    github: {
-      clientId: process.env.GITHUB_CLIENT_ID || "",
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
-      enabled: !!process.env.GITHUB_CLIENT_ID,
-    },
-  },
+  // socialProviders: {
+  //   google: {
+  //     clientId: process.env.GOOGLE_CLIENT_ID || "",
+  //     clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+  //     enabled: !!process.env.GOOGLE_CLIENT_ID,
+  //   },
+  //   github: {
+  //     clientId: process.env.GITHUB_CLIENT_ID || "",
+  //     clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
+  //     enabled: !!process.env.GITHUB_CLIENT_ID,
+  //   },
+  // },
   
   // Session configuration
   session: {

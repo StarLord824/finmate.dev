@@ -28,13 +28,22 @@ export interface SearchResult {
   total: number;
 }
 
-export const CATEGORIES = [
-  "Markets",
-  "Crypto",
-  "Macro",
-  "Personal Finance",
-  "Investing",
-  "Fintech",
-] as const;
+// Source from backend
+export interface Source {
+  id: string;
+  name: string;
+  url: string;
+  logo?: string;
+}
 
-export type Category = (typeof CATEGORIES)[number];
+// Meta responses
+export interface CategoriesResponse {
+  data: string[];
+}
+
+export interface SourcesResponse {
+  data: Source[];
+}
+
+// Category is now a string (dynamic from backend)
+export type Category = string;

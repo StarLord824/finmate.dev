@@ -1,31 +1,30 @@
 "use client";
 
 import { JSX, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
-import { CATEGORIES, type Category } from "@/lib/types";
+import { apiClient } from "@/lib/api-client";
+import type { Category } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Save, Moon, Sun, Monitor } from "lucide-react";
-
-const MOCK_SOURCES = [
-  "Bloomberg",
-  "Financial Times",
-  "WSJ",
-  "Reuters",
-  "CNBC",
-  "MarketWatch",
-  "Seeking Alpha",
-  "The Motley Fool",
-  "Investopedia",
-  "CoinDesk",
-  "Yahoo Finance",
-  "Barron's",
-];
+import { Save, Moon, Sun, Monitor, Loader2, AlertCircle } from "lucide-react";
 
 export default function SettingsPage(): JSX.Element {
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>(["Markets", "Investing"]);
-  const [selectedSources, setSelectedSources] = useState<string[]>(["Bloomberg", "WSJ"]);
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+  const [selectedSources, setSelectedSources] = useState<string[]>([]);
   const [theme, setTheme] = useState<"light" | "dark" | "system">("system");
   const [saved, setSaved] = useState(false);
+
+  // Fetch categories from backend
+  const { data: categories = [], isLoading: categoriesLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => apiClient.getCategories(),
+  });
+
+  // Fetch sources from backend
+  const { data: sources = [], isLoading: sourcesLoading } = useQuery({
+    queryKey: ["sources"],
+    queryFn: () => apiClient.getSources(),
+  });
 
   const handleCategoryToggle = (category: Category) => {
     setSelectedCategories((prev) =>
@@ -106,27 +105,39 @@ export default function SettingsPage(): JSX.Element {
           <section className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-6 mb-6">
             <h2 className="text-xl font-semibold text-foreground mb-2">Preferred Categories</h2>
             <p className="text-sm text-muted mb-4">
-              Select the topics you're most interested in
+              Select the topics you&apos;re most interested in
             </p>
-            <div className="flex flex-wrap gap-2">
-              {CATEGORIES.map((category) => {
-                const isSelected = selectedCategories.includes(category);
-                return (
-                  <button
-                    key={category}
-                    onClick={() => handleCategoryToggle(category)}
-                    className={cn(
-                      "px-4 py-2 rounded-lg text-sm font-medium transition-all",
-                      isSelected
-                        ? "bg-accent text-white shadow-sm"
-                        : "bg-light-bg dark:bg-dark-bg text-muted hover:text-accent hover:bg-accent/10 border border-light-border dark:border-dark-border"
-                    )}
-                  >
-                    {category}
-                  </button>
-                );
-              })}
-            </div>
+            
+            {categoriesLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin text-muted" />
+              </div>
+            ) : categories.length === 0 ? (
+              <div className="flex items-center gap-2 text-sm text-muted py-4">
+                <AlertCircle className="h-4 w-4" />
+                <span>No categories available</span>
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => {
+                  const isSelected = selectedCategories.includes(category);
+                  return (
+                    <button
+                      key={category}
+                      onClick={() => handleCategoryToggle(category)}
+                      className={cn(
+                        "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                        isSelected
+                          ? "bg-accent text-white shadow-sm"
+                          : "bg-light-bg dark:bg-dark-bg text-muted hover:text-accent hover:bg-accent/10 border border-light-border dark:border-dark-border"
+                      )}
+                    >
+                      {category}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </section>
 
           {/* Sources */}
@@ -135,30 +146,42 @@ export default function SettingsPage(): JSX.Element {
             <p className="text-sm text-muted mb-4">
               Choose which news sources you want to see
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {MOCK_SOURCES.map((source) => {
-                const isSelected = selectedSources.includes(source);
-                return (
-                  <label
-                    key={source}
-                    className={cn(
-                      "flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all",
-                      isSelected
-                        ? "border-accent bg-accent/5"
-                        : "border-light-border dark:border-dark-border hover:border-accent/50"
-                    )}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isSelected}
-                      onChange={() => handleSourceToggle(source)}
-                      className="w-4 h-4 rounded border-muted text-accent focus:ring-2 focus:ring-accent/50 cursor-pointer"
-                    />
-                    <span className="text-sm font-medium">{source}</span>
-                  </label>
-                );
-              })}
-            </div>
+            
+            {sourcesLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin text-muted" />
+              </div>
+            ) : sources.length === 0 ? (
+              <div className="flex items-center gap-2 text-sm text-muted py-4">
+                <AlertCircle className="h-4 w-4" />
+                <span>No sources available</span>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {sources.map((source) => {
+                  const isSelected = selectedSources.includes(source.name);
+                  return (
+                    <label
+                      key={source.id}
+                      className={cn(
+                        "flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all",
+                        isSelected
+                          ? "border-accent bg-accent/5"
+                          : "border-light-border dark:border-dark-border hover:border-accent/50"
+                      )}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => handleSourceToggle(source.name)}
+                        className="w-4 h-4 rounded border-muted text-accent focus:ring-2 focus:ring-accent/50 cursor-pointer"
+                      />
+                      <span className="text-sm font-medium">{source.name}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            )}
           </section>
 
           {/* Bookmarks */}
