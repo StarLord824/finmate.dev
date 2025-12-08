@@ -53,10 +53,6 @@ export const httpLogger = pinoHttp({
     }),
     res: (res) => ({
       statusCode: res.statusCode,
-      headers: {
-        "content-type": res.getHeader("content-type"),
-        "content-length": res.getHeader("content-length"),
-      },
     }),
   },
 });
