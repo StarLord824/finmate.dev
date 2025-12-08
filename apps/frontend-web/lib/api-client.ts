@@ -12,6 +12,7 @@ class ApiClient {
   private async fetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       ...options,
+      credentials: "include", // Include cookies for authentication
       headers: {
         "Content-Type": "application/json",
         ...options?.headers,
@@ -53,6 +54,11 @@ class ApiClient {
     return { articles: response.data, total: response.data.length };
   }
 
+  async getUserPreferences(): Promise<UserPreferences> {
+    const response = await this.fetch<{ data: UserPreferences }>("/user/preferences");
+    return response.data;
+  }
+
   async updatePreferences(preferences: UserPreferences): Promise<void> {
     await this.fetch("/user/preferences", {
       method: "POST",
@@ -65,6 +71,11 @@ class ApiClient {
       method: "POST",
       body: JSON.stringify({ articleId, isBookmarked }),
     });
+  }
+
+  async getBookmarks(): Promise<Article[]> {
+    const response = await this.fetch<{ data: Article[] }>("/user/bookmarks");
+    return response.data;
   }
 
   // Meta endpoints

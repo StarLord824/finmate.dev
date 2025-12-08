@@ -11,11 +11,12 @@ import type { Article } from "@/lib/types";
 interface FeedCardProps {
   article: Article;
   index?: number;
-  onBookmarkToggle?: (articleId: string, isBookmarked: boolean) => void;
+  isBookmarked?: boolean;
+  onBookmarkToggle?: (articleId: string, isBookmarked: boolean) => Promise<void> | void;
 }
 
-export function FeedCard({ article, index = 0, onBookmarkToggle }: FeedCardProps): ReactElement {
-  const [isBookmarked, setIsBookmarked] = useState(article.isBookmarked || false);
+export function FeedCard({ article, index = 0, isBookmarked: isBookmarkedProp, onBookmarkToggle }: FeedCardProps): ReactElement {
+  const [isBookmarked, setIsBookmarked] = useState(isBookmarkedProp ?? article.isBookmarked ?? false);
   const [showMenu, setShowMenu] = useState(false);
 
   const handleBookmark = (e: React.MouseEvent) => {
