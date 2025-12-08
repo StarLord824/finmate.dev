@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd apps/frontend-web && npx next build",
+  "buildCommand": "cd apps/frontend-web && pnpm run build",
   "outputDirectory": "apps/frontend-web/.next",
   "framework": "nextjs",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- apps/frontend-web/"
+  "installCommand": "pnpm install"
 }
