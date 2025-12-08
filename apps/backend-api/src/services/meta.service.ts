@@ -22,7 +22,7 @@ export async function getCategories(): Promise<string[]> {
 }
 
 /**
- * Get all active news sources
+ * Get all unique sources from articles
  * Returns array of source objects
  */
 export async function getSources(): Promise<Array<{
@@ -31,24 +31,22 @@ export async function getSources(): Promise<Array<{
   url: string;
   logo?: string;
 }>> {
-  const sources = await prisma.source.findMany({
-    where: {
-      active: true,
-    },
+  // Get unique sources from articles
+  const articles = await prisma.article.findMany({
     select: {
-      id: true,
-      name: true,
-      url: true,
+      source: true,
     },
+    distinct: ['source'],
     orderBy: {
-      name: "asc",
+      source: 'asc',
     },
   });
 
-  return sources.map((source) => ({
-    id: source.id,
-    name: source.name,
-    url: source.url,
-    logo: undefined, // Add logo field to Source model if needed
+  // Map to source objects
+  return articles.map((article, index) => ({
+    id: `source-${index}`,
+    name: article.source,
+    url: '#', // We don't have URLs in articles, could be added later
+    logo: undefined,
   }));
 }

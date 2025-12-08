@@ -1,6 +1,6 @@
 "use client";
 
-import { Bookmark, ExternalLink, Share2, MoreHorizontal } from "lucide-react";
+import { Bookmark, ExternalLink, Share2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ReactElement, useState } from "react";
@@ -11,13 +11,13 @@ import type { Article } from "@/lib/types";
 interface FeedCardProps {
   article: Article;
   index?: number;
+  onBookmarkToggle?: (articleId: string, isBookmarked: boolean) => void;
   isBookmarked?: boolean;
-  onBookmarkToggle?: (articleId: string, isBookmarked: boolean) => Promise<void> | void;
 }
 
-export function FeedCard({ article, index = 0, isBookmarked: isBookmarkedProp, onBookmarkToggle }: FeedCardProps): ReactElement {
-  const [isBookmarked, setIsBookmarked] = useState(isBookmarkedProp ?? article.isBookmarked ?? false);
-  const [showMenu, setShowMenu] = useState(false);
+export function FeedCard({ article, index = 0, onBookmarkToggle }: FeedCardProps): ReactElement {
+  const [isBookmarked, setIsBookmarked] = useState(article.isBookmarked || false);
+  // const [showMenu, setShowMenu] = useState(false);
 
   const handleBookmark = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -35,7 +35,7 @@ export function FeedCard({ article, index = 0, isBookmarked: isBookmarkedProp, o
           text: article.summary || "",
           url: `/article/${article.id}`,
         });
-      } catch (err) {
+      } catch (_err) {
         console.log("Share cancelled");
       }
     } else {

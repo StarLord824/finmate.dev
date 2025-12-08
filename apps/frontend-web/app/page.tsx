@@ -136,7 +136,7 @@ export default function Home(): ReactElement {
 
             {!hasNextPage && allArticles.length > 0 && (
               <div className="text-center py-8 text-muted text-sm">
-                You've reached the end of the feed
+                {"You've reached the end of the feed"}
               </div>
             )}
           </div>

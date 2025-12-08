@@ -42,9 +42,14 @@ export default function SignupPage(): React.ReactNode {
       });
       router.push("/");
       router.refresh();
-    } catch (err: any) {
-      setError(err.message || "Failed to create account");
-      console.error("Signup error:", err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+        console.error("Signup error:", err);
+      } else {
+        setError("Failed to create account");
+        console.error("Signup error (unknown):", err);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -57,9 +62,14 @@ export default function SignupPage(): React.ReactNode {
         provider: "google",
         callbackURL: "/",
       });
-    } catch (err) {
-      setError("Failed to sign up with Google");
-      console.error("Google signup error:", err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+        console.error("Google signup error:", err);
+      } else {
+        setError("Failed to sign up with Google");
+        console.error("Google signup error (unknown):", err);
+      }
       setIsLoading(false);
     }
   };

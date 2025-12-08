@@ -48,14 +48,14 @@ export function FiltersPanel({
   };
 
   return (
-    <aside className="space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto pr-2">
+    <aside className="space-y-6">
       {/* Categories */}
-      <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-4 shadow-sm">
+      <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-4">
         <h3 className="font-semibold text-sm mb-3 text-foreground">Categories</h3>
         
         {categoriesLoading ? (
           <div className="flex items-center justify-center py-4">
-            <Loader2 className="h-5 w-5 animate-spin text-accent" />
+            <Loader2 className="h-5 w-5 animate-spin text-muted" />
           </div>
         ) : categoriesError ? (
           <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 py-2">
@@ -75,8 +75,8 @@ export function FiltersPanel({
                   className={cn(
                     "px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200",
                     isSelected
-                      ? "bg-accent text-white shadow-sm hover:bg-accent-dark"
-                      : "bg-light-bg dark:bg-dark-bg text-foreground hover:text-accent hover:bg-accent/10 border border-light-border dark:border-dark-border"
+                      ? "bg-accent text-white shadow-sm"
+                      : "bg-light-bg dark:bg-dark-bg text-muted hover:text-accent hover:bg-accent/10 border border-light-border dark:border-dark-border"
                   )}
                 >
                   {category}
@@ -88,12 +88,12 @@ export function FiltersPanel({
       </div>
 
       {/* Sources */}
-      <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-4 shadow-sm">
+      <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-4">
         <h3 className="font-semibold text-sm mb-3 text-foreground">Sources</h3>
         
         {sourcesLoading ? (
           <div className="flex items-center justify-center py-4">
-            <Loader2 className="h-5 w-5 animate-spin text-accent" />
+            <Loader2 className="h-5 w-5 animate-spin text-muted" />
           </div>
         ) : sourcesError ? (
           <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 py-2">
@@ -118,7 +118,7 @@ export function FiltersPanel({
                       onChange={() => onSourceToggle(source.name)}
                       className="w-4 h-4 rounded border-muted text-accent focus:ring-2 focus:ring-accent/50 cursor-pointer"
                     />
-                    <span className="text-sm text-foreground group-hover:text-accent transition-colors">
+                    <span className="text-sm text-muted group-hover:text-foreground transition-colors">
                       {source.name}
                     </span>
                   </label>
@@ -129,7 +129,7 @@ export function FiltersPanel({
             {sources.length > 8 && (
               <button
                 onClick={() => setShowAllSources(!showAllSources)}
-                className="flex items-center gap-1 text-sm text-accent hover:text-accent-dark mt-3 transition-colors font-medium"
+                className="flex items-center gap-1 text-sm text-accent hover:text-accent-dark mt-3 transition-colors"
               >
                 <span>{showAllSources ? "Show less" : "Show more"}</span>
                 <ChevronDown
@@ -145,7 +145,7 @@ export function FiltersPanel({
       </div>
 
       {/* Watchlist */}
-      <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-4 shadow-sm">
+      <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-4">
         <h3 className="font-semibold text-sm mb-3 text-foreground">Watchlist</h3>
         <form onSubmit={handleAddToWatchlist} className="flex gap-2">
           <input
@@ -153,7 +153,7 @@ export function FiltersPanel({
             value={watchlistTicker}
             onChange={(e) => setWatchlistTicker(e.target.value.toUpperCase())}
             placeholder="Add ticker..."
-            className="flex-1 px-3 py-2 text-sm rounded-lg border border-light-border dark:border-dark-border bg-light-bg dark:bg-dark-bg text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
+            className="flex-1 px-3 py-2 text-sm rounded-lg border border-light-border dark:border-dark-border bg-light-bg dark:bg-dark-bg focus:outline-none focus:ring-2 focus:ring-accent/50"
           />
           <button
             type="submit"
@@ -169,24 +169,19 @@ export function FiltersPanel({
       </div>
 
       {/* Market Widget */}
-      <div className="bg-gradient-to-br from-accent/10 to-accent/5 dark:from-accent/20 dark:to-accent/10 rounded-xl border border-accent/20 p-4 shadow-sm">
+      <div className="bg-gradient-to-br from-accent/10 to-accent2/10 rounded-xl border border-accent/20 p-4">
         <h3 className="font-semibold text-sm mb-3 text-foreground">Markets Today</h3>
         <div className="space-y-2">
           {[
-            { name: "S&P 500", value: "4,783.45", change: "+0.89%", positive: true },
-            { name: "Nasdaq", value: "15,011.35", change: "+1.23%", positive: true },
-            { name: "Dow Jones", value: "37,545.33", change: "+0.45%", positive: true },
+            { name: "S&P 500", value: "4,783.45", change: "+0.89%" },
+            { name: "Nasdaq", value: "15,011.35", change: "+1.23%" },
+            { name: "Dow Jones", value: "37,545.33", change: "+0.45%" },
           ].map((index) => (
             <div key={index.name} className="flex items-center justify-between text-sm">
-              <span className="text-foreground font-medium">{index.name}</span>
+              <span className="text-muted">{index.name}</span>
               <div className="text-right">
                 <div className="font-medium text-foreground">{index.value}</div>
-                <div className={cn(
-                  "text-xs font-medium",
-                  index.positive ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
-                )}>
-                  {index.change}
-                </div>
+                <div className="text-xs text-accent">{index.change}</div>
               </div>
             </div>
           ))}
@@ -194,12 +189,12 @@ export function FiltersPanel({
       </div>
 
       {/* CTA */}
-      <div className="bg-gradient-to-br from-accent to-accent-dark rounded-xl p-6 text-white shadow-lg">
+      <div className="bg-gradient-to-br from-primary to-accent rounded-xl p-6 text-white">
         <h3 className="font-bold text-lg mb-2">Never miss a beat</h3>
         <p className="text-sm text-white/90 mb-4">
           Get personalized finance news delivered to your inbox
         </p>
-        <button className="w-full px-4 py-2 bg-white text-accent rounded-lg font-medium hover:bg-white/90 transition-colors shadow-sm">
+        <button className="w-full px-4 py-2 bg-white text-primary rounded-lg font-medium hover:bg-white/90 transition-colors">
           Subscribe Now
         </button>
       </div>

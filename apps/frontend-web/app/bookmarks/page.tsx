@@ -12,7 +12,7 @@ import type { Article } from "@/lib/types";
 
 export default function BookmarksPage(): React.ReactNode {
   const { data: session, isPending: sessionLoading } = authClient.useSession();
-  const [bookmarkedArticles, setBookmarkedArticles] = useState<Set<string>>(new Set());
+  const [_bookmarkedArticles, setBookmarkedArticles] = useState<Set<string>>(new Set());
 
   // Fetch bookmarks only if user is logged in
   const { data: bookmarks = [], isLoading, error } = useQuery({

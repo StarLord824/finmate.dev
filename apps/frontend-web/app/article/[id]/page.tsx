@@ -79,7 +79,7 @@ export default function ArticlePage(): ReactElement {
           text: article.summary || "",
           url: window.location.href,
         });
-      } catch (err) {
+      } catch (_err) {
         console.log("Share cancelled");
       }
     } else {

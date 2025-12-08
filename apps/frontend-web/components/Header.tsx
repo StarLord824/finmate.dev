@@ -10,6 +10,7 @@ import { apiClient } from "@/lib/api-client";
 import { authClient } from "@/lib/auth-client";
 import type { Article } from "@/lib/types";
 import type { ReactElement } from "react";
+import Image from "next/image";
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -196,8 +197,10 @@ export function Header({ onMenuClick }: HeaderProps): ReactElement {
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className="flex items-center gap-2 p-2 rounded-lg hover:bg-accent/10 transition-colors"
                 >
-                  {session.user.image ? (
-                    <img
+                  {session?.user.image ? (
+                    <Image
+                      width={32}
+                      height={32}
                       src={session.user.image}
                       alt={session.user.name || "User"}
                       className="h-8 w-8 rounded-full"
