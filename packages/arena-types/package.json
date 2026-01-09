@@ -1,0 +1,15 @@
+{
+  "name": "@repo/arena-types",
+  "version": "1.0.0",
+  "description": "Shared types for Traders Arena",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:^",
+    "typescript": "5.8.3"
+  }
+}

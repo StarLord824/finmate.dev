@@ -8,6 +8,7 @@ import articleRouter from "./routes/article";
 import searchRouter from "./routes/search";
 import userRouter from "./routes/user";
 import metaRouter from "./routes/meta";
+import arenaRouter from "./routes/arena";
 import { logger } from "./utils/logger";
 import { httpLogger, requestIdMiddleware } from "./middleware/logging";
 
@@ -36,6 +37,7 @@ app.use("/article", articleRouter);
 app.use("/search", searchRouter);
 app.use("/user", userRouter);
 app.use("/meta", metaRouter);
+app.use("/arena", arenaRouter);
 
 // Error handler
 app.use((err: any, req: any, res: any, next: any) => {

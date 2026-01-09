@@ -14,5 +14,48 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  redis:
+    image: redis:7-alpine
+    container_name: finmate-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  # Commenting out arena services for now - they need shared packages
+  # To run them, use: pnpm dev (which runs them locally with access to monorepo)
+  
+  # arena-market-simulator:
+  #   build: ./apps/arena-market-simulator
+  #   container_name: finmate-arena-market
+  #   restart: unless-stopped
+  #   ports:
+  #     - "4001:4001"
+  #   environment:
+  #     - DATABASE_URL=postgresql://postgres:password@postgres:5432/finmate
+  #     - REDIS_URL=redis://redis:6379
+  #     - PORT=4001
+  #   depends_on:
+  #     - postgres
+  #     - redis
+
+  # arena-agent-orchestrator:
+  #   build: ./apps/arena-agent-orchestrator
+  #   container_name: finmate-arena-orchestrator
+  #   restart: unless-stopped
+  #   ports:
+  #     - "4002:4002"
+  #   environment:
+  #     - DATABASE_URL=postgresql://postgres:password@postgres:5432/finmate
+  #     - REDIS_URL=redis://redis:6379
+  #     - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+  #     - PORT=4002
+  #   depends_on:
+  #     - postgres
+  #     - redis
+
 volumes:
   pgdata:
+  redisdata:
+
