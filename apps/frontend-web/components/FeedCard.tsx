@@ -46,27 +46,26 @@ export function FeedCard({ article, index = 0, onBookmarkToggle }: FeedCardProps
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
       className={cn(
-        "group relative bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border",
-        "hover:shadow-card-hover dark:hover:shadow-card-hover-dark transition-all duration-300",
-        "hover:-translate-y-1.5 hover:scale-[1.01]"
+        "group relative bg-white rounded-xl border border-border p-4 h-full flex flex-col",
+        "hover:border-primary/20 transition-colors duration-200"
       )}
       role="article"
       aria-labelledby={`article-title-${article.id}`}
     >
-      <Link href={`/article/${article.id}`} className="block p-4">
+      <Link href={`/article/${article.id}`} className="flex-1 flex flex-col gap-4">
         <div className="flex gap-4">
-          {/* Tags */}
-          <div className="flex flex-col gap-2 min-w-0">
+          {/* Tags - Simplified */}
+          <div className="flex flex-col gap-2 min-w-0 flex-1">
             {article.tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5">
                 {article.tags.slice(0, 2).map((tag) => (
                   <span
                     key={tag}
-                    className="px-2 py-0.5 text-xs font-medium rounded-md bg-accent/10 text-accent border border-accent/20"
+                    className="px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold rounded-full bg-slate-100 text-slate-600"
                   >
                     {tag}
                   </span>
@@ -122,14 +121,15 @@ export function FeedCard({ article, index = 0, onBookmarkToggle }: FeedCardProps
       </Link>
 
       {/* Action Buttons */}
-      <div className="absolute top-3 right-3 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+      {/* Action Buttons - Minimalist */}
+      <div className="absolute top-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
           onClick={handleBookmark}
           className={cn(
-            "p-2 rounded-full shadow-md transition-all duration-200 border",
+            "p-2 rounded-full border transition-colors bg-white",
             isBookmarked
-              ? "bg-accent text-white border-accent"
-              : "bg-white dark:bg-slate-800 text-muted hover:text-accent border-slate-200 dark:border-slate-700"
+              ? "border-primary text-primary bg-primary/5"
+              : "border-slate-200 text-slate-400 hover:text-primary hover:border-primary/30"
           )}
           aria-label={isBookmarked ? "Remove bookmark" : "Bookmark article"}
         >
@@ -138,7 +138,7 @@ export function FeedCard({ article, index = 0, onBookmarkToggle }: FeedCardProps
 
         <button
           onClick={handleShare}
-          className="p-2 rounded-full bg-white dark:bg-slate-800 text-muted hover:text-accent border border-slate-200 dark:border-slate-700 shadow-md transition-all duration-200"
+          className="p-2 rounded-full border border-slate-200 bg-white text-slate-400 hover:text-primary hover:border-primary/30 transition-colors"
           aria-label="Share article"
         >
           <Share2 className="h-4 w-4" />
@@ -149,7 +149,7 @@ export function FeedCard({ article, index = 0, onBookmarkToggle }: FeedCardProps
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="p-2 rounded-full bg-white dark:bg-slate-800 text-muted hover:text-accent border border-slate-200 dark:border-slate-700 shadow-md transition-all duration-200"
+          className="p-2 rounded-full border border-slate-200 bg-white text-slate-400 hover:text-primary hover:border-primary/30 transition-colors"
           aria-label="Open original article"
         >
           <ExternalLink className="h-4 w-4" />

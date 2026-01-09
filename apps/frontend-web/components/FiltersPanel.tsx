@@ -69,8 +69,8 @@ export function FiltersPanel({
   return (
     <aside className="space-y-6">
       {/* Categories */}
-      <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-4">
-        <h3 className="font-semibold text-sm mb-3 text-foreground">Categories</h3>
+      <div className="bg-transparent space-y-3">
+        <h3 className="font-semibold text-sm mb-3 text-foreground px-1">Categories</h3>
         
         {categoriesLoading ? (
           <div className="flex items-center justify-center py-4">
@@ -92,10 +92,10 @@ export function FiltersPanel({
                   key={category}
                   onClick={() => onCategoryToggle(category)}
                   className={cn(
-                    "px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200",
+                    "px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 border",
                     isSelected
-                      ? "bg-accent text-white shadow-sm"
-                      : "bg-light-bg dark:bg-dark-bg text-slate-600 dark:text-slate-400 hover:text-accent hover:bg-accent/10 border border-light-border dark:border-dark-border"
+                      ? "bg-primary text-white border-primary shadow-sm"
+                      : "bg-white text-black border-slate-200 hover:border-slate-300 hover:bg-slate-50"
                   )}
                 >
                   {category}
@@ -107,8 +107,8 @@ export function FiltersPanel({
       </div>
 
       {/* Sources */}
-      <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-4">
-        <h3 className="font-semibold text-sm mb-3 text-foreground">Sources</h3>
+      <div className="bg-transparent space-y-3">
+        <h3 className="font-semibold text-sm mb-3 text-foreground px-1">Sources</h3>
         
         {sourcesLoading ? (
           <div className="flex items-center justify-center py-4">
@@ -135,7 +135,7 @@ export function FiltersPanel({
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => onSourceToggle(source.name)}
-                      className="w-4 h-4 rounded border-muted text-accent focus:ring-2 focus:ring-accent/50 cursor-pointer"
+                      className="w-4 h-4 rounded border-slate-300 text-primary focus:ring-2 focus:ring-primary/20 cursor-pointer"
                     />
                     <span className="text-sm text-muted group-hover:text-foreground transition-colors">
                       {source.name}
@@ -148,7 +148,7 @@ export function FiltersPanel({
             {sources.length > 8 && (
               <button
                 onClick={() => setShowAllSources(!showAllSources)}
-                className="flex items-center gap-1 text-sm text-accent hover:text-accent-dark mt-3 transition-colors"
+                className="flex items-center gap-1 text-sm text-slate-500 hover:text-foreground mt-3 transition-colors px-1"
               >
                 <span>{showAllSources ? "Show less" : "Show more"}</span>
                 <ChevronDown
@@ -164,19 +164,19 @@ export function FiltersPanel({
       </div>
 
       {/* Watchlist */}
-      <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-4">
-        <h3 className="font-semibold text-sm mb-3 text-foreground">Watchlist</h3>
+      <div className="bg-transparent space-y-3">
+        <h3 className="font-semibold text-sm mb-3 text-foreground px-1">Watchlist</h3>
         <form onSubmit={handleAddToWatchlist} className="flex gap-2 mb-3">
           <input
             type="text"
             value={watchlistTicker}
             onChange={(e) => setWatchlistTicker(e.target.value.toUpperCase())}
-            placeholder="Add ticker..."
-            className="flex-1 px-3 py-2 text-sm rounded-lg border border-light-border dark:border-dark-border bg-light-bg dark:bg-dark-bg focus:outline-none focus:ring-2 focus:ring-accent/50"
+            placeholder="ADD TICKER..."
+            className="flex-1 px-3 py-2 text-xs font-semibold rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-slate-400"
           />
           <button
             type="submit"
-            className="p-2 bg-accent text-white rounded-lg hover:bg-accent-dark transition-colors"
+            className="p-2 bg-white border border-slate-200 text-slate-600 rounded-lg hover:border-primary hover:text-primary transition-colors"
             aria-label="Add to watchlist"
           >
             <Plus className="h-4 w-4" />
@@ -187,14 +187,14 @@ export function FiltersPanel({
         {userPrefs?.watchlist && userPrefs.watchlist.length > 0 ? (
            <div className="flex flex-wrap gap-2">
              {userPrefs.watchlist.map((ticker: string) => (
-                <span key={ticker} className="px-2 py-1 bg-accent/10 text-accent text-xs rounded font-medium border border-accent/20">
+                <span key={ticker} className="px-2 py-1 bg-white text-slate-700 text-xs rounded border border-slate-200 font-semibold shadow-sm">
                   {ticker}
                 </span>
              ))}
            </div>
         ) : (
-          <p className="text-xs text-muted mt-2">
-            Track your favorite stocks and get relevant news
+          <p className="text-xs text-slate-500 px-1">
+            Track your favorite stocks.
           </p>
         )}
       </div>
@@ -220,12 +220,13 @@ export function FiltersPanel({
       </div>
 
       {/* CTA */}
-      <div className="bg-gradient-to-br from-primary to-accent rounded-xl p-6 text-white">
+      {/* CTA */}
+      <div className="bg-primary rounded-xl p-6 text-white shadow-lg shadow-primary/10">
         <h3 className="font-bold text-lg mb-2">Never miss a beat</h3>
-        <p className="text-sm text-white/90 mb-4">
+        <p className="text-sm text-white/80 mb-4">
           Get personalized finance news delivered to your inbox
         </p>
-        <button className="w-full px-4 py-2 bg-white text-primary rounded-lg font-medium hover:bg-white/90 transition-colors">
+        <button className="w-full px-4 py-2 bg-white text-primary rounded-lg font-medium hover:bg-slate-50 transition-colors">
           Subscribe Now
         </button>
       </div>

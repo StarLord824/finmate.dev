@@ -11,32 +11,35 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#0b2545",
-          dark: "#081a33",
-          light: "#0f3159",
+          DEFAULT: "#0f172a", // Slate-900 (Deep Black/Navy)
+          dark: "#020617",
+          light: "#334155",
         },
         accent: {
-          DEFAULT: "#008a6f",
-          dark: "#006b56",
-          light: "#00a889",
-        },
-        accent2: {
-          DEFAULT: "#ffb703",
-          dark: "#e6a400",
-          light: "#ffc933",
+          DEFAULT: "#0f172a", // Monochrome accent (Black) for minimal look
+          dark: "#000000",
+          light: "#334155",
         },
         muted: {
-          DEFAULT: "#6b7280",
-          dark: "#4b5563",
-          light: "#9ca3af",
+          DEFAULT: "#64748b", // Slate-500
+          dark: "#94a3b8",
+          light: "#cbd5e1",
         },
+        // Semantic overrides
+        background: "#ffffff",
+        foreground: "#020617",
+        card: "#ffffff",
+        "card-foreground": "#020617",
+        border: "#e2e8f0", // Slate-200
+        
+        // Retain legacy aliases for compatibility but ensuring they map to new theme
         dark: {
-          bg: "#0f172a",
-          card: "#1e293b",
-          border: "#334155",
+          bg: "#ffffff", // Force light even in "dark" classes for now
+          card: "#ffffff",
+          border: "#e2e8f0",
         },
         light: {
-          bg: "#f8fafc",
+          bg: "#ffffff",
           card: "#ffffff",
           border: "#e2e8f0",
         },

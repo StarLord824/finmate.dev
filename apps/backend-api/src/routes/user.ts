@@ -24,9 +24,9 @@ router.get("/me", authMiddleware, async (req: AuthRequest, res, next) => {
  */
 router.post("/preferences", authMiddleware, async (req: AuthRequest, res, next) => {
   try {
-    const { categories, sources } = req.body;
+    const preferences = req.body;
     const userId = req.user!.id;
-    const user = await upsertUserPreferences(userId, { categories, sources });
+    const user = await upsertUserPreferences(userId, preferences);
     res.json({ data: user });
   } catch (err) {
     next(err);

@@ -1,31 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #ffffff;
+  --foreground: #020617; /* Slate-950 */
   --card: #ffffff;
-  --card-foreground: #0f172a;
-  --primary: #0b2545;
-  --primary-foreground: #f8fafc;
-  --accent: #008a6f;
+  --card-foreground: #020617;
+  --primary: #0f172a; /* Slate-900 */
+  --primary-foreground: #ffffff;
+  --accent: #0f172a;
   --accent-foreground: #ffffff;
-  --muted: #6b7280;
-  --muted-foreground: #6b7280;
-  --border: #e2e8f0;
+  --muted: #64748b; /* Slate-500 */
+  --muted-foreground: #64748b;
+  --border: #e2e8f0; /* Slate-200 */
+  --radius: 0.5rem;
 }
 
 .dark {
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  --card: #1e293b;
-  --card-foreground: #f8fafc;
-  --primary: #0b2545;
-  --primary-foreground: #f8fafc;
-  --accent: #008a6f;
+  /* Enforce light mode look even if class is present */
+  --background: #ffffff;
+  --foreground: #020617;
+  --card: #ffffff;
+  --card-foreground: #020617;
+  --primary: #0f172a;
+  --primary-foreground: #ffffff;
+  --accent: #0f172a;
   --accent-foreground: #ffffff;
-  --muted: #6b7280;
-  --muted-foreground: #9ca3af;
-  --border: #334155;
+  --muted: #64748b;
+  --muted-foreground: #64748b;
+  --border: #e2e8f0;
 }
 
 body {

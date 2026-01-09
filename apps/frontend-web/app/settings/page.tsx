@@ -88,64 +88,22 @@ export default function SettingsPage(): JSX.Element {
           <h1 className="text-3xl font-bold text-foreground mb-2">Settings</h1>
           <p className="text-muted mb-8">Customize your FinMate experience</p>
 
-          {/* Theme */}
-          <section className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-6 mb-6">
-            <h2 className="text-xl font-semibold text-foreground mb-4">Appearance</h2>
-            <div className="grid grid-cols-3 gap-4">
-              <button
-                onClick={() => setTheme("light")}
-                className={cn(
-                  "flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all",
-                  theme === "light"
-                    ? "border-accent bg-accent/5"
-                    : "border-light-border dark:border-dark-border hover:border-accent/50"
-                )}
-              >
-                <Sun className="h-6 w-6" />
-                <span className="font-medium">Light</span>
-              </button>
-
-              <button
-                onClick={() => setTheme("dark")}
-                className={cn(
-                  "flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all",
-                  theme === "dark"
-                    ? "border-accent bg-accent/5"
-                    : "border-light-border dark:border-dark-border hover:border-accent/50"
-                )}
-              >
-                <Moon className="h-6 w-6" />
-                <span className="font-medium">Dark</span>
-              </button>
-
-              <button
-                onClick={() => setTheme("system")}
-                className={cn(
-                  "flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all",
-                  theme === "system"
-                    ? "border-accent bg-accent/5"
-                    : "border-light-border dark:border-dark-border hover:border-accent/50"
-                )}
-              >
-                <Monitor className="h-6 w-6" />
-                <span className="font-medium">System</span>
-              </button>
-            </div>
-          </section>
+          {/* Appearance Section Removed - Light mode enforced */}
+          {/* <section className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-6 mb-6">...</section> */}
 
           {/* Categories */}
-          <section className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-6 mb-6">
+          <section className="bg-white rounded-xl border border-border p-6 mb-6">
             <h2 className="text-xl font-semibold text-foreground mb-2">Preferred Categories</h2>
-            <p className="text-sm text-muted mb-4">
+            <p className="text-sm text-slate-500 mb-6">
               Select the topics you&apos;re most interested in
             </p>
             
             {categoriesLoading ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin text-muted" />
+                <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
               </div>
             ) : categories.length === 0 ? (
-              <div className="flex items-center gap-2 text-sm text-muted py-4">
+              <div className="flex items-center gap-2 text-sm text-slate-500 py-4">
                 <AlertCircle className="h-4 w-4" />
                 <span>No categories available</span>
               </div>
@@ -158,10 +116,10 @@ export default function SettingsPage(): JSX.Element {
                       key={category}
                       onClick={() => handleCategoryToggle(category)}
                       className={cn(
-                        "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                        "px-4 py-2 rounded-full text-sm font-medium transition-all border",
                         isSelected
-                          ? "bg-accent text-white shadow-sm"
-                          : "bg-light-bg dark:bg-dark-bg text-muted hover:text-accent hover:bg-accent/10 border border-light-border dark:border-dark-border"
+                          ? "bg-primary text-white border-primary shadow-sm"
+                          : "bg-white text-slate-600 border-slate-200 hover:border-primary/30 hover:bg-slate-50"
                       )}
                     >
                       {category}
@@ -173,18 +131,18 @@ export default function SettingsPage(): JSX.Element {
           </section>
 
           {/* Sources */}
-          <section className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-6 mb-6">
+          <section className="bg-white rounded-xl border border-border p-6 mb-6">
             <h2 className="text-xl font-semibold text-foreground mb-2">Preferred Sources</h2>
-            <p className="text-sm text-muted mb-4">
+            <p className="text-sm text-slate-500 mb-6">
               Choose which news sources you want to see
             </p>
             
             {sourcesLoading ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin text-muted" />
+                <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
               </div>
             ) : sources.length === 0 ? (
-              <div className="flex items-center gap-2 text-sm text-muted py-4">
+              <div className="flex items-center gap-2 text-sm text-slate-500 py-4">
                 <AlertCircle className="h-4 w-4" />
                 <span>No sources available</span>
               </div>
@@ -198,15 +156,15 @@ export default function SettingsPage(): JSX.Element {
                       className={cn(
                         "flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all",
                         isSelected
-                          ? "border-accent bg-accent/5"
-                          : "border-light-border dark:border-dark-border hover:border-accent/50"
+                          ? "border-primary bg-primary/5 text-primary"
+                          : "border-slate-200 hover:border-primary/30"
                       )}
                     >
                       <input
                         type="checkbox"
                         checked={isSelected}
                         onChange={() => handleSourceToggle(source.name)}
-                        className="w-4 h-4 rounded border-muted text-accent focus:ring-2 focus:ring-accent/50 cursor-pointer"
+                        className="w-4 h-4 rounded border-slate-300 text-primary focus:ring-2 focus:ring-primary/20 cursor-pointer"
                       />
                       <span className="text-sm font-medium">{source.name}</span>
                     </label>
@@ -217,12 +175,12 @@ export default function SettingsPage(): JSX.Element {
           </section>
 
           {/* Bookmarks */}
-          <section className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-6 mb-6">
+          <section className="bg-white rounded-xl border border-border p-6 mb-6">
             <h2 className="text-xl font-semibold text-foreground mb-2">Bookmarks</h2>
-            <p className="text-sm text-muted mb-4">
+            <p className="text-sm text-slate-500 mb-4">
               Your saved articles will appear here
             </p>
-            <div className="text-center py-8 text-muted">
+            <div className="text-center py-8 text-slate-400">
               <p>No bookmarks yet</p>
               <p className="text-sm mt-2">Start bookmarking articles to read later</p>
             </div>

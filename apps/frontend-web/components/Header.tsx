@@ -109,8 +109,8 @@ export function Header({ onMenuClick }: HeaderProps): ReactElement {
             <TrendingUp className="h-7 w-7 text-accent transition-transform group-hover:scale-110" />
             <div className="absolute -inset-1 bg-accent/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            FinMate
+          <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-black">
+            FinMate.dev
           </span>
         </Link>
 

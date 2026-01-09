@@ -1,26 +1,27 @@
 // src/services/user.service.ts
 import prisma from "@repo/db/prismaClient";
 
-export async function upsertUserPreferences(userId: string, prefs: { categories?: string[]; sources?: string[] }) {
+export async function upsertUserPreferences(userId: string, prefs: Record<string, any>) {
+  // 1. Get existing user to merge preferences
+  const existingUser = await prisma.user.findUnique({ where: { id: userId } });
+  
+  const currentPrefs = (existingUser?.preferences as Record<string, any>) || {};
+  
+  // 2. Merge new prefs into existing
+  const updatedPrefs = {
+    ...currentPrefs,
+    ...prefs,
+  };
+
   const user = await prisma.user.upsert({
     where: { id: userId },
     update: {
-      preferences: {
-        set: {
-          categories: prefs.categories ?? [],
-          sources: prefs.sources ?? []
-        } as any
-      }
+      preferences: updatedPrefs
     },
     create: {
       id: userId,
-      email: "", // can be updated later
-      preferences: {
-        set: {
-          categories: prefs.categories ?? [],
-          sources: prefs.sources ?? []
-        } as any
-      }
+      email: "", 
+      preferences: updatedPrefs
     }
   });
   return user;

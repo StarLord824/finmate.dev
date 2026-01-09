@@ -118,7 +118,7 @@ export function BentoFeedCard({ article, index = 0, onBookmarkToggle }: BentoFee
         <button
           onClick={handleBookmark}
           className={cn(
-            "p-2 rounded-lg transition-all duration-200 backdrop-blur-sm",
+            "p-2 rounded-lg transition-all duration-200 border border-light-border dark:border-dark-border backdrop-blur-sm hover:scale-[1.05]",
             isBookmarked
               ? "bg-accent2 text-white"
               : "bg-white/90 dark:bg-dark-bg/90 hover:bg-accent/10 text-muted hover:text-accent"
@@ -130,7 +130,7 @@ export function BentoFeedCard({ article, index = 0, onBookmarkToggle }: BentoFee
 
         <button
           onClick={handleShare}
-          className="p-2 rounded-lg bg-white/90 dark:bg-dark-bg/90 hover:bg-accent/10 text-muted hover:text-accent backdrop-blur-sm transition-all duration-200"
+          className="p-2 rounded-lg border border-light-border dark:border-dark-border backdrop-blur-sm transition-all hover:scale-[1.05] duration-200"
           aria-label="Share article"
         >
           <Share2 className="h-4 w-4" />
@@ -141,7 +141,7 @@ export function BentoFeedCard({ article, index = 0, onBookmarkToggle }: BentoFee
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="p-2 rounded-lg bg-accent text-white hover:bg-accent-dark backdrop-blur-sm transition-all duration-200"
+          className="p-2 rounded-lg border border-light-border dark:border-dark-border backdrop-blur-sm transition-all hover:scale-[1.05] duration-200"
           aria-label="Open original article"
         >
           <ExternalLink className="h-4 w-4" />
