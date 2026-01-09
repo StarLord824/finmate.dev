@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import DOMPurify from "dompurify";
 import { ArrowLeft, Bookmark, Share2, ExternalLink, Clock } from "lucide-react";
 import { ReactElement, useState } from "react";
 import { Header } from "@/components/Header";
@@ -79,7 +80,7 @@ export default function ArticlePage(): ReactElement {
           text: article.summary || "",
           url: window.location.href,
         });
-      } catch (_err) {
+      } catch {
         console.log("Share cancelled");
       }
     } else {
@@ -227,7 +228,7 @@ export default function ArticlePage(): ReactElement {
                 </p>
                 <div
                   className="text-foreground leading-relaxed space-y-4"
-                  dangerouslySetInnerHTML={{ __html: article.content || "" }}
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content || "") }}
                 />
               </div>
             </div>

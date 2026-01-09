@@ -18,9 +18,11 @@ export interface FeedResponse {
 }
 
 export interface UserPreferences {
-  selectedTags: string[];
-  selectedSources: string[];
-  theme: "light" | "dark" | "system";
+  categories?: string[];
+  sources?: string[];
+  watchlist?: string[];
+  theme?: "light" | "dark" | "system";
+  [key: string]: any;
 }
 
 export interface SearchResult {

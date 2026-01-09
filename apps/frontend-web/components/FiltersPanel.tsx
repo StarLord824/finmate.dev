@@ -39,11 +39,30 @@ export function FiltersPanel({
 
   const displayedSources = showAllSources ? sources : sources.slice(0, 8);
 
-  const handleAddToWatchlist = (e: React.FormEvent) => {
+  // Fetch user prefs
+  const { data: userPrefs, refetch: refetchPrefs } = useQuery({
+    queryKey: ["user-prefs"],
+    queryFn: () => apiClient.getUserPreferences(),
+    // prevent refetching loop if we update it locally
+  });
+
+  const handleAddToWatchlist = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (watchlistTicker.trim()) {
-      console.log("Add to watchlist:", watchlistTicker);
+    const ticker = watchlistTicker.trim().toUpperCase();
+    if (!ticker) return;
+
+    // Optimistic update or just simple API call
+    const currentWatchlist = userPrefs?.watchlist || [];
+    if (currentWatchlist.includes(ticker)) return;
+
+    const newWatchlist = [...currentWatchlist, ticker];
+    
+    try {
+      await apiClient.updatePreferences({ watchlist: newWatchlist });
       setWatchlistTicker("");
+      refetchPrefs();
+    } catch (err) {
+      console.error("Failed to update watchlist", err);
     }
   };
 
@@ -76,7 +95,7 @@ export function FiltersPanel({
                     "px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200",
                     isSelected
                       ? "bg-accent text-white shadow-sm"
-                      : "bg-light-bg dark:bg-dark-bg text-muted hover:text-accent hover:bg-accent/10 border border-light-border dark:border-dark-border"
+                      : "bg-light-bg dark:bg-dark-bg text-slate-600 dark:text-slate-400 hover:text-accent hover:bg-accent/10 border border-light-border dark:border-dark-border"
                   )}
                 >
                   {category}
@@ -147,7 +166,7 @@ export function FiltersPanel({
       {/* Watchlist */}
       <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border p-4">
         <h3 className="font-semibold text-sm mb-3 text-foreground">Watchlist</h3>
-        <form onSubmit={handleAddToWatchlist} className="flex gap-2">
+        <form onSubmit={handleAddToWatchlist} className="flex gap-2 mb-3">
           <input
             type="text"
             value={watchlistTicker}
@@ -163,9 +182,21 @@ export function FiltersPanel({
             <Plus className="h-4 w-4" />
           </button>
         </form>
-        <p className="text-xs text-muted mt-2">
-          Track your favorite stocks and get relevant news
-        </p>
+        
+        {/* Render Watchlist Items */}
+        {userPrefs?.watchlist && userPrefs.watchlist.length > 0 ? (
+           <div className="flex flex-wrap gap-2">
+             {userPrefs.watchlist.map((ticker: string) => (
+                <span key={ticker} className="px-2 py-1 bg-accent/10 text-accent text-xs rounded font-medium border border-accent/20">
+                  {ticker}
+                </span>
+             ))}
+           </div>
+        ) : (
+          <p className="text-xs text-muted mt-2">
+            Track your favorite stocks and get relevant news
+          </p>
+        )}
       </div>
 
       {/* Market Widget */}

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "./providers";
+import { Footer } from "@/components/Footer";
 import type { ReactElement } from "react";
 
 const inter = Inter({
@@ -35,10 +36,14 @@ export default function RootLayout({
 }>): ReactElement {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${geistMono.variable} font-sans`}>
-        <Providers>{children}</Providers>
+      <body className={`${inter.variable} ${geistMono.variable} font-sans antialiased min-h-screen flex flex-col`}>
+        <Providers>
+          <div className="flex-1">
+            {children}
+          </div>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
 }
-

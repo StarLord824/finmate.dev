@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { FeedCard } from "@/components/FeedCard";
 import { authClient } from "@/lib/auth-client";
@@ -12,7 +11,7 @@ import type { Article } from "@/lib/types";
 
 export default function BookmarksPage(): React.ReactNode {
   const { data: session, isPending: sessionLoading } = authClient.useSession();
-  const [_bookmarkedArticles, setBookmarkedArticles] = useState<Set<string>>(new Set());
+  const queryClient = useQueryClient();
 
   // Fetch bookmarks only if user is logged in
   const { data: bookmarks = [], isLoading, error } = useQuery({
@@ -35,30 +34,10 @@ export default function BookmarksPage(): React.ReactNode {
 
   const handleBookmarkToggle = async (articleId: string, currentState: boolean) => {
     try {
-      // Optimistic update
-      setBookmarkedArticles(prev => {
-        const next = new Set(prev);
-        if (currentState) {
-          next.delete(articleId);
-        } else {
-          next.add(articleId);
-        }
-        return next;
-      });
-
       await apiClient.toggleBookmark(articleId, !currentState);
+      queryClient.invalidateQueries({ queryKey: ["bookmarks"] });
     } catch (error) {
       console.error("Failed to toggle bookmark:", error);
-      // Revert on error
-      setBookmarkedArticles(prev => {
-        const next = new Set(prev);
-        if (currentState) {
-          next.add(articleId);
-        } else {
-          next.delete(articleId);
-        }
-        return next;
-      });
     }
   };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { JSX, useState } from "react";
+import { JSX, useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { apiClient } from "@/lib/api-client";
@@ -8,10 +8,12 @@ import type { Category } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Save, Moon, Sun, Monitor, Loader2, AlertCircle } from "lucide-react";
 
+import { useTheme } from "next-themes";
+
 export default function SettingsPage(): JSX.Element {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const [selectedSources, setSelectedSources] = useState<string[]>([]);
-  const [theme, setTheme] = useState<"light" | "dark" | "system">("system");
+  const { theme, setTheme } = useTheme();
   const [saved, setSaved] = useState(false);
 
   // Fetch categories from backend
@@ -25,6 +27,27 @@ export default function SettingsPage(): JSX.Element {
     queryKey: ["sources"],
     queryFn: () => apiClient.getSources(),
   });
+
+  // Fetch user preferences
+  const { data: userPrefs } = useQuery({
+    queryKey: ["user-prefs"],
+    queryFn: () => apiClient.getUserPreferences(),
+  });
+
+  // Sync state with fetching prefs
+  if (userPrefs && !saved) {
+    // Only update if we haven't just saved (to avoid jitter, though simple effect is better)
+     // actually simple effect is better
+  }
+  
+  // Use effect to populate initial state
+  useEffect(() => {
+    if (userPrefs) {
+      if (userPrefs.categories) setSelectedCategories(userPrefs.categories);
+      if (userPrefs.sources) setSelectedSources(userPrefs.sources);
+      if (userPrefs.theme) setTheme(userPrefs.theme);
+    }
+  }, [userPrefs]);
 
   const handleCategoryToggle = (category: Category) => {
     setSelectedCategories((prev) =>
@@ -41,10 +64,19 @@ export default function SettingsPage(): JSX.Element {
   };
 
   const handleSave = async () => {
-    // Save preferences
-    console.log("Saving preferences:", { selectedCategories, selectedSources, theme });
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+    try {
+      setSaved(false);
+      await apiClient.updatePreferences({
+        categories: selectedCategories,
+        sources: selectedSources,
+        // theme is local state but we could save it too if backend supported it
+      });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } catch (error) {
+      console.error("Failed to save preferences:", error);
+      // You might want to add an error state/toast here
+    }
   };
 
   return (

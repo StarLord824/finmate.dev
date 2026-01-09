@@ -126,10 +126,10 @@ export function FeedCard({ article, index = 0, onBookmarkToggle }: FeedCardProps
         <button
           onClick={handleBookmark}
           className={cn(
-            "p-1.5 rounded-md transition-all duration-200",
+            "p-2 rounded-full shadow-md transition-all duration-200 border",
             isBookmarked
-              ? "bg-accent2 text-white"
-              : "bg-light-bg/80 dark:bg-dark-bg/80 hover:bg-accent/10 text-muted hover:text-accent backdrop-blur-sm"
+              ? "bg-accent text-white border-accent"
+              : "bg-white dark:bg-slate-800 text-muted hover:text-accent border-slate-200 dark:border-slate-700"
           )}
           aria-label={isBookmarked ? "Remove bookmark" : "Bookmark article"}
         >
@@ -138,7 +138,7 @@ export function FeedCard({ article, index = 0, onBookmarkToggle }: FeedCardProps
 
         <button
           onClick={handleShare}
-          className="p-1.5 rounded-md bg-light-bg/80 dark:bg-dark-bg/80 hover:bg-accent/10 text-muted hover:text-accent backdrop-blur-sm transition-all duration-200"
+          className="p-2 rounded-full bg-white dark:bg-slate-800 text-muted hover:text-accent border border-slate-200 dark:border-slate-700 shadow-md transition-all duration-200"
           aria-label="Share article"
         >
           <Share2 className="h-4 w-4" />
@@ -149,7 +149,7 @@ export function FeedCard({ article, index = 0, onBookmarkToggle }: FeedCardProps
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="p-1.5 rounded-md bg-light-bg/80 dark:bg-dark-bg/80 hover:bg-accent/10 text-muted hover:text-accent backdrop-blur-sm transition-all duration-200"
+          className="p-2 rounded-full bg-white dark:bg-slate-800 text-muted hover:text-accent border border-slate-200 dark:border-slate-700 shadow-md transition-all duration-200"
           aria-label="Open original article"
         >
           <ExternalLink className="h-4 w-4" />

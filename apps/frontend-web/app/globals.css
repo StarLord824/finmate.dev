@@ -1,36 +1,36 @@
 @import "tailwindcss";
 
 :root {
-  --background: 248 250 252;
-  --foreground: 15 23 42;
-  --card: 255 255 255;
-  --card-foreground: 15 23 42;
-  --primary: 11 37 69;
-  --primary-foreground: 248 250 252;
-  --accent: 0 138 111;
-  --accent-foreground: 255 255 255;
-  --accent2: 255 183 3;
-  --accent2-foreground: 11 37 69;
-  --muted: 107 114 128;
-  --muted-foreground: 107 114 128;
-  --border: 226 232 240;
-  --radius: 0.5rem;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --primary: #0b2545;
+  --primary-foreground: #f8fafc;
+  --accent: #008a6f;
+  --accent-foreground: #ffffff;
+  --muted: #6b7280;
+  --muted-foreground: #6b7280;
+  --border: #e2e8f0;
 }
 
 .dark {
-  --background: 15 23 42;
-  --foreground: 248 250 252;
-  --card: 30 41 59;
-  --card-foreground: 248 250 252;
-  --primary: 11 37 69;
-  --primary-foreground: 248 250 252;
-  --accent: 0 138 111;
-  --accent-foreground: 255 255 255;
-  --accent2: 255 183 3;
-  --accent2-foreground: 11 37 69;
-  --muted: 107 114 128;
-  --muted-foreground: 156 163 175;
-  --border: 51 65 85;
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  --primary: #0b2545;
+  --primary-foreground: #f8fafc;
+  --accent: #008a6f;
+  --accent-foreground: #ffffff;
+  --muted: #6b7280;
+  --muted-foreground: #9ca3af;
+  --border: #334155;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
 }
 
 html {
