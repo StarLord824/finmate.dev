@@ -1,7 +1,9 @@
-import { ReactNode } from 'react';
+import type { ReactElement } from 'react';
 import Link from 'next/link';
 
-export default function ArenaLayout({ children }: { children: ReactNode }): ReactNode {
+export default function ArenaLayout(props: any): ReactElement {
+  const { children } = props;
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Arena Header */}
