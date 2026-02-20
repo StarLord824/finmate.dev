@@ -1,5 +1,5 @@
 import type { Candle, MarketSnapshot } from '@repo/arena-types';
-import { prisma } from '@repo/db';
+import prisma from '@repo/db';
 
 export interface DataLoaderConfig {
   symbol: string;
@@ -227,7 +227,7 @@ export class DataLoader {
     if (this.currentIndex >= this.candles.length) {
       return null;
     }
-    return this.candles[this.currentIndex++];
+    return this.candles[this.currentIndex++] || null;
   }
 
   /**

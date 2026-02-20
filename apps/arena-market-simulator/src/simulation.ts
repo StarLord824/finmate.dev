@@ -8,7 +8,7 @@ import type {
   SimulationCompletedEvent,
   AgentTradeEvent,
 } from '@repo/arena-types';
-import { prisma } from '@repo/db';
+import prisma from '@repo/db';
 import { v4 as uuidv4 } from 'uuid';
 import { pino } from 'pino';
 import { OrderBookEngine } from './orderBook';
@@ -382,8 +382,8 @@ export class SimulationEngine {
         tick: this.state.tickCount,
         price: this.state.market.price,
         data: {
-          orderBook: this.orderBook.getOrderBook(),
-          portfolios,
+          orderBook: this.orderBook.getOrderBook() as any,
+          portfolios: portfolios as any,
         },
       },
     });

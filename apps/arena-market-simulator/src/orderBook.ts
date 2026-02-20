@@ -60,6 +60,7 @@ export class OrderBookEngine {
 
     while (remainingQty > 0 && this.asks.length > 0) {
       const bestAsk = this.asks[0];
+      if (!bestAsk) break;
       const fillQty = Math.min(remainingQty, bestAsk.quantity);
       
       totalCost += fillQty * bestAsk.price;
@@ -103,6 +104,7 @@ export class OrderBookEngine {
 
     while (remainingQty > 0 && this.bids.length > 0) {
       const bestBid = this.bids[0];
+      if (!bestBid) break;
       const fillQty = Math.min(remainingQty, bestBid.quantity);
       
       totalValue += fillQty * bestBid.price;
