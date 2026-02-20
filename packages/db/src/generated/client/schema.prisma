@@ -1,0 +1,229 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id          String   @id @default(uuid())
+  title       String
+  link        String   @unique
+  source      String
+  author      String?
+  publishedAt DateTime
+  ingestedAt  DateTime @default(now())
+  summary     String?
+  content     String?
+  imageUrl    String?
+  fingerprint String   @unique
+  tags        String[] @default([])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  // @@fulltext([title, summary, content], map: "article_fulltext") // Prisma 5+ supports fulltext in some DBs; keep or remove depending on PG version
+
+  @@index([publishedAt])
+}
+
+model Source {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  url       String
+  type      String
+  tags      String[] @default([])
+  active    Boolean  @default(true)
+  schedule  String?
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id String @id
+
+  // Better Auth required fields
+  name          String?
+  email         String?  @unique
+  emailVerified Boolean  @default(false)
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Your existing custom fields
+  preferences Json?
+  bookmarks   String[] @default([])
+
+  // Relations
+  sessions Session[]
+  accounts Account[]
+}
+
+// betterauth
+
+model Session {
+  id        String   @id
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// ============= TRADERS ARENA MODELS =============
+
+model ArenaAgent {
+  id          String   @id @default(uuid())
+  name        String
+  model       String // e.g. "openai/gpt-4o", "anthropic/claude-3.5-sonnet"
+  personality String?  @db.Text // System prompt personality
+  strategy    String?  @db.Text // Trading strategy description
+  config      Json     @default("{}")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  participations ArenaParticipation[]
+}
+
+model ArenaSimulation {
+  id             String    @id @default(uuid())
+  name           String
+  status         String    @default("pending") // pending, running, paused, completed, failed
+  market         String // e.g. "BTC/USDT", "AAPL"
+  marketType     String // "crypto" or "stock"
+  interval       String    @default("1h") // "1m", "5m", "15m", "1h", "4h", "1d"
+  startDate      DateTime
+  endDate        DateTime
+  initialBalance Float     @default(10000)
+  tickIntervalMs Int       @default(1000) // simulation speed
+  priceImpact    Float     @default(0.001) // how much trades affect price
+  config         Json      @default("{}") // Additional simulation config
+  createdAt      DateTime  @default(now())
+  startedAt      DateTime?
+  pausedAt       DateTime?
+  completedAt    DateTime?
+  errorMessage   String?
+
+  participants ArenaParticipation[]
+  trades       ArenaTrade[]
+  snapshots    ArenaSnapshot[]
+}
+
+model ArenaParticipation {
+  id           String @id @default(uuid())
+  simulationId String
+  agentId      String
+  finalBalance Float?
+  pnl          Float?
+  pnlPercent   Float?
+  sharpeRatio  Float?
+  winRate      Float?
+  totalTrades  Int    @default(0)
+  rank         Int?
+
+  simulation ArenaSimulation @relation(fields: [simulationId], references: [id], onDelete: Cascade)
+  agent      ArenaAgent      @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  trades     ArenaTrade[]
+
+  @@unique([simulationId, agentId])
+  @@index([simulationId])
+  @@index([agentId])
+}
+
+model ArenaTrade {
+  id              String   @id @default(uuid())
+  simulationId    String
+  participationId String
+  timestamp       DateTime
+  action          String // "buy" or "sell"
+  asset           String
+  quantity        Float
+  price           Float
+  total           Float // quantity * price
+  reasoning       String?  @db.Text // LLM's reasoning for trade
+
+  simulation    ArenaSimulation    @relation(fields: [simulationId], references: [id], onDelete: Cascade)
+  participation ArenaParticipation @relation(fields: [participationId], references: [id], onDelete: Cascade)
+
+  @@index([simulationId, timestamp])
+  @@index([participationId])
+}
+
+model ArenaSnapshot {
+  id           String   @id @default(uuid())
+  simulationId String
+  timestamp    DateTime
+  tick         Int
+  price        Float
+  data         Json // { orderBook, portfolios: { [agentId]: { cash, positions, totalValue } } }
+
+  simulation ArenaSimulation @relation(fields: [simulationId], references: [id], onDelete: Cascade)
+
+  @@index([simulationId, timestamp])
+  @@index([simulationId, tick])
+}
+
+model ArenaLeaderboard {
+  id               String   @id @default(uuid())
+  agentId          String   @unique
+  agentName        String
+  totalWins        Int      @default(0)
+  totalSimulations Int      @default(0)
+  avgPnl           Float    @default(0)
+  avgPnlPercent    Float    @default(0)
+  avgSharpe        Float    @default(0)
+  bestPnl          Float    @default(0)
+  worstPnl         Float    @default(0)
+  lastUpdated      DateTime @default(now())
+}
+
+model MarketDataCache {
+  id        String   @id @default(uuid())
+  symbol    String
+  type      String // "crypto" or "stock"
+  interval  String // "1m", "5m", "15m", "1h", "4h", "1d"
+  startTime DateTime
+  endTime   DateTime
+  dataCount Int // number of candles
+  data      Json // Array of OHLCV candles
+  createdAt DateTime @default(now())
+
+  @@unique([symbol, type, interval, startTime, endTime])
+  @@index([symbol, type, interval])
+}
