@@ -219,6 +219,9 @@ importers:
 
   apps/frontend-web:
     dependencies:
+      '@prisma/client':
+        specifier: 6.16.1
+        version: 6.16.1(prisma@6.16.1(typescript@5.8.2))(typescript@5.8.2)
       '@repo/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -5080,6 +5083,11 @@ snapshots:
 
   '@pinojs/redact@0.4.0': {}
 
+  '@prisma/client@6.16.1(prisma@6.16.1(typescript@5.8.2))(typescript@5.8.2)':
+    optionalDependencies:
+      prisma: 6.16.1(typescript@5.8.2)
+      typescript: 5.8.2
+
   '@prisma/client@6.16.1(prisma@6.16.1(typescript@5.9.3))(typescript@5.9.3)':
     optionalDependencies:
       prisma: 6.16.1(typescript@5.9.3)
@@ -7589,6 +7597,16 @@ snapshots:
   prelude-ls@1.2.1: {}
 
   prettier@3.6.2: {}
+
+  prisma@6.16.1(typescript@5.8.2):
+    dependencies:
+      '@prisma/config': 6.16.1
+      '@prisma/engines': 6.16.1
+    optionalDependencies:
+      typescript: 5.8.2
+    transitivePeerDependencies:
+      - magicast
+    optional: true
 
   prisma@6.16.1(typescript@5.9.3):
     dependencies:
