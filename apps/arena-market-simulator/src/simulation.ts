@@ -78,7 +78,7 @@ export class SimulationEngine {
       startDate: simulation.startDate,
       endDate: simulation.endDate,
       initialBalance: simulation.initialBalance,
-      agents: simulation.participants.map(p => ({
+      agents: simulation.participants.map((p: any) => ({
         id: p.agent.id,
         name: p.agent.name,
         model: p.agent.model,

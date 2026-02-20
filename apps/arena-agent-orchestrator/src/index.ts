@@ -5,7 +5,7 @@ import type {
   AgentDecisionEvent,
   AgentAction,
 } from '@repo/arena-types';
-import { prisma } from '@repo/db';
+import prisma from '@repo/db';
 import { pino } from 'pino';
 import { v4 as uuidv4 } from 'uuid';
 import { AgentFactory, TradingAgent, TradingAgentContext } from './langchain/agentFactory';

@@ -1,7 +1,7 @@
-import { Router, Request, Response } from 'express';
-import { prisma } from '@repo/db';
+import { Router, Request, Response, type Router as ExpressRouter } from 'express';
+import prisma from '@repo/db';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 /**
  * GET /arena/replay/:id - Get replay data for a simulation
@@ -44,13 +44,13 @@ router.get('/:id', async (req: Request, res: Response) => {
 
     res.json({
       simulation,
-      snapshots: snapshots.map(s => ({
+      snapshots: snapshots.map((s: any) => ({
         tick: s.tick,
         timestamp: s.timestamp,
         price: s.price,
         data: s.data,
       })),
-      trades: trades.map(t => ({
+      trades: trades.map((t: any) => ({
         id: t.id,
         timestamp: t.timestamp,
         agentId: t.participation.agentId,

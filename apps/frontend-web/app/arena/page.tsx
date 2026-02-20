@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 
-export default function ArenaPage() {
+export default function ArenaPage(): ReactNode {
   return (
     <div className="space-y-8">
       {/* Hero Section */}

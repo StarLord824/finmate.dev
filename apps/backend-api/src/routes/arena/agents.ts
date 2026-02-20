@@ -1,7 +1,7 @@
-import { Router, Request, Response } from 'express';
-import { prisma } from '@repo/db';
+import { Router, Request, Response, type Router as ExpressRouter } from 'express';
+import prisma from '@repo/db';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 /**
  * GET /arena/agents - List all agents

@@ -1,5 +1,7 @@
 'use client';
 
+import type { ReactNode } from 'react';
+
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -16,7 +18,7 @@ const mockSimulations = [
   { id: '3', name: 'AAPL Analysis', market: 'AAPL', status: 'pending', participants: 4, startedAt: null },
 ];
 
-export default function AdminDashboard() {
+export default function AdminDashboard(): ReactNode {
   const [activeTab, setActiveTab] = useState<'agents' | 'simulations'>('simulations');
 
   return (

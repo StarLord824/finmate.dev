@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
 
-export default function ArenaLayout({ children }: { children: ReactNode }) {
+export default function ArenaLayout({ children }: { children: ReactNode }): ReactNode {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Arena Header */}

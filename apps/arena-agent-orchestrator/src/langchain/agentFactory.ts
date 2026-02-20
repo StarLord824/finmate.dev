@@ -142,14 +142,14 @@ Bid/Ask: ${context.market.orderBook?.bids[0]?.price.toFixed(2)} / ${context.mark
       const qtyMatch = response.match(/(\d+(?:\.\d+)?)/);
       return {
         action: 'buy',
-        quantity: qtyMatch ? parseFloat(qtyMatch[1]) : 1,
+        quantity: qtyMatch && qtyMatch[1] ? parseFloat(qtyMatch[1]) : 1,
         reasoning: response,
       };
     } else if (lowerResponse.includes('sell')) {
       const qtyMatch = response.match(/(\d+(?:\.\d+)?)/);
       return {
         action: 'sell',
-        quantity: qtyMatch ? parseFloat(qtyMatch[1]) : 1,
+        quantity: qtyMatch && qtyMatch[1] ? parseFloat(qtyMatch[1]) : 1,
         reasoning: response,
       };
     }

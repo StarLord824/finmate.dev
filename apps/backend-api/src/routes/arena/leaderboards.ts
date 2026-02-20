@@ -1,7 +1,8 @@
-import { Router, Request, Response } from 'express';
-import { prisma } from '@repo/db';
+import { Router, Request, Response, type Router as ExpressRouter } from 'express';
+import prisma from '@repo/db';
 
-const router = Router();
+
+const router: ExpressRouter = Router();
 
 /**
  * GET /arena/leaderboards - Get agent leaderboards
@@ -25,7 +26,7 @@ router.get('/', async (req: Request, res: Response) => {
     });
     
     res.json({ 
-      leaderboard: leaderboard.map((entry, index) => ({
+      leaderboard: leaderboard.map((entry: any, index: number) => ({
         rank: index + 1,
         ...entry,
         winRate: entry.totalSimulations > 0 
@@ -63,7 +64,7 @@ router.get('/:agentId', async (req: Request, res: Response) => {
     
     res.json({ 
       stats,
-      recentPerformances: recentParticipations.map(p => ({
+      recentPerformances: recentParticipations.map((p: any) => ({
         simulationId: p.simulationId,
         simulationName: p.simulation.name,
         market: p.simulation.market,

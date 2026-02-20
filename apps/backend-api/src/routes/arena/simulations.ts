@@ -1,8 +1,8 @@
-import { Router, Request, Response } from 'express';
-import { prisma } from '@repo/db';
+import { Router, Request, Response, type Router as ExpressRouter } from 'express';
+import prisma from '@repo/db';
 import Redis from 'ioredis';
 
-const router = Router();
+const router: ExpressRouter = Router();
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
 
 /**

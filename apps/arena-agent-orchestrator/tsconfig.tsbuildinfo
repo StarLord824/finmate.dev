@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/langchain/agentfactory.ts","./src/langchain/openroutermodel.ts","./src/langchain/prompts/traderprompt.ts","./src/langchain/tools/tradingtools.ts"],"version":"5.8.3"}

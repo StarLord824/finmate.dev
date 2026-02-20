@@ -1,5 +1,7 @@
 'use client';
 
+import type { ReactNode } from 'react';
+
 import Link from 'next/link';
 
 // Mock data - in production this would come from API
@@ -42,7 +44,7 @@ const mockSimulations = [
   },
 ];
 
-export default function ReplayListPage() {
+export default function ReplayListPage(): ReactNode {
   return (
     <div className="space-y-6">
       <div>

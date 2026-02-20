@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 import agentsRouter from './agents';
 import simulationsRouter from './simulations';
 import replayRouter from './replay';
 import leaderboardsRouter from './leaderboards';
 
-const arenaRouter = Router();
+export const arenaRouter: ExpressRouter = Router();
 
 arenaRouter.use('/agents', agentsRouter);
 arenaRouter.use('/simulations', simulationsRouter);
