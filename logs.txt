@@ -1,0 +1,194 @@
+ "code": "P2021",
+[WORKER]       "meta": {
+[WORKER]         "modelName": "Article",
+[WORKER]         "table": "public.Article"
+[WORKER]       },
+[WORKER]       "clientVersion": "6.16.1",
+[WORKER]       "name": "PrismaClientKnownRequestError"
+[WORKER]     }
+[WORKER] [15:57:24 UTC] ERROR: upsertArticle error
+[WORKER]     env: "development"
+[WORKER]     service: "ingestion-worker"
+[WORKER]     fingerprint: "3ca99aa2c70cbd9b34b33a60f835748af861805da3d78cbbd6f77a68426c171b"
+[WORKER]     link: "https://blockworks.co/news/fusaka-update-today"
+[WORKER]     err: {
+[WORKER]       "type": "PrismaClientKnownRequestError",
+[WORKER]       "message": "\nInvalid `prisma.article.create()` invocation in\nC:\\Users\\MY NOTEBOOK\\Desktop\\finmate.dev\\apps\\ingestion-worker\\src\\db\\write-article.ts:16:43\n\n  13   return { inserted: false, id: existing.id };\n  14 }\n  15 \n→ 16 const inserted = await prisma.article.create(\nThe table `public.Article` does not exist in the current database.",
+[WORKER]       "stack":
+[WORKER]           PrismaClientKnownRequestError:
+[WORKER]           Invalid `prisma.article.create()` invocation in
+[WORKER]           C:\Users\MY NOTEBOOK\Desktop\finmate.dev\apps\ingestion-worker\src\db\write-article.ts:16:43
+[WORKER]
+[WORKER]             13   return { inserted: false, id: existing.id };
+[WORKER]             14 }
+[WORKER]             15
+[WORKER]           → 16 const inserted = await prisma.article.create(
+[WORKER]           The table `public.Article` does not exist in the current database.
+[WORKER]               at ei.handleRequestError (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:124:7268)
+[WORKER]               at ei.handleAndLogRequestError (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:124:6593)
+[WORKER]               at ei.request (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:124:6300)
+[WORKER]               at a (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:133:9551)
+[WORKER]               at upsertArticle (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\apps\ingestion-worker\src\db\write-article.ts:16:22)
+[WORKER]               at CronJob.<anonymous> (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\apps\ingestion-worker\src\scheduler.ts:38:25)
+[WORKER]       "code": "P2021",
+[WORKER]       "meta": {
+[WORKER]         "modelName": "Article",
+[WORKER]         "table": "public.Article"
+[WORKER]       },
+[WORKER]       "clientVersion": "6.16.1",
+[WORKER]       "name": "PrismaClientKnownRequestError"
+[WORKER]     }
+[WORKER] [15:57:24 UTC] ERROR: upsertArticle error
+[WORKER]     env: "development"
+[WORKER]     service: "ingestion-worker"
+[WORKER]     fingerprint: "a9de29bc36f5049352326d0f050fc54d5332f708761eb5876cbdfc7893e215ee"
+[WORKER]     link: "https://blockworks.co/news/the-sci-fi-future-of-onchain-assets-and-smart-locks"
+[WORKER]     err: {
+[WORKER]       "type": "PrismaClientKnownRequestError",
+[WORKER]       "message": "\nInvalid `prisma.article.create()` invocation in\nC:\\Users\\MY NOTEBOOK\\Desktop\\finmate.dev\\apps\\ingestion-worker\\src\\db\\write-article.ts:16:43\n\n  13   return { inserted: false, id: existing.id };\n  14 }\n  15 \n→ 16 const inserted = await prisma.article.create(\nThe table `public.Article` does not exist in the current database.",
+[WORKER]       "stack":
+[WORKER]           PrismaClientKnownRequestError:
+[WORKER]           Invalid `prisma.article.create()` invocation in
+[WORKER]           C:\Users\MY NOTEBOOK\Desktop\finmate.dev\apps\ingestion-worker\src\db\write-article.ts:16:43
+[WORKER]
+[WORKER]             13   return { inserted: false, id: existing.id };
+[WORKER]             14 }
+[WORKER]             15
+[WORKER]           → 16 const inserted = await prisma.article.create(
+[WORKER]           The table `public.Article` does not exist in the current database.
+[WORKER]               at ei.handleRequestError (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:124:7268)
+[WORKER]               at ei.handleAndLogRequestError (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:124:6593)
+[WORKER]               at ei.request (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:124:6300)
+[WORKER]               at a (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:133:9551)
+[WORKER]               at upsertArticle (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\apps\ingestion-worker\src\db\write-article.ts:16:22)
+[WORKER]               at CronJob.<anonymous> (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\apps\ingestion-worker\src\scheduler.ts:38:25)
+[WORKER]       "code": "P2021",
+[WORKER]       "meta": {
+[WORKER]         "modelName": "Article",
+[WORKER]         "table": "public.Article"
+[WORKER]       },
+[WORKER]       "clientVersion": "6.16.1",
+[WORKER]       "name": "PrismaClientKnownRequestError"
+[WORKER]     }
+[WORKER] [15:57:24 UTC] ERROR: upsertArticle error
+[WORKER]     env: "development"
+[WORKER]     service: "ingestion-worker"
+[WORKER]     fingerprint: "5e03e227ed055e0bff5b42e081ec42540cc1300c01c12307a824c151e7b6f179"
+[WORKER]     link: "https://blockworks.co/news/strategy-stress-liquidity-strain"
+[WORKER]     err: {
+[WORKER]       "type": "PrismaClientKnownRequestError",
+[WORKER]       "message": "\nInvalid `prisma.article.create()` invocation in\nC:\\Users\\MY NOTEBOOK\\Desktop\\finmate.dev\\apps\\ingestion-worker\\src\\db\\write-article.ts:16:43\n\n  13   return { inserted: false, id: existing.id };\n  14 }\n  15 \n→ 16 const inserted = await prisma.article.create(\nThe table `public.Article` does not exist in the current database.",
+[WORKER]       "stack":
+[WORKER]           PrismaClientKnownRequestError:
+[WORKER]           Invalid `prisma.article.create()` invocation in
+[WORKER]           C:\Users\MY NOTEBOOK\Desktop\finmate.dev\apps\ingestion-worker\src\db\write-article.ts:16:43
+[WORKER]
+[WORKER]             13   return { inserted: false, id: existing.id };
+[WORKER]             14 }
+[WORKER]             15
+[WORKER]           → 16 const inserted = await prisma.article.create(
+[WORKER]           The table `public.Article` does not exist in the current database.
+[WORKER]               at ei.handleRequestError (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:124:7268)
+[WORKER]               at ei.handleAndLogRequestError (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:124:6593)
+[WORKER]               at ei.request (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:124:6300)
+[WORKER]               at a (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:133:9551)
+[WORKER]               at upsertArticle (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\apps\ingestion-worker\src\db\write-article.ts:16:22)
+[WORKER]               at CronJob.<anonymous> (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\apps\ingestion-worker\src\scheduler.ts:38:25)
+[WORKER]       "code": "P2021",
+[WORKER]       "meta": {
+[WORKER]         "modelName": "Article",
+[WORKER]         "table": "public.Article"
+[WORKER]       },
+[WORKER]       "clientVersion": "6.16.1",
+[WORKER]       "name": "PrismaClientKnownRequestError"
+[WORKER]     }
+[WORKER] [15:57:24 UTC] ERROR: upsertArticle error
+[WORKER]     env: "development"
+[WORKER]     service: "ingestion-worker"
+[WORKER]     fingerprint: "15ba677c6793578b6526b8de7f2193b5ab1f26b2e9944dd66ba3a43c6d44c94b"
+[WORKER]     link: "https://blockworks.co/news/privacy-right-invention"
+[WORKER]     err: {
+[WORKER]       "type": "PrismaClientKnownRequestError",
+[WORKER]       "message": "\nInvalid `prisma.article.create()` invocation in\nC:\\Users\\MY NOTEBOOK\\Desktop\\finmate.dev\\apps\\ingestion-worker\\src\\db\\write-article.ts:16:43\n\n  13   return { inserted: false, id: existing.id };\n  14 }\n  15 \n→ 16 const inserted = await prisma.article.create(\nThe table `public.Article` does not exist in the current database.",
+[WORKER]       "stack":
+[WORKER]           PrismaClientKnownRequestError:
+[WORKER]           Invalid `prisma.article.create()` invocation in
+[WORKER]           C:\Users\MY NOTEBOOK\Desktop\finmate.dev\apps\ingestion-worker\src\db\write-article.ts:16:43
+[WORKER]
+[WORKER]             13   return { inserted: false, id: existing.id };
+[WORKER]             14 }
+[WORKER]             15
+[WORKER]           → 16 const inserted = await prisma.article.create(
+[WORKER]           The table `public.Article` does not exist in the current database.
+[WORKER]               at ei.handleRequestError (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:124:7268)
+[WORKER]               at ei.handleAndLogRequestError (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:124:6593)
+[WORKER]               at ei.request (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:124:6300)
+[WORKER]               at a (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\packages\db\src\generated\client\runtime\library.js:133:9551)
+[WORKER]               at upsertArticle (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\apps\ingestion-worker\src\db\write-article.ts:16:22)
+[WORKER]               at CronJob.<anonymous> (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\apps\ingestion-worker\src\scheduler.ts:38:25)
+[WORKER]       "code": "P2021",
+[WORKER]       "meta": {
+[WORKER]         "modelName": "Article",
+[WORKER]         "table": "public.Article"
+[WORKER]       },
+[WORKER]       "clientVersion": "6.16.1",
+[WORKER]       "name": "PrismaClientKnownRequestError"
+[WORKER]     }
+[WORKER] [15:57:24 UTC] INFO: cron run complete
+[WORKER]     env: "development"
+[WORKER]     service: "ingestion-worker"
+[WORKER]     source: "Blockworks"
+[WORKER]     fetched: 50
+[WORKER]     inserted: 0
+[WORKER] [15:57:25 UTC] ERROR: fetchRss error
+[WORKER]     env: "development"
+[WORKER]     service: "ingestion-worker"
+[WORKER]     feedUrl: "https://blogs.imf.org/feed/"
+[WORKER]     err: {
+[WORKER]       "type": "Error",
+[WORKER]       "message": "Attribute without value\nLine: 26\nColumn: 271\nChar: i",
+[WORKER]       "stack":
+[WORKER]           Error: Attribute without value
+[WORKER]           Line: 26
+[WORKER]           Column: 271
+[WORKER]           Char: i
+[WORKER]               at error (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\node_modules\.pnpm\sax@1.4.3\node_modules\sax\lib\sax.js:695:10)
+[WORKER]               at strictFail (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\node_modules\.pnpm\sax@1.4.3\node_modules\sax\lib\sax.js:724:7)
+[WORKER]               at SAXParser.write (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\node_modules\.pnpm\sax@1.4.3\node_modules\sax\lib\sax.js:1455:13)
+[WORKER]               at Parser.exports.Parser.Parser.parseString (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\node_modules\.pnpm\xml2js@0.5.0\node_modules\xml2js\lib\parser.js:327:31)
+[WORKER]               at Parser.parseString (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\node_modules\.pnpm\xml2js@0.5.0\node_modules\xml2js\lib\parser.js:5:59)
+[WORKER]               at C:\Users\MY NOTEBOOK\Desktop\finmate.dev\node_modules\.pnpm\rss-parser@3.13.0\node_modules\rss-parser\lib\parser.js:33:22
+[WORKER]               at new Promise (<anonymous>)
+[WORKER]               at Parser.parseString (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\node_modules\.pnpm\rss-parser@3.13.0\node_modules\rss-parser\lib\parser.js:32:16)
+[WORKER]               at IncomingMessage.<anonymous> (C:\Users\MY NOTEBOOK\Desktop\finmate.dev\node_modules\.pnpm\rss-parser@3.13.0\node_modules\rss-parser\lib\parser.js:96:23)
+[WORKER]               at IncomingMessage.emit (node:events:530:35)
+[WORKER]     }
+[WORKER] [15:57:25 UTC] INFO: cron run complete
+[WORKER]     env: "development"
+[WORKER]     service: "ingestion-worker"
+[WORKER]     source: "IMF Blog"
+[WORKER]     fetched: 0
+[WORKER]     inserted: 0
+[WEB] ✓ Ready in 21.4s
+[WEB] ○ Compiling / ...
+[WEB]  GET / 200 in 9.8s (compile: 9.5s, render: 298ms)
+[WEB]  GET /api/auth/get-session 200 in 4.3s (compile: 4.2s, render: 66ms)
+[WEB]  GET /login 200 in 300ms (compile: 235ms, render: 65ms)
+[WEB] 2026-04-26T15:58:07.126Z ERROR [Better Auth]: PrismaClientInitializationError Error [PrismaClientInitializationError]:
+[WEB] Invalid `prisma.user.findMany()` invocation:
+[WEB]
+[WEB]
+[WEB] error: Environment variable not found: DATABASE_URL.
+[WEB]   -->  schema.prisma:8
+[WEB]    |
+[WEB]  7 |   provider = "postgresql"
+[WEB]  8 |   url      = env("DATABASE_URL")
+[WEB]    |
+[WEB]
+[WEB] Validation Error Count: 1
+[WEB]     at <unknown> (-->  schema.prisma:8)
+[WEB]     at ei.handleRequestError (..\..\packages\db\src\generated\client\runtime\library.js:124:7568)
+[WEB]     at ei.handleAndLogRequestError (..\..\packages\db\src\generated\client\runtime\library.js:124:6593)
+[WEB]     at ei.request (..\..\packages\db\src\generated\client\runtime\library.js:124:6300)
+[WEB]     at async a (..\..\packages\db\src\generated\client\runtime\library.js:133:9551)
+[WEB]   122 |
