@@ -14,12 +14,10 @@ export function useReadTracker(articleId: string, isAuthenticated: boolean) {
 
     return () => {
       const elapsed = Math.round((Date.now() - startRef.current) / 1000);
-      // Fire-and-forget: don't block navigation. 10s minimum to count as a read.
+      // Only record if user spent at least 10 seconds — filters out bounces
+      // and keeps history meaningful rather than logging every page visit.
       if (elapsed >= 10) {
         apiClient.recordRead(articleId, elapsed).catch(() => {});
-      } else {
-        // Still record it, just without a readTime so ranking still improves
-        apiClient.recordRead(articleId).catch(() => {});
       }
     };
   }, [articleId, isAuthenticated]);

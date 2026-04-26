@@ -1,10 +1,11 @@
 "use client";
 
+import { type ReactElement } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
-export function MarketBar() {
+export function MarketBar(): ReactElement | null {
   const { data } = useQuery({
     queryKey: ["market"],
     queryFn: () => apiClient.getMarket(),

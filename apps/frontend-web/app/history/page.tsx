@@ -1,5 +1,6 @@
 "use client";
 
+import { type ReactElement } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
 import { authClient } from "@/lib/auth-client";
@@ -7,7 +8,7 @@ import { FeedCard } from "@/components/FeedCard";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 
-export default function HistoryPage() {
+export default function HistoryPage(): ReactElement {
   const { data: session } = authClient.useSession();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =

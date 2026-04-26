@@ -1,5 +1,6 @@
 "use client";
 
+import { type ReactElement } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
 import { TrendingUp } from "lucide-react";
@@ -9,7 +10,7 @@ interface Props {
   selectedTags?: string[];
 }
 
-export function TrendingTopics({ onTagClick, selectedTags = [] }: Props) {
+export function TrendingTopics({ onTagClick, selectedTags = [] }: Props): ReactElement | null {
   const { data, isLoading } = useQuery({
     queryKey: ["trending"],
     queryFn: () => apiClient.getTrending(),

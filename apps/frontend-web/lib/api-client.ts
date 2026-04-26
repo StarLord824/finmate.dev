@@ -48,6 +48,13 @@ class ApiClient {
     return response.data;
   }
 
+  async getRelatedArticles(id: string, limit = 5): Promise<Article[]> {
+    const response = await this.fetch<{ data: Article[] }>(
+      `/article/${id}/related?limit=${limit}`
+    );
+    return response.data;
+  }
+
   async searchArticles(query: string): Promise<SearchResult> {
     const searchParams = new URLSearchParams({ q: query });
     const response = await this.fetch<{ data: Article[] }>(`/search?${searchParams.toString()}`);

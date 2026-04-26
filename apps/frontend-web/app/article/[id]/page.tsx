@@ -47,25 +47,15 @@ export default function ArticlePage(): ReactElement {
   };
 
   const { data: relatedArticles } = useQuery({
-    queryKey: ["related", articleId, article?.tags[0]],
+    queryKey: ["related", articleId],
     queryFn: async () => {
-      if (!article || article.tags.length === 0) return [];
-      
-      const response = await apiClient.getFeed({
-        limit: 3,
-        tags: article.tags.length > 0 ? [article.tags[0]!] : undefined, // Use the first tag for related articles
-      });
-
-      // Filter out the current article and calculate reading time
-      return response.data
-        .filter((a: Article) => a.id !== articleId)
-        .slice(0, 3)
-        .map((a: Article) => ({
-          ...a,
-          readingTime: a.readingTime || calculateReadingTime(a),
-        }));
+      const articles = await apiClient.getRelatedArticles(articleId, 3);
+      return articles.map((a: Article) => ({
+        ...a,
+        readingTime: a.readingTime || calculateReadingTime(a),
+      }));
     },
-    enabled: !!article, // Only fetch when we have the article
+    enabled: !!article,
   });
 
   const handleBookmark = () => {
