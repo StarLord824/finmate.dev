@@ -88,6 +88,56 @@ class ApiClient {
     const response = await this.fetch<SourcesResponse>("/meta/sources");
     return response.data;
   }
+
+  // Read history
+  async recordRead(articleId: string, readTime?: number): Promise<void> {
+    await this.fetch("/user/history", {
+      method: "POST",
+      body: JSON.stringify({ articleId, readTime }),
+    });
+  }
+
+  async getHistory(cursor?: string, limit = 20): Promise<{
+    items: Array<{
+      id: string;
+      readAt: string;
+      readTime: number | null;
+      article: {
+        id: string;
+        title: string;
+        link: string;
+        source: string;
+        publishedAt: string;
+        summary: string | null;
+        imageUrl: string | null;
+        tags: string[];
+      };
+    }>;
+    nextCursor: string | null;
+  }> {
+    const params = new URLSearchParams({ limit: String(limit) });
+    if (cursor) params.set("cursor", cursor);
+    return this.fetch(`/user/history?${params}`);
+  }
+
+  // Trending topics
+  async getTrending(hours = 24): Promise<Array<{ tag: string; count: number }>> {
+    return this.fetch(`/meta/trending?hours=${hours}`);
+  }
+
+  // Market data
+  async getMarket(): Promise<
+    Array<{
+      label: string;
+      symbol: string;
+      price: number;
+      change: number;
+      changePercent: number;
+    }>
+  > {
+    return this.fetch("/meta/market");
+  }
 }
+
 
 export const apiClient = new ApiClient(API_BASE_URL);

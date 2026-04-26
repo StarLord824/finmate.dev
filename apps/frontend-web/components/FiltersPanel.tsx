@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, Plus, Loader2, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { apiClient } from "@/lib/api-client";
+import { MarketBar } from "@/components/MarketBar";
 import type { Category } from "@/lib/types";
 
 interface FiltersPanelProps {
@@ -199,24 +200,10 @@ export function FiltersPanel({
         )}
       </div>
 
-      {/* Market Widget */}
+      {/* Market Widget — live data via Yahoo Finance */}
       <div className="bg-gradient-to-br from-accent/10 to-accent2/10 rounded-xl border border-accent/20 p-4">
-        <h3 className="font-semibold text-sm mb-3 text-foreground">Markets Today</h3>
-        <div className="space-y-2">
-          {[
-            { name: "S&P 500", value: "4,783.45", change: "+0.89%" },
-            { name: "Nasdaq", value: "15,011.35", change: "+1.23%" },
-            { name: "Dow Jones", value: "37,545.33", change: "+0.45%" },
-          ].map((index) => (
-            <div key={index.name} className="flex items-center justify-between text-sm">
-              <span className="text-muted">{index.name}</span>
-              <div className="text-right">
-                <div className="font-medium text-foreground">{index.value}</div>
-                <div className="text-xs text-accent">{index.change}</div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <h3 className="font-semibold text-sm mb-3 text-foreground">Markets</h3>
+        <MarketBar />
       </div>
 
       {/* CTA */}

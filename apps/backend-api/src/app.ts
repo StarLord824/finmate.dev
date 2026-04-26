@@ -9,6 +9,8 @@ import searchRouter from "./routes/search";
 import userRouter from "./routes/user";
 import metaRouter from "./routes/meta";
 import arenaRouter from "./routes/arena";
+import historyRouter from "./routes/history";
+import liveRouter from "./routes/live";
 import { logger } from "./utils/logger";
 import { httpLogger, requestIdMiddleware } from "./middleware/logging";
 
@@ -33,9 +35,11 @@ app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 // Routes
 app.use("/feed", feedRouter);
+app.use("/feed/live", liveRouter);
 app.use("/article", articleRouter);
 app.use("/search", searchRouter);
 app.use("/user", userRouter);
+app.use("/user/history", historyRouter);
 app.use("/meta", metaRouter);
 app.use("/arena", arenaRouter);
 

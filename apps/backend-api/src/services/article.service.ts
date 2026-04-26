@@ -38,12 +38,48 @@ export async function getArticles(options: {
 }
 
 export async function searchArticles(query: string, limit = 20) {
-  // simple ILIKE search on title, summary, content
-  const q = `%${query}%`;
-  const items = await prisma.$queryRawUnsafe(
-    `SELECT * FROM "Article" WHERE title ILIKE $1 OR summary ILIKE $1 OR content ILIKE $1 ORDER BY "publishedAt" DESC LIMIT $2`,
-    q,
-    limit
-  );
-  return items;
+  if (!query || query.trim().length < 2) return [];
+
+  const sanitized = query.trim();
+  const limitNum = Math.min(Math.max(1, limit), 100);
+
+  // plainto_tsquery handles multi-word queries without special operator syntax.
+  // The GIN index on to_tsvector makes this fast even on large tables.
+  const results = await prisma.$queryRaw<
+    Array<{
+      id: string;
+      title: string;
+      link: string;
+      source: string;
+      author: string | null;
+      publishedAt: Date;
+      summary: string | null;
+      imageUrl: string | null;
+      tags: string[];
+      rank: number;
+    }>
+  >`
+    SELECT
+      id,
+      title,
+      link,
+      source,
+      author,
+      "publishedAt",
+      summary,
+      "imageUrl",
+      tags,
+      ts_rank(
+        to_tsvector('english', coalesce(title,'') || ' ' || coalesce(summary,'') || ' ' || coalesce(content,'')),
+        plainto_tsquery('english', ${sanitized})
+      ) AS rank
+    FROM "Article"
+    WHERE to_tsvector('english', coalesce(title,'') || ' ' || coalesce(summary,'') || ' ' || coalesce(content,''))
+      @@ plainto_tsquery('english', ${sanitized})
+    ORDER BY rank DESC, "publishedAt" DESC
+    LIMIT ${limitNum}
+  `;
+
+  return results;
 }
+

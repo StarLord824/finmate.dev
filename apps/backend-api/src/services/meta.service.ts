@@ -50,3 +50,31 @@ export async function getSources(): Promise<Array<{
     logo: undefined,
   }));
 }
+
+/**
+ * Get trending tags over a rolling time window
+ * Uses unnest to count tag occurrences across recent articles
+ */
+export async function getTrending(hours = 24, topN = 12) {
+  const since = new Date(Date.now() - hours * 60 * 60 * 1000);
+
+  const rows = await prisma.$queryRaw<Array<{ tag: string; count: bigint }>>`
+    SELECT tag, COUNT(*) AS count
+    FROM "Article", unnest(tags) AS tag
+    WHERE "publishedAt" >= ${since}
+    GROUP BY tag
+    ORDER BY count DESC
+    LIMIT ${topN}
+  `;
+
+  return rows.map((r) => ({ tag: r.tag, count: Number(r.count) }));
+}
+
+/**
+ * Get live market quotes — delegates to market service
+ */
+export async function getMarketData() {
+  const { getMarketQuotes } = await import("./market.service.js");
+  return getMarketQuotes();
+}
+

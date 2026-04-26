@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { BentoGrid } from "@/components/BentoGrid";
 import { FiltersPanel } from "@/components/FiltersPanel";
 import { FeedSkeleton } from "@/components/Skeletons";
 import { EmptyState } from "@/components/EmptyState";
+import { TrendingTopics } from "@/components/TrendingTopics";
 import { apiClient } from "@/lib/api-client";
+import { useLiveFeed } from "@/hooks/useLiveFeed";
 import type { Category, Article } from "@/lib/types";
 import { Loader2 } from "lucide-react";
 import type { ReactElement } from "react";
@@ -15,6 +17,8 @@ import type { ReactElement } from "react";
 export default function Home(): ReactElement {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const [selectedSources, setSelectedSources] = useState<string[]>([]);
+  const queryClient = useQueryClient();
+  const { newCount, reset } = useLiveFeed();
 
   const {
     data,
@@ -65,7 +69,6 @@ export default function Home(): ReactElement {
       const newCategories = prev.includes(category)
         ? prev.filter((c) => c !== category)
         : [...prev, category];
-      console.log("Selected categories:", newCategories);
       return newCategories;
     });
   };
@@ -107,9 +110,38 @@ export default function Home(): ReactElement {
       <Header />
 
       <main className="container mx-auto px-4 py-6">
+        {/* Live feed refresh banner */}
+        {newCount > 0 && (
+          <div className="sticky top-16 z-20 flex justify-center pointer-events-none mb-4">
+            <button
+              onClick={() => {
+                reset();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                queryClient.invalidateQueries({ queryKey: ["feed"] });
+              }}
+              className="pointer-events-auto bg-accent text-white text-sm font-medium px-5 py-2 rounded-full shadow-lg hover:bg-accent-dark transition-all animate-bounce"
+            >
+              ↑ {newCount} new {newCount === 1 ? "article" : "articles"} — click to refresh
+            </button>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Feed - Bento Grid */}
           <div>
+            {/* Trending topics bar */}
+            <div className="mb-4">
+              <TrendingTopics
+                onTagClick={(tag) => {
+                  setSelectedCategories((prev) =>
+                    prev.includes(tag as Category)
+                      ? prev.filter((t) => t !== tag)
+                      : [...prev, tag as Category]
+                  );
+                }}
+                selectedTags={selectedCategories}
+              />
+            </div>
             {isLoading ? (
               <FeedSkeleton count={8} />
             ) : isError ? (

@@ -1,6 +1,6 @@
 // src/routes/meta.ts
 import express from "express";
-import { getCategories, getSources } from "../services/meta.service";
+import { getCategories, getSources, getTrending, getMarketData } from "../services/meta.service";
 
 const router: express.Router = express.Router();
 
@@ -30,4 +30,32 @@ router.get("/sources", async (req, res, next) => {
   }
 });
 
+/**
+ * GET /meta/trending?hours=24
+ * Returns top trending tags over the rolling window
+ */
+router.get("/trending", async (req, res, next) => {
+  try {
+    const hours = parseInt(req.query.hours as string) || 24;
+    const data = await getTrending(hours);
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /meta/market
+ * Returns live market quotes (S&P, Nasdaq, BTC, etc.)
+ */
+router.get("/market", async (req, res, next) => {
+  try {
+    const data = await getMarketData();
+    res.json(data ?? []);
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;
+

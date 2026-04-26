@@ -11,14 +11,18 @@ import { Header } from "@/components/Header";
 import { FeedCard } from "@/components/FeedCard";
 import { ArticleSkeleton } from "@/components/Skeletons";
 import { apiClient } from "@/lib/api-client";
+import { authClient } from "@/lib/auth-client";
 import { formatRelativeTime, cn } from "@/lib/utils";
 import type { Article } from "@/lib/types";
+import { ReadTracker } from "./ReadTracker";
 
 export default function ArticlePage(): ReactElement {
   const params = useParams();
   const router = useRouter();
   const articleId = params.id as string;
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const { data: session } = authClient.useSession();
+  const isAuthenticated = !!session?.user;
 
   const { data: article, isLoading, isError } = useQuery({
     queryKey: ["article", articleId],
@@ -251,6 +255,9 @@ export default function ArticlePage(): ReactElement {
           )}
         </div>
       </main>
+
+      {/* Read tracker — fires recordRead on unmount */}
+      {article && <ReadTracker articleId={article.id} isAuthenticated={isAuthenticated} />}
     </div>
   );
 }

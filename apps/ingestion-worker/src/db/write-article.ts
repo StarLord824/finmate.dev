@@ -1,6 +1,7 @@
 import prisma from "@repo/db/prismaClient";
 import { Article } from "../types";
 import { logger } from "../utils/logger";
+import { getRedis } from "../redis";
 
 
 export async function upsertArticle(a: Article) {
@@ -28,6 +29,19 @@ export async function upsertArticle(a: Article) {
     });
 
     logger.info({ id: inserted.id, title: a.title }, "inserted article");
+
+    // Notify SSE clients about the new article
+    const redis = getRedis();
+    await redis.publish(
+      "feed:new-article",
+      JSON.stringify({
+        id: inserted.id,
+        title: inserted.title,
+        source: inserted.source,
+        publishedAt: inserted.publishedAt.toISOString(),
+      })
+    );
+
     return { inserted: true, id: inserted.id };
   } catch (err: any) {
     // handle unique constraint on link or fingerprint
@@ -37,3 +51,4 @@ export async function upsertArticle(a: Article) {
     // do not disconnect Prisma here; global Prisma instance should be reused
   }
 }
+

@@ -224,6 +224,13 @@ export function Header({ onMenuClick }: HeaderProps): ReactElement {
                       className="absolute right-0 mt-2 w-48 bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-lg shadow-lg overflow-hidden"
                     >
                       <Link
+                        href="/history"
+                        onClick={() => setShowUserMenu(false)}
+                        className="block px-4 py-3 hover:bg-accent/5 transition-colors text-sm"
+                      >
+                        History
+                      </Link>
+                      <Link
                         href="/settings"
                         onClick={() => setShowUserMenu(false)}
                         className="block px-4 py-3 hover:bg-accent/5 transition-colors text-sm"
