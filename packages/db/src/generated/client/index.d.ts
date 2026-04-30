@@ -44,6 +44,11 @@ export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
  */
 export type Verification = $Result.DefaultSelection<Prisma.$VerificationPayload>
 /**
+ * Model ReadHistory
+ * 
+ */
+export type ReadHistory = $Result.DefaultSelection<Prisma.$ReadHistoryPayload>
+/**
  * Model ArenaAgent
  * 
  */
@@ -256,6 +261,16 @@ export class PrismaClient<
     * ```
     */
   get verification(): Prisma.VerificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.readHistory`: Exposes CRUD operations for the **ReadHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ReadHistories
+    * const readHistories = await prisma.readHistory.findMany()
+    * ```
+    */
+  get readHistory(): Prisma.ReadHistoryDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.arenaAgent`: Exposes CRUD operations for the **ArenaAgent** model.
@@ -772,6 +787,7 @@ export namespace Prisma {
     Session: 'Session',
     Account: 'Account',
     Verification: 'Verification',
+    ReadHistory: 'ReadHistory',
     ArenaAgent: 'ArenaAgent',
     ArenaSimulation: 'ArenaSimulation',
     ArenaParticipation: 'ArenaParticipation',
@@ -797,7 +813,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "article" | "source" | "user" | "session" | "account" | "verification" | "arenaAgent" | "arenaSimulation" | "arenaParticipation" | "arenaTrade" | "arenaSnapshot" | "arenaLeaderboard" | "marketDataCache"
+      modelProps: "article" | "source" | "user" | "session" | "account" | "verification" | "readHistory" | "arenaAgent" | "arenaSimulation" | "arenaParticipation" | "arenaTrade" | "arenaSnapshot" | "arenaLeaderboard" | "marketDataCache"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1242,6 +1258,80 @@ export namespace Prisma {
           count: {
             args: Prisma.VerificationCountArgs<ExtArgs>
             result: $Utils.Optional<VerificationCountAggregateOutputType> | number
+          }
+        }
+      }
+      ReadHistory: {
+        payload: Prisma.$ReadHistoryPayload<ExtArgs>
+        fields: Prisma.ReadHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ReadHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReadHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ReadHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReadHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.ReadHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReadHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ReadHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReadHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.ReadHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReadHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.ReadHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReadHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.ReadHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ReadHistoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReadHistoryPayload>[]
+          }
+          delete: {
+            args: Prisma.ReadHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReadHistoryPayload>
+          }
+          update: {
+            args: Prisma.ReadHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReadHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.ReadHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ReadHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ReadHistoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReadHistoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.ReadHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReadHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.ReadHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReadHistory>
+          }
+          groupBy: {
+            args: Prisma.ReadHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReadHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ReadHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<ReadHistoryCountAggregateOutputType> | number
           }
         }
       }
@@ -1865,6 +1955,7 @@ export namespace Prisma {
     session?: SessionOmit
     account?: AccountOmit
     verification?: VerificationOmit
+    readHistory?: ReadHistoryOmit
     arenaAgent?: ArenaAgentOmit
     arenaSimulation?: ArenaSimulationOmit
     arenaParticipation?: ArenaParticipationOmit
@@ -1948,17 +2039,50 @@ export namespace Prisma {
 
 
   /**
+   * Count Type ArticleCountOutputType
+   */
+
+  export type ArticleCountOutputType = {
+    readHistory: number
+  }
+
+  export type ArticleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    readHistory?: boolean | ArticleCountOutputTypeCountReadHistoryArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ArticleCountOutputType without action
+   */
+  export type ArticleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleCountOutputType
+     */
+    select?: ArticleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ArticleCountOutputType without action
+   */
+  export type ArticleCountOutputTypeCountReadHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReadHistoryWhereInput
+  }
+
+
+  /**
    * Count Type UserCountOutputType
    */
 
   export type UserCountOutputType = {
     sessions: number
     accounts: number
+    readHistory: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+    readHistory?: boolean | UserCountOutputTypeCountReadHistoryArgs
   }
 
   // Custom InputTypes
@@ -1984,6 +2108,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AccountWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReadHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReadHistoryWhereInput
   }
 
 
@@ -2334,6 +2465,8 @@ export namespace Prisma {
     tags?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    readHistory?: boolean | Article$readHistoryArgs<ExtArgs>
+    _count?: boolean | ArticleCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["article"]>
 
   export type ArticleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2388,10 +2521,18 @@ export namespace Prisma {
   }
 
   export type ArticleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "link" | "source" | "author" | "publishedAt" | "ingestedAt" | "summary" | "content" | "imageUrl" | "fingerprint" | "tags" | "createdAt" | "updatedAt", ExtArgs["result"]["article"]>
+  export type ArticleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    readHistory?: boolean | Article$readHistoryArgs<ExtArgs>
+    _count?: boolean | ArticleCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ArticleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ArticleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $ArticlePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Article"
-    objects: {}
+    objects: {
+      readHistory: Prisma.$ReadHistoryPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
@@ -2801,6 +2942,7 @@ export namespace Prisma {
    */
   export interface Prisma__ArticleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    readHistory<T extends Article$readHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Article$readHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2861,6 +3003,10 @@ export namespace Prisma {
      */
     omit?: ArticleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
      * Filter, which Article to fetch.
      */
     where: ArticleWhereUniqueInput
@@ -2879,6 +3025,10 @@ export namespace Prisma {
      */
     omit?: ArticleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
      * Filter, which Article to fetch.
      */
     where: ArticleWhereUniqueInput
@@ -2896,6 +3046,10 @@ export namespace Prisma {
      * Omit specific fields from the Article
      */
     omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
     /**
      * Filter, which Article to fetch.
      */
@@ -2945,6 +3099,10 @@ export namespace Prisma {
      */
     omit?: ArticleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
      * Filter, which Article to fetch.
      */
     where?: ArticleWhereInput
@@ -2993,6 +3151,10 @@ export namespace Prisma {
      */
     omit?: ArticleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
      * Filter, which Articles to fetch.
      */
     where?: ArticleWhereInput
@@ -3035,6 +3197,10 @@ export namespace Prisma {
      * Omit specific fields from the Article
      */
     omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
     /**
      * The data needed to create a Article.
      */
@@ -3083,6 +3249,10 @@ export namespace Prisma {
      * Omit specific fields from the Article
      */
     omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
     /**
      * The data needed to update a Article.
      */
@@ -3150,6 +3320,10 @@ export namespace Prisma {
      */
     omit?: ArticleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
      * The filter to search for the Article to update in case it exists.
      */
     where: ArticleWhereUniqueInput
@@ -3176,6 +3350,10 @@ export namespace Prisma {
      */
     omit?: ArticleOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
      * Filter which Article to delete.
      */
     where: ArticleWhereUniqueInput
@@ -3196,6 +3374,30 @@ export namespace Prisma {
   }
 
   /**
+   * Article.readHistory
+   */
+  export type Article$readHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryInclude<ExtArgs> | null
+    where?: ReadHistoryWhereInput
+    orderBy?: ReadHistoryOrderByWithRelationInput | ReadHistoryOrderByWithRelationInput[]
+    cursor?: ReadHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReadHistoryScalarFieldEnum | ReadHistoryScalarFieldEnum[]
+  }
+
+  /**
    * Article without action
    */
   export type ArticleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3207,6 +3409,10 @@ export namespace Prisma {
      * Omit specific fields from the Article
      */
     omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
   }
 
 
@@ -4430,6 +4636,7 @@ export namespace Prisma {
     bookmarks?: boolean
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
+    readHistory?: boolean | User$readHistoryArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4473,6 +4680,7 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
+    readHistory?: boolean | User$readHistoryArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4483,6 +4691,7 @@ export namespace Prisma {
     objects: {
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       accounts: Prisma.$AccountPayload<ExtArgs>[]
+      readHistory: Prisma.$ReadHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4890,6 +5099,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    readHistory<T extends User$readHistoryArgs<ExtArgs> = {}>(args?: Subset<T, User$readHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5361,6 +5571,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * User.readHistory
+   */
+  export type User$readHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryInclude<ExtArgs> | null
+    where?: ReadHistoryWhereInput
+    orderBy?: ReadHistoryOrderByWithRelationInput | ReadHistoryOrderByWithRelationInput[]
+    cursor?: ReadHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReadHistoryScalarFieldEnum | ReadHistoryScalarFieldEnum[]
   }
 
   /**
@@ -8646,6 +8880,1106 @@ export namespace Prisma {
      * Omit specific fields from the Verification
      */
     omit?: VerificationOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ReadHistory
+   */
+
+  export type AggregateReadHistory = {
+    _count: ReadHistoryCountAggregateOutputType | null
+    _avg: ReadHistoryAvgAggregateOutputType | null
+    _sum: ReadHistorySumAggregateOutputType | null
+    _min: ReadHistoryMinAggregateOutputType | null
+    _max: ReadHistoryMaxAggregateOutputType | null
+  }
+
+  export type ReadHistoryAvgAggregateOutputType = {
+    readTime: number | null
+  }
+
+  export type ReadHistorySumAggregateOutputType = {
+    readTime: number | null
+  }
+
+  export type ReadHistoryMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    articleId: string | null
+    readAt: Date | null
+    readTime: number | null
+  }
+
+  export type ReadHistoryMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    articleId: string | null
+    readAt: Date | null
+    readTime: number | null
+  }
+
+  export type ReadHistoryCountAggregateOutputType = {
+    id: number
+    userId: number
+    articleId: number
+    readAt: number
+    readTime: number
+    _all: number
+  }
+
+
+  export type ReadHistoryAvgAggregateInputType = {
+    readTime?: true
+  }
+
+  export type ReadHistorySumAggregateInputType = {
+    readTime?: true
+  }
+
+  export type ReadHistoryMinAggregateInputType = {
+    id?: true
+    userId?: true
+    articleId?: true
+    readAt?: true
+    readTime?: true
+  }
+
+  export type ReadHistoryMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    articleId?: true
+    readAt?: true
+    readTime?: true
+  }
+
+  export type ReadHistoryCountAggregateInputType = {
+    id?: true
+    userId?: true
+    articleId?: true
+    readAt?: true
+    readTime?: true
+    _all?: true
+  }
+
+  export type ReadHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReadHistory to aggregate.
+     */
+    where?: ReadHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReadHistories to fetch.
+     */
+    orderBy?: ReadHistoryOrderByWithRelationInput | ReadHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ReadHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReadHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReadHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ReadHistories
+    **/
+    _count?: true | ReadHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReadHistoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReadHistorySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReadHistoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReadHistoryMaxAggregateInputType
+  }
+
+  export type GetReadHistoryAggregateType<T extends ReadHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateReadHistory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReadHistory[P]>
+      : GetScalarType<T[P], AggregateReadHistory[P]>
+  }
+
+
+
+
+  export type ReadHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReadHistoryWhereInput
+    orderBy?: ReadHistoryOrderByWithAggregationInput | ReadHistoryOrderByWithAggregationInput[]
+    by: ReadHistoryScalarFieldEnum[] | ReadHistoryScalarFieldEnum
+    having?: ReadHistoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReadHistoryCountAggregateInputType | true
+    _avg?: ReadHistoryAvgAggregateInputType
+    _sum?: ReadHistorySumAggregateInputType
+    _min?: ReadHistoryMinAggregateInputType
+    _max?: ReadHistoryMaxAggregateInputType
+  }
+
+  export type ReadHistoryGroupByOutputType = {
+    id: string
+    userId: string
+    articleId: string
+    readAt: Date
+    readTime: number | null
+    _count: ReadHistoryCountAggregateOutputType | null
+    _avg: ReadHistoryAvgAggregateOutputType | null
+    _sum: ReadHistorySumAggregateOutputType | null
+    _min: ReadHistoryMinAggregateOutputType | null
+    _max: ReadHistoryMaxAggregateOutputType | null
+  }
+
+  type GetReadHistoryGroupByPayload<T extends ReadHistoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReadHistoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReadHistoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReadHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], ReadHistoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ReadHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    articleId?: boolean
+    readAt?: boolean
+    readTime?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    article?: boolean | ArticleDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["readHistory"]>
+
+  export type ReadHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    articleId?: boolean
+    readAt?: boolean
+    readTime?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    article?: boolean | ArticleDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["readHistory"]>
+
+  export type ReadHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    articleId?: boolean
+    readAt?: boolean
+    readTime?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    article?: boolean | ArticleDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["readHistory"]>
+
+  export type ReadHistorySelectScalar = {
+    id?: boolean
+    userId?: boolean
+    articleId?: boolean
+    readAt?: boolean
+    readTime?: boolean
+  }
+
+  export type ReadHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "articleId" | "readAt" | "readTime", ExtArgs["result"]["readHistory"]>
+  export type ReadHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    article?: boolean | ArticleDefaultArgs<ExtArgs>
+  }
+  export type ReadHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    article?: boolean | ArticleDefaultArgs<ExtArgs>
+  }
+  export type ReadHistoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    article?: boolean | ArticleDefaultArgs<ExtArgs>
+  }
+
+  export type $ReadHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ReadHistory"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      article: Prisma.$ArticlePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      articleId: string
+      readAt: Date
+      readTime: number | null
+    }, ExtArgs["result"]["readHistory"]>
+    composites: {}
+  }
+
+  type ReadHistoryGetPayload<S extends boolean | null | undefined | ReadHistoryDefaultArgs> = $Result.GetResult<Prisma.$ReadHistoryPayload, S>
+
+  type ReadHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ReadHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReadHistoryCountAggregateInputType | true
+    }
+
+  export interface ReadHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ReadHistory'], meta: { name: 'ReadHistory' } }
+    /**
+     * Find zero or one ReadHistory that matches the filter.
+     * @param {ReadHistoryFindUniqueArgs} args - Arguments to find a ReadHistory
+     * @example
+     * // Get one ReadHistory
+     * const readHistory = await prisma.readHistory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ReadHistoryFindUniqueArgs>(args: SelectSubset<T, ReadHistoryFindUniqueArgs<ExtArgs>>): Prisma__ReadHistoryClient<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ReadHistory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ReadHistoryFindUniqueOrThrowArgs} args - Arguments to find a ReadHistory
+     * @example
+     * // Get one ReadHistory
+     * const readHistory = await prisma.readHistory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ReadHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, ReadHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReadHistoryClient<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReadHistory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReadHistoryFindFirstArgs} args - Arguments to find a ReadHistory
+     * @example
+     * // Get one ReadHistory
+     * const readHistory = await prisma.readHistory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ReadHistoryFindFirstArgs>(args?: SelectSubset<T, ReadHistoryFindFirstArgs<ExtArgs>>): Prisma__ReadHistoryClient<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReadHistory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReadHistoryFindFirstOrThrowArgs} args - Arguments to find a ReadHistory
+     * @example
+     * // Get one ReadHistory
+     * const readHistory = await prisma.readHistory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ReadHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, ReadHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReadHistoryClient<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ReadHistories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReadHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ReadHistories
+     * const readHistories = await prisma.readHistory.findMany()
+     * 
+     * // Get first 10 ReadHistories
+     * const readHistories = await prisma.readHistory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const readHistoryWithIdOnly = await prisma.readHistory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ReadHistoryFindManyArgs>(args?: SelectSubset<T, ReadHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ReadHistory.
+     * @param {ReadHistoryCreateArgs} args - Arguments to create a ReadHistory.
+     * @example
+     * // Create one ReadHistory
+     * const ReadHistory = await prisma.readHistory.create({
+     *   data: {
+     *     // ... data to create a ReadHistory
+     *   }
+     * })
+     * 
+     */
+    create<T extends ReadHistoryCreateArgs>(args: SelectSubset<T, ReadHistoryCreateArgs<ExtArgs>>): Prisma__ReadHistoryClient<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ReadHistories.
+     * @param {ReadHistoryCreateManyArgs} args - Arguments to create many ReadHistories.
+     * @example
+     * // Create many ReadHistories
+     * const readHistory = await prisma.readHistory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ReadHistoryCreateManyArgs>(args?: SelectSubset<T, ReadHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ReadHistories and returns the data saved in the database.
+     * @param {ReadHistoryCreateManyAndReturnArgs} args - Arguments to create many ReadHistories.
+     * @example
+     * // Create many ReadHistories
+     * const readHistory = await prisma.readHistory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ReadHistories and only return the `id`
+     * const readHistoryWithIdOnly = await prisma.readHistory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ReadHistoryCreateManyAndReturnArgs>(args?: SelectSubset<T, ReadHistoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ReadHistory.
+     * @param {ReadHistoryDeleteArgs} args - Arguments to delete one ReadHistory.
+     * @example
+     * // Delete one ReadHistory
+     * const ReadHistory = await prisma.readHistory.delete({
+     *   where: {
+     *     // ... filter to delete one ReadHistory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ReadHistoryDeleteArgs>(args: SelectSubset<T, ReadHistoryDeleteArgs<ExtArgs>>): Prisma__ReadHistoryClient<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ReadHistory.
+     * @param {ReadHistoryUpdateArgs} args - Arguments to update one ReadHistory.
+     * @example
+     * // Update one ReadHistory
+     * const readHistory = await prisma.readHistory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ReadHistoryUpdateArgs>(args: SelectSubset<T, ReadHistoryUpdateArgs<ExtArgs>>): Prisma__ReadHistoryClient<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ReadHistories.
+     * @param {ReadHistoryDeleteManyArgs} args - Arguments to filter ReadHistories to delete.
+     * @example
+     * // Delete a few ReadHistories
+     * const { count } = await prisma.readHistory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ReadHistoryDeleteManyArgs>(args?: SelectSubset<T, ReadHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReadHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReadHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ReadHistories
+     * const readHistory = await prisma.readHistory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ReadHistoryUpdateManyArgs>(args: SelectSubset<T, ReadHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReadHistories and returns the data updated in the database.
+     * @param {ReadHistoryUpdateManyAndReturnArgs} args - Arguments to update many ReadHistories.
+     * @example
+     * // Update many ReadHistories
+     * const readHistory = await prisma.readHistory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ReadHistories and only return the `id`
+     * const readHistoryWithIdOnly = await prisma.readHistory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ReadHistoryUpdateManyAndReturnArgs>(args: SelectSubset<T, ReadHistoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ReadHistory.
+     * @param {ReadHistoryUpsertArgs} args - Arguments to update or create a ReadHistory.
+     * @example
+     * // Update or create a ReadHistory
+     * const readHistory = await prisma.readHistory.upsert({
+     *   create: {
+     *     // ... data to create a ReadHistory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ReadHistory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ReadHistoryUpsertArgs>(args: SelectSubset<T, ReadHistoryUpsertArgs<ExtArgs>>): Prisma__ReadHistoryClient<$Result.GetResult<Prisma.$ReadHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ReadHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReadHistoryCountArgs} args - Arguments to filter ReadHistories to count.
+     * @example
+     * // Count the number of ReadHistories
+     * const count = await prisma.readHistory.count({
+     *   where: {
+     *     // ... the filter for the ReadHistories we want to count
+     *   }
+     * })
+    **/
+    count<T extends ReadHistoryCountArgs>(
+      args?: Subset<T, ReadHistoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReadHistoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ReadHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReadHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReadHistoryAggregateArgs>(args: Subset<T, ReadHistoryAggregateArgs>): Prisma.PrismaPromise<GetReadHistoryAggregateType<T>>
+
+    /**
+     * Group by ReadHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReadHistoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ReadHistoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ReadHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: ReadHistoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ReadHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReadHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ReadHistory model
+   */
+  readonly fields: ReadHistoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ReadHistory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ReadHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    article<T extends ArticleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ArticleDefaultArgs<ExtArgs>>): Prisma__ArticleClient<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ReadHistory model
+   */
+  interface ReadHistoryFieldRefs {
+    readonly id: FieldRef<"ReadHistory", 'String'>
+    readonly userId: FieldRef<"ReadHistory", 'String'>
+    readonly articleId: FieldRef<"ReadHistory", 'String'>
+    readonly readAt: FieldRef<"ReadHistory", 'DateTime'>
+    readonly readTime: FieldRef<"ReadHistory", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ReadHistory findUnique
+   */
+  export type ReadHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ReadHistory to fetch.
+     */
+    where: ReadHistoryWhereUniqueInput
+  }
+
+  /**
+   * ReadHistory findUniqueOrThrow
+   */
+  export type ReadHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ReadHistory to fetch.
+     */
+    where: ReadHistoryWhereUniqueInput
+  }
+
+  /**
+   * ReadHistory findFirst
+   */
+  export type ReadHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ReadHistory to fetch.
+     */
+    where?: ReadHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReadHistories to fetch.
+     */
+    orderBy?: ReadHistoryOrderByWithRelationInput | ReadHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReadHistories.
+     */
+    cursor?: ReadHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReadHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReadHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReadHistories.
+     */
+    distinct?: ReadHistoryScalarFieldEnum | ReadHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * ReadHistory findFirstOrThrow
+   */
+  export type ReadHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ReadHistory to fetch.
+     */
+    where?: ReadHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReadHistories to fetch.
+     */
+    orderBy?: ReadHistoryOrderByWithRelationInput | ReadHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReadHistories.
+     */
+    cursor?: ReadHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReadHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReadHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReadHistories.
+     */
+    distinct?: ReadHistoryScalarFieldEnum | ReadHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * ReadHistory findMany
+   */
+  export type ReadHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ReadHistories to fetch.
+     */
+    where?: ReadHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReadHistories to fetch.
+     */
+    orderBy?: ReadHistoryOrderByWithRelationInput | ReadHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ReadHistories.
+     */
+    cursor?: ReadHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReadHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReadHistories.
+     */
+    skip?: number
+    distinct?: ReadHistoryScalarFieldEnum | ReadHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * ReadHistory create
+   */
+  export type ReadHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ReadHistory.
+     */
+    data: XOR<ReadHistoryCreateInput, ReadHistoryUncheckedCreateInput>
+  }
+
+  /**
+   * ReadHistory createMany
+   */
+  export type ReadHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ReadHistories.
+     */
+    data: ReadHistoryCreateManyInput | ReadHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ReadHistory createManyAndReturn
+   */
+  export type ReadHistoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many ReadHistories.
+     */
+    data: ReadHistoryCreateManyInput | ReadHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ReadHistory update
+   */
+  export type ReadHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ReadHistory.
+     */
+    data: XOR<ReadHistoryUpdateInput, ReadHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which ReadHistory to update.
+     */
+    where: ReadHistoryWhereUniqueInput
+  }
+
+  /**
+   * ReadHistory updateMany
+   */
+  export type ReadHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ReadHistories.
+     */
+    data: XOR<ReadHistoryUpdateManyMutationInput, ReadHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which ReadHistories to update
+     */
+    where?: ReadHistoryWhereInput
+    /**
+     * Limit how many ReadHistories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReadHistory updateManyAndReturn
+   */
+  export type ReadHistoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to update ReadHistories.
+     */
+    data: XOR<ReadHistoryUpdateManyMutationInput, ReadHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which ReadHistories to update
+     */
+    where?: ReadHistoryWhereInput
+    /**
+     * Limit how many ReadHistories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ReadHistory upsert
+   */
+  export type ReadHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ReadHistory to update in case it exists.
+     */
+    where: ReadHistoryWhereUniqueInput
+    /**
+     * In case the ReadHistory found by the `where` argument doesn't exist, create a new ReadHistory with this data.
+     */
+    create: XOR<ReadHistoryCreateInput, ReadHistoryUncheckedCreateInput>
+    /**
+     * In case the ReadHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ReadHistoryUpdateInput, ReadHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * ReadHistory delete
+   */
+  export type ReadHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryInclude<ExtArgs> | null
+    /**
+     * Filter which ReadHistory to delete.
+     */
+    where: ReadHistoryWhereUniqueInput
+  }
+
+  /**
+   * ReadHistory deleteMany
+   */
+  export type ReadHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReadHistories to delete
+     */
+    where?: ReadHistoryWhereInput
+    /**
+     * Limit how many ReadHistories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReadHistory without action
+   */
+  export type ReadHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReadHistory
+     */
+    select?: ReadHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReadHistory
+     */
+    omit?: ReadHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReadHistoryInclude<ExtArgs> | null
   }
 
 
@@ -16900,6 +18234,17 @@ export namespace Prisma {
   export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
+  export const ReadHistoryScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    articleId: 'articleId',
+    readAt: 'readAt',
+    readTime: 'readTime'
+  };
+
+  export type ReadHistoryScalarFieldEnum = (typeof ReadHistoryScalarFieldEnum)[keyof typeof ReadHistoryScalarFieldEnum]
+
+
   export const ArenaAgentScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -17117,20 +18462,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -17141,6 +18472,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
   /**
    * Deep Input Types
@@ -17165,6 +18510,7 @@ export namespace Prisma {
     tags?: StringNullableListFilter<"Article">
     createdAt?: DateTimeFilter<"Article"> | Date | string
     updatedAt?: DateTimeFilter<"Article"> | Date | string
+    readHistory?: ReadHistoryListRelationFilter
   }
 
   export type ArticleOrderByWithRelationInput = {
@@ -17182,6 +18528,7 @@ export namespace Prisma {
     tags?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    readHistory?: ReadHistoryOrderByRelationAggregateInput
   }
 
   export type ArticleWhereUniqueInput = Prisma.AtLeast<{
@@ -17202,6 +18549,7 @@ export namespace Prisma {
     tags?: StringNullableListFilter<"Article">
     createdAt?: DateTimeFilter<"Article"> | Date | string
     updatedAt?: DateTimeFilter<"Article"> | Date | string
+    readHistory?: ReadHistoryListRelationFilter
   }, "id" | "link" | "fingerprint">
 
   export type ArticleOrderByWithAggregationInput = {
@@ -17326,6 +18674,7 @@ export namespace Prisma {
     bookmarks?: StringNullableListFilter<"User">
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
+    readHistory?: ReadHistoryListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -17340,6 +18689,7 @@ export namespace Prisma {
     bookmarks?: SortOrder
     sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
+    readHistory?: ReadHistoryOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -17357,6 +18707,7 @@ export namespace Prisma {
     bookmarks?: StringNullableListFilter<"User">
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
+    readHistory?: ReadHistoryListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -17609,6 +18960,67 @@ export namespace Prisma {
     expiresAt?: DateTimeWithAggregatesFilter<"Verification"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Verification"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Verification"> | Date | string
+  }
+
+  export type ReadHistoryWhereInput = {
+    AND?: ReadHistoryWhereInput | ReadHistoryWhereInput[]
+    OR?: ReadHistoryWhereInput[]
+    NOT?: ReadHistoryWhereInput | ReadHistoryWhereInput[]
+    id?: StringFilter<"ReadHistory"> | string
+    userId?: StringFilter<"ReadHistory"> | string
+    articleId?: StringFilter<"ReadHistory"> | string
+    readAt?: DateTimeFilter<"ReadHistory"> | Date | string
+    readTime?: IntNullableFilter<"ReadHistory"> | number | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    article?: XOR<ArticleScalarRelationFilter, ArticleWhereInput>
+  }
+
+  export type ReadHistoryOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    articleId?: SortOrder
+    readAt?: SortOrder
+    readTime?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+    article?: ArticleOrderByWithRelationInput
+  }
+
+  export type ReadHistoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_articleId?: ReadHistoryUserIdArticleIdCompoundUniqueInput
+    AND?: ReadHistoryWhereInput | ReadHistoryWhereInput[]
+    OR?: ReadHistoryWhereInput[]
+    NOT?: ReadHistoryWhereInput | ReadHistoryWhereInput[]
+    userId?: StringFilter<"ReadHistory"> | string
+    articleId?: StringFilter<"ReadHistory"> | string
+    readAt?: DateTimeFilter<"ReadHistory"> | Date | string
+    readTime?: IntNullableFilter<"ReadHistory"> | number | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    article?: XOR<ArticleScalarRelationFilter, ArticleWhereInput>
+  }, "id" | "userId_articleId">
+
+  export type ReadHistoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    articleId?: SortOrder
+    readAt?: SortOrder
+    readTime?: SortOrderInput | SortOrder
+    _count?: ReadHistoryCountOrderByAggregateInput
+    _avg?: ReadHistoryAvgOrderByAggregateInput
+    _max?: ReadHistoryMaxOrderByAggregateInput
+    _min?: ReadHistoryMinOrderByAggregateInput
+    _sum?: ReadHistorySumOrderByAggregateInput
+  }
+
+  export type ReadHistoryScalarWhereWithAggregatesInput = {
+    AND?: ReadHistoryScalarWhereWithAggregatesInput | ReadHistoryScalarWhereWithAggregatesInput[]
+    OR?: ReadHistoryScalarWhereWithAggregatesInput[]
+    NOT?: ReadHistoryScalarWhereWithAggregatesInput | ReadHistoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ReadHistory"> | string
+    userId?: StringWithAggregatesFilter<"ReadHistory"> | string
+    articleId?: StringWithAggregatesFilter<"ReadHistory"> | string
+    readAt?: DateTimeWithAggregatesFilter<"ReadHistory"> | Date | string
+    readTime?: IntNullableWithAggregatesFilter<"ReadHistory"> | number | null
   }
 
   export type ArenaAgentWhereInput = {
@@ -18219,6 +19631,7 @@ export namespace Prisma {
     tags?: ArticleCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    readHistory?: ReadHistoryCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleUncheckedCreateInput = {
@@ -18236,6 +19649,7 @@ export namespace Prisma {
     tags?: ArticleCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    readHistory?: ReadHistoryUncheckedCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleUpdateInput = {
@@ -18253,6 +19667,7 @@ export namespace Prisma {
     tags?: ArticleUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readHistory?: ReadHistoryUpdateManyWithoutArticleNestedInput
   }
 
   export type ArticleUncheckedUpdateInput = {
@@ -18270,6 +19685,7 @@ export namespace Prisma {
     tags?: ArticleUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readHistory?: ReadHistoryUncheckedUpdateManyWithoutArticleNestedInput
   }
 
   export type ArticleCreateManyInput = {
@@ -18412,6 +19828,7 @@ export namespace Prisma {
     bookmarks?: UserCreatebookmarksInput | string[]
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
+    readHistory?: ReadHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -18426,6 +19843,7 @@ export namespace Prisma {
     bookmarks?: UserCreatebookmarksInput | string[]
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    readHistory?: ReadHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -18440,6 +19858,7 @@ export namespace Prisma {
     bookmarks?: UserUpdatebookmarksInput | string[]
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    readHistory?: ReadHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -18454,6 +19873,7 @@ export namespace Prisma {
     bookmarks?: UserUpdatebookmarksInput | string[]
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    readHistory?: ReadHistoryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -18740,6 +20160,60 @@ export namespace Prisma {
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReadHistoryCreateInput = {
+    id?: string
+    readAt?: Date | string
+    readTime?: number | null
+    user: UserCreateNestedOneWithoutReadHistoryInput
+    article: ArticleCreateNestedOneWithoutReadHistoryInput
+  }
+
+  export type ReadHistoryUncheckedCreateInput = {
+    id?: string
+    userId: string
+    articleId: string
+    readAt?: Date | string
+    readTime?: number | null
+  }
+
+  export type ReadHistoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readTime?: NullableIntFieldUpdateOperationsInput | number | null
+    user?: UserUpdateOneRequiredWithoutReadHistoryNestedInput
+    article?: ArticleUpdateOneRequiredWithoutReadHistoryNestedInput
+  }
+
+  export type ReadHistoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    articleId?: StringFieldUpdateOperationsInput | string
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readTime?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ReadHistoryCreateManyInput = {
+    id?: string
+    userId: string
+    articleId: string
+    readAt?: Date | string
+    readTime?: number | null
+  }
+
+  export type ReadHistoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readTime?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ReadHistoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    articleId?: StringFieldUpdateOperationsInput | string
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readTime?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ArenaAgentCreateInput = {
@@ -19457,9 +20931,19 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
+  export type ReadHistoryListRelationFilter = {
+    every?: ReadHistoryWhereInput
+    some?: ReadHistoryWhereInput
+    none?: ReadHistoryWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type ReadHistoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type ArticleCountOrderByAggregateInput = {
@@ -19843,6 +21327,75 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type ArticleScalarRelationFilter = {
+    is?: ArticleWhereInput
+    isNot?: ArticleWhereInput
+  }
+
+  export type ReadHistoryUserIdArticleIdCompoundUniqueInput = {
+    userId: string
+    articleId: string
+  }
+
+  export type ReadHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    articleId?: SortOrder
+    readAt?: SortOrder
+    readTime?: SortOrder
+  }
+
+  export type ReadHistoryAvgOrderByAggregateInput = {
+    readTime?: SortOrder
+  }
+
+  export type ReadHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    articleId?: SortOrder
+    readAt?: SortOrder
+    readTime?: SortOrder
+  }
+
+  export type ReadHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    articleId?: SortOrder
+    readAt?: SortOrder
+    readTime?: SortOrder
+  }
+
+  export type ReadHistorySumOrderByAggregateInput = {
+    readTime?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
   export type JsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -20092,17 +21645,6 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type ArenaSimulationScalarRelationFilter = {
     is?: ArenaSimulationWhereInput
     isNot?: ArenaSimulationWhereInput
@@ -20191,22 +21733,6 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type ArenaParticipationScalarRelationFilter = {
@@ -20416,6 +21942,20 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type ReadHistoryCreateNestedManyWithoutArticleInput = {
+    create?: XOR<ReadHistoryCreateWithoutArticleInput, ReadHistoryUncheckedCreateWithoutArticleInput> | ReadHistoryCreateWithoutArticleInput[] | ReadHistoryUncheckedCreateWithoutArticleInput[]
+    connectOrCreate?: ReadHistoryCreateOrConnectWithoutArticleInput | ReadHistoryCreateOrConnectWithoutArticleInput[]
+    createMany?: ReadHistoryCreateManyArticleInputEnvelope
+    connect?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+  }
+
+  export type ReadHistoryUncheckedCreateNestedManyWithoutArticleInput = {
+    create?: XOR<ReadHistoryCreateWithoutArticleInput, ReadHistoryUncheckedCreateWithoutArticleInput> | ReadHistoryCreateWithoutArticleInput[] | ReadHistoryUncheckedCreateWithoutArticleInput[]
+    connectOrCreate?: ReadHistoryCreateOrConnectWithoutArticleInput | ReadHistoryCreateOrConnectWithoutArticleInput[]
+    createMany?: ReadHistoryCreateManyArticleInputEnvelope
+    connect?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -20431,6 +21971,34 @@ export namespace Prisma {
   export type ArticleUpdatetagsInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type ReadHistoryUpdateManyWithoutArticleNestedInput = {
+    create?: XOR<ReadHistoryCreateWithoutArticleInput, ReadHistoryUncheckedCreateWithoutArticleInput> | ReadHistoryCreateWithoutArticleInput[] | ReadHistoryUncheckedCreateWithoutArticleInput[]
+    connectOrCreate?: ReadHistoryCreateOrConnectWithoutArticleInput | ReadHistoryCreateOrConnectWithoutArticleInput[]
+    upsert?: ReadHistoryUpsertWithWhereUniqueWithoutArticleInput | ReadHistoryUpsertWithWhereUniqueWithoutArticleInput[]
+    createMany?: ReadHistoryCreateManyArticleInputEnvelope
+    set?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    disconnect?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    delete?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    connect?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    update?: ReadHistoryUpdateWithWhereUniqueWithoutArticleInput | ReadHistoryUpdateWithWhereUniqueWithoutArticleInput[]
+    updateMany?: ReadHistoryUpdateManyWithWhereWithoutArticleInput | ReadHistoryUpdateManyWithWhereWithoutArticleInput[]
+    deleteMany?: ReadHistoryScalarWhereInput | ReadHistoryScalarWhereInput[]
+  }
+
+  export type ReadHistoryUncheckedUpdateManyWithoutArticleNestedInput = {
+    create?: XOR<ReadHistoryCreateWithoutArticleInput, ReadHistoryUncheckedCreateWithoutArticleInput> | ReadHistoryCreateWithoutArticleInput[] | ReadHistoryUncheckedCreateWithoutArticleInput[]
+    connectOrCreate?: ReadHistoryCreateOrConnectWithoutArticleInput | ReadHistoryCreateOrConnectWithoutArticleInput[]
+    upsert?: ReadHistoryUpsertWithWhereUniqueWithoutArticleInput | ReadHistoryUpsertWithWhereUniqueWithoutArticleInput[]
+    createMany?: ReadHistoryCreateManyArticleInputEnvelope
+    set?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    disconnect?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    delete?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    connect?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    update?: ReadHistoryUpdateWithWhereUniqueWithoutArticleInput | ReadHistoryUpdateWithWhereUniqueWithoutArticleInput[]
+    updateMany?: ReadHistoryUpdateManyWithWhereWithoutArticleInput | ReadHistoryUpdateManyWithWhereWithoutArticleInput[]
+    deleteMany?: ReadHistoryScalarWhereInput | ReadHistoryScalarWhereInput[]
   }
 
   export type SourceCreatetagsInput = {
@@ -20464,6 +22032,13 @@ export namespace Prisma {
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
   }
 
+  export type ReadHistoryCreateNestedManyWithoutUserInput = {
+    create?: XOR<ReadHistoryCreateWithoutUserInput, ReadHistoryUncheckedCreateWithoutUserInput> | ReadHistoryCreateWithoutUserInput[] | ReadHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReadHistoryCreateOrConnectWithoutUserInput | ReadHistoryCreateOrConnectWithoutUserInput[]
+    createMany?: ReadHistoryCreateManyUserInputEnvelope
+    connect?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -20476,6 +22051,13 @@ export namespace Prisma {
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
     createMany?: AccountCreateManyUserInputEnvelope
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type ReadHistoryUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ReadHistoryCreateWithoutUserInput, ReadHistoryUncheckedCreateWithoutUserInput> | ReadHistoryCreateWithoutUserInput[] | ReadHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReadHistoryCreateOrConnectWithoutUserInput | ReadHistoryCreateOrConnectWithoutUserInput[]
+    createMany?: ReadHistoryCreateManyUserInputEnvelope
+    connect?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
   }
 
   export type UserUpdatebookmarksInput = {
@@ -20511,6 +22093,20 @@ export namespace Prisma {
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
   }
 
+  export type ReadHistoryUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ReadHistoryCreateWithoutUserInput, ReadHistoryUncheckedCreateWithoutUserInput> | ReadHistoryCreateWithoutUserInput[] | ReadHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReadHistoryCreateOrConnectWithoutUserInput | ReadHistoryCreateOrConnectWithoutUserInput[]
+    upsert?: ReadHistoryUpsertWithWhereUniqueWithoutUserInput | ReadHistoryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ReadHistoryCreateManyUserInputEnvelope
+    set?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    disconnect?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    delete?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    connect?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    update?: ReadHistoryUpdateWithWhereUniqueWithoutUserInput | ReadHistoryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ReadHistoryUpdateManyWithWhereWithoutUserInput | ReadHistoryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ReadHistoryScalarWhereInput | ReadHistoryScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -20537,6 +22133,20 @@ export namespace Prisma {
     update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type ReadHistoryUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ReadHistoryCreateWithoutUserInput, ReadHistoryUncheckedCreateWithoutUserInput> | ReadHistoryCreateWithoutUserInput[] | ReadHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReadHistoryCreateOrConnectWithoutUserInput | ReadHistoryCreateOrConnectWithoutUserInput[]
+    upsert?: ReadHistoryUpsertWithWhereUniqueWithoutUserInput | ReadHistoryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ReadHistoryCreateManyUserInputEnvelope
+    set?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    disconnect?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    delete?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    connect?: ReadHistoryWhereUniqueInput | ReadHistoryWhereUniqueInput[]
+    update?: ReadHistoryUpdateWithWhereUniqueWithoutUserInput | ReadHistoryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ReadHistoryUpdateManyWithWhereWithoutUserInput | ReadHistoryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ReadHistoryScalarWhereInput | ReadHistoryScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -20569,6 +22179,42 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutAccountsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
+  export type UserCreateNestedOneWithoutReadHistoryInput = {
+    create?: XOR<UserCreateWithoutReadHistoryInput, UserUncheckedCreateWithoutReadHistoryInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReadHistoryInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ArticleCreateNestedOneWithoutReadHistoryInput = {
+    create?: XOR<ArticleCreateWithoutReadHistoryInput, ArticleUncheckedCreateWithoutReadHistoryInput>
+    connectOrCreate?: ArticleCreateOrConnectWithoutReadHistoryInput
+    connect?: ArticleWhereUniqueInput
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type UserUpdateOneRequiredWithoutReadHistoryNestedInput = {
+    create?: XOR<UserCreateWithoutReadHistoryInput, UserUncheckedCreateWithoutReadHistoryInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReadHistoryInput
+    upsert?: UserUpsertWithoutReadHistoryInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReadHistoryInput, UserUpdateWithoutReadHistoryInput>, UserUncheckedUpdateWithoutReadHistoryInput>
+  }
+
+  export type ArticleUpdateOneRequiredWithoutReadHistoryNestedInput = {
+    create?: XOR<ArticleCreateWithoutReadHistoryInput, ArticleUncheckedCreateWithoutReadHistoryInput>
+    connectOrCreate?: ArticleCreateOrConnectWithoutReadHistoryInput
+    upsert?: ArticleUpsertWithoutReadHistoryInput
+    connect?: ArticleWhereUniqueInput
+    update?: XOR<XOR<ArticleUpdateToOneWithWhereWithoutReadHistoryInput, ArticleUpdateWithoutReadHistoryInput>, ArticleUncheckedUpdateWithoutReadHistoryInput>
   }
 
   export type ArenaParticipationCreateNestedManyWithoutAgentInput = {
@@ -20782,14 +22428,6 @@ export namespace Prisma {
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
     decrement?: number
@@ -21052,6 +22690,33 @@ export namespace Prisma {
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -21119,17 +22784,6 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -21146,20 +22800,55 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
+  export type ReadHistoryCreateWithoutArticleInput = {
+    id?: string
+    readAt?: Date | string
+    readTime?: number | null
+    user: UserCreateNestedOneWithoutReadHistoryInput
+  }
+
+  export type ReadHistoryUncheckedCreateWithoutArticleInput = {
+    id?: string
+    userId: string
+    readAt?: Date | string
+    readTime?: number | null
+  }
+
+  export type ReadHistoryCreateOrConnectWithoutArticleInput = {
+    where: ReadHistoryWhereUniqueInput
+    create: XOR<ReadHistoryCreateWithoutArticleInput, ReadHistoryUncheckedCreateWithoutArticleInput>
+  }
+
+  export type ReadHistoryCreateManyArticleInputEnvelope = {
+    data: ReadHistoryCreateManyArticleInput | ReadHistoryCreateManyArticleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReadHistoryUpsertWithWhereUniqueWithoutArticleInput = {
+    where: ReadHistoryWhereUniqueInput
+    update: XOR<ReadHistoryUpdateWithoutArticleInput, ReadHistoryUncheckedUpdateWithoutArticleInput>
+    create: XOR<ReadHistoryCreateWithoutArticleInput, ReadHistoryUncheckedCreateWithoutArticleInput>
+  }
+
+  export type ReadHistoryUpdateWithWhereUniqueWithoutArticleInput = {
+    where: ReadHistoryWhereUniqueInput
+    data: XOR<ReadHistoryUpdateWithoutArticleInput, ReadHistoryUncheckedUpdateWithoutArticleInput>
+  }
+
+  export type ReadHistoryUpdateManyWithWhereWithoutArticleInput = {
+    where: ReadHistoryScalarWhereInput
+    data: XOR<ReadHistoryUpdateManyMutationInput, ReadHistoryUncheckedUpdateManyWithoutArticleInput>
+  }
+
+  export type ReadHistoryScalarWhereInput = {
+    AND?: ReadHistoryScalarWhereInput | ReadHistoryScalarWhereInput[]
+    OR?: ReadHistoryScalarWhereInput[]
+    NOT?: ReadHistoryScalarWhereInput | ReadHistoryScalarWhereInput[]
+    id?: StringFilter<"ReadHistory"> | string
+    userId?: StringFilter<"ReadHistory"> | string
+    articleId?: StringFilter<"ReadHistory"> | string
+    readAt?: DateTimeFilter<"ReadHistory"> | Date | string
+    readTime?: IntNullableFilter<"ReadHistory"> | number | null
   }
 
   export type SessionCreateWithoutUserInput = {
@@ -21232,6 +22921,30 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ReadHistoryCreateWithoutUserInput = {
+    id?: string
+    readAt?: Date | string
+    readTime?: number | null
+    article: ArticleCreateNestedOneWithoutReadHistoryInput
+  }
+
+  export type ReadHistoryUncheckedCreateWithoutUserInput = {
+    id?: string
+    articleId: string
+    readAt?: Date | string
+    readTime?: number | null
+  }
+
+  export type ReadHistoryCreateOrConnectWithoutUserInput = {
+    where: ReadHistoryWhereUniqueInput
+    create: XOR<ReadHistoryCreateWithoutUserInput, ReadHistoryUncheckedCreateWithoutUserInput>
+  }
+
+  export type ReadHistoryCreateManyUserInputEnvelope = {
+    data: ReadHistoryCreateManyUserInput | ReadHistoryCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
     where: SessionWhereUniqueInput
     update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
@@ -21297,6 +23010,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Account"> | Date | string
   }
 
+  export type ReadHistoryUpsertWithWhereUniqueWithoutUserInput = {
+    where: ReadHistoryWhereUniqueInput
+    update: XOR<ReadHistoryUpdateWithoutUserInput, ReadHistoryUncheckedUpdateWithoutUserInput>
+    create: XOR<ReadHistoryCreateWithoutUserInput, ReadHistoryUncheckedCreateWithoutUserInput>
+  }
+
+  export type ReadHistoryUpdateWithWhereUniqueWithoutUserInput = {
+    where: ReadHistoryWhereUniqueInput
+    data: XOR<ReadHistoryUpdateWithoutUserInput, ReadHistoryUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ReadHistoryUpdateManyWithWhereWithoutUserInput = {
+    where: ReadHistoryScalarWhereInput
+    data: XOR<ReadHistoryUpdateManyMutationInput, ReadHistoryUncheckedUpdateManyWithoutUserInput>
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id: string
     name?: string | null
@@ -21308,6 +23037,7 @@ export namespace Prisma {
     preferences?: NullableJsonNullValueInput | InputJsonValue
     bookmarks?: UserCreatebookmarksInput | string[]
     accounts?: AccountCreateNestedManyWithoutUserInput
+    readHistory?: ReadHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -21321,6 +23051,7 @@ export namespace Prisma {
     preferences?: NullableJsonNullValueInput | InputJsonValue
     bookmarks?: UserCreatebookmarksInput | string[]
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    readHistory?: ReadHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -21350,6 +23081,7 @@ export namespace Prisma {
     preferences?: NullableJsonNullValueInput | InputJsonValue
     bookmarks?: UserUpdatebookmarksInput | string[]
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    readHistory?: ReadHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -21363,6 +23095,7 @@ export namespace Prisma {
     preferences?: NullableJsonNullValueInput | InputJsonValue
     bookmarks?: UserUpdatebookmarksInput | string[]
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    readHistory?: ReadHistoryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -21376,6 +23109,7 @@ export namespace Prisma {
     preferences?: NullableJsonNullValueInput | InputJsonValue
     bookmarks?: UserCreatebookmarksInput | string[]
     sessions?: SessionCreateNestedManyWithoutUserInput
+    readHistory?: ReadHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -21389,6 +23123,7 @@ export namespace Prisma {
     preferences?: NullableJsonNullValueInput | InputJsonValue
     bookmarks?: UserCreatebookmarksInput | string[]
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    readHistory?: ReadHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -21418,6 +23153,7 @@ export namespace Prisma {
     preferences?: NullableJsonNullValueInput | InputJsonValue
     bookmarks?: UserUpdatebookmarksInput | string[]
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    readHistory?: ReadHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -21431,6 +23167,163 @@ export namespace Prisma {
     preferences?: NullableJsonNullValueInput | InputJsonValue
     bookmarks?: UserUpdatebookmarksInput | string[]
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    readHistory?: ReadHistoryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutReadHistoryInput = {
+    id: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    bookmarks?: UserCreatebookmarksInput | string[]
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutReadHistoryInput = {
+    id: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    bookmarks?: UserCreatebookmarksInput | string[]
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutReadHistoryInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReadHistoryInput, UserUncheckedCreateWithoutReadHistoryInput>
+  }
+
+  export type ArticleCreateWithoutReadHistoryInput = {
+    id?: string
+    title: string
+    link: string
+    source: string
+    author?: string | null
+    publishedAt: Date | string
+    ingestedAt?: Date | string
+    summary?: string | null
+    content?: string | null
+    imageUrl?: string | null
+    fingerprint: string
+    tags?: ArticleCreatetagsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArticleUncheckedCreateWithoutReadHistoryInput = {
+    id?: string
+    title: string
+    link: string
+    source: string
+    author?: string | null
+    publishedAt: Date | string
+    ingestedAt?: Date | string
+    summary?: string | null
+    content?: string | null
+    imageUrl?: string | null
+    fingerprint: string
+    tags?: ArticleCreatetagsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArticleCreateOrConnectWithoutReadHistoryInput = {
+    where: ArticleWhereUniqueInput
+    create: XOR<ArticleCreateWithoutReadHistoryInput, ArticleUncheckedCreateWithoutReadHistoryInput>
+  }
+
+  export type UserUpsertWithoutReadHistoryInput = {
+    update: XOR<UserUpdateWithoutReadHistoryInput, UserUncheckedUpdateWithoutReadHistoryInput>
+    create: XOR<UserCreateWithoutReadHistoryInput, UserUncheckedCreateWithoutReadHistoryInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReadHistoryInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReadHistoryInput, UserUncheckedUpdateWithoutReadHistoryInput>
+  }
+
+  export type UserUpdateWithoutReadHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    bookmarks?: UserUpdatebookmarksInput | string[]
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReadHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    preferences?: NullableJsonNullValueInput | InputJsonValue
+    bookmarks?: UserUpdatebookmarksInput | string[]
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ArticleUpsertWithoutReadHistoryInput = {
+    update: XOR<ArticleUpdateWithoutReadHistoryInput, ArticleUncheckedUpdateWithoutReadHistoryInput>
+    create: XOR<ArticleCreateWithoutReadHistoryInput, ArticleUncheckedCreateWithoutReadHistoryInput>
+    where?: ArticleWhereInput
+  }
+
+  export type ArticleUpdateToOneWithWhereWithoutReadHistoryInput = {
+    where?: ArticleWhereInput
+    data: XOR<ArticleUpdateWithoutReadHistoryInput, ArticleUncheckedUpdateWithoutReadHistoryInput>
+  }
+
+  export type ArticleUpdateWithoutReadHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    author?: NullableStringFieldUpdateOperationsInput | string | null
+    publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ingestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fingerprint?: StringFieldUpdateOperationsInput | string
+    tags?: ArticleUpdatetagsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArticleUncheckedUpdateWithoutReadHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    author?: NullableStringFieldUpdateOperationsInput | string | null
+    publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ingestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fingerprint?: StringFieldUpdateOperationsInput | string
+    tags?: ArticleUpdatetagsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ArenaParticipationCreateWithoutAgentInput = {
@@ -22167,6 +24060,34 @@ export namespace Prisma {
     trades?: ArenaTradeUncheckedUpdateManyWithoutSimulationNestedInput
   }
 
+  export type ReadHistoryCreateManyArticleInput = {
+    id?: string
+    userId: string
+    readAt?: Date | string
+    readTime?: number | null
+  }
+
+  export type ReadHistoryUpdateWithoutArticleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readTime?: NullableIntFieldUpdateOperationsInput | number | null
+    user?: UserUpdateOneRequiredWithoutReadHistoryNestedInput
+  }
+
+  export type ReadHistoryUncheckedUpdateWithoutArticleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readTime?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ReadHistoryUncheckedUpdateManyWithoutArticleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readTime?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
   export type SessionCreateManyUserInput = {
     id: string
     token: string
@@ -22190,6 +24111,13 @@ export namespace Prisma {
     password?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type ReadHistoryCreateManyUserInput = {
+    id?: string
+    articleId: string
+    readAt?: Date | string
+    readTime?: number | null
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -22265,6 +24193,27 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReadHistoryUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readTime?: NullableIntFieldUpdateOperationsInput | number | null
+    article?: ArticleUpdateOneRequiredWithoutReadHistoryNestedInput
+  }
+
+  export type ReadHistoryUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    articleId?: StringFieldUpdateOperationsInput | string
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readTime?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ReadHistoryUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    articleId?: StringFieldUpdateOperationsInput | string
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readTime?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ArenaParticipationCreateManyAgentInput = {

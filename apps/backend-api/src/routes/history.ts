@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { authMiddleware } from "../middleware/auth.js";
-import { recordRead, getReadHistory } from "../services/history.service.js";
+import { authMiddleware } from "../middleware/auth";
+import { recordRead, getReadHistory } from "../services/history.service";
 
 const router = Router();
 

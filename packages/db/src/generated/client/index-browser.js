@@ -196,6 +196,14 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ReadHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  articleId: 'articleId',
+  readAt: 'readAt',
+  readTime: 'readTime'
+};
+
 exports.Prisma.ArenaAgentScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -327,6 +335,7 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
+  ReadHistory: 'ReadHistory',
   ArenaAgent: 'ArenaAgent',
   ArenaSimulation: 'ArenaSimulation',
   ArenaParticipation: 'ArenaParticipation',

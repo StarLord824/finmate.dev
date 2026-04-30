@@ -1,4 +1,4 @@
-import { getRedis } from "../lib/redis.js";
+import { getRedis } from "../lib/redis";
 
 const SYMBOLS = [
   { symbol: "^GSPC", label: "S&P 500" },

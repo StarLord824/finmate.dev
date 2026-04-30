@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createSubscriberClient } from "../lib/redis.js";
+import { createSubscriberClient } from "../lib/redis";
 
 const router = Router();
 

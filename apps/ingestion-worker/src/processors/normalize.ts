@@ -16,7 +16,9 @@ export function normalizeFeedItem(item: RawFeedItem, sourceName: string, default
 
   const fingerprint = fingerprintFor(title, link);
 
-  const tags = Array.isArray(item.categories) ? item.categories.map(String) : defaultTags ?? [];
+  const tags = Array.isArray(item.categories)
+    ? item.categories.map(c => (typeof c === "string" ? c : (c as any)?._ ?? (c as any)?.name ?? "")).filter(Boolean)
+    : defaultTags ?? [];
 
   return {
     title,
