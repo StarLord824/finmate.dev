@@ -42,6 +42,9 @@ export async function upsertArticle(a: Article) {
       })
     );
 
+    // Queue article for AI enrichment (sentiment, summary, tags, embedding)
+    await redis.rpush("enrichment:queue", inserted.id);
+
     return { inserted: true, id: inserted.id };
   } catch (err: any) {
     // handle unique constraint on link or fingerprint
