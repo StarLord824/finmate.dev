@@ -2,25 +2,20 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import DOMPurify from "dompurify";
-import { ArrowLeft, Bookmark, Share2, ExternalLink, Clock } from "lucide-react";
-import { ReactElement, useState } from "react";
-import { Header } from "@/components/Header";
-import { FeedCard } from "@/components/FeedCard";
+import { Badge } from "@/components/ui/badge";
+import { ArticleBody } from "@/components/article/ArticleBody";
+import { ArticleMeta } from "@/components/article/ArticleMeta";
+import { RelatedArticles } from "@/components/article/RelatedArticles";
 import { ArticleSkeleton } from "@/components/Skeletons";
 import { apiClient } from "@/lib/api-client";
 import { authClient } from "@/lib/auth-client";
-import { formatRelativeTime, cn } from "@/lib/utils";
-import type { Article } from "@/lib/types";
 import { ReadTracker } from "./ReadTracker";
+import type { ReactElement } from "react";
 
 export default function ArticlePage(): ReactElement {
   const params = useParams();
-  const router = useRouter();
   const articleId = params.id as string;
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const { data: session } = authClient.useSession();
   const isAuthenticated = !!session?.user;
 
@@ -46,46 +41,9 @@ export default function ArticlePage(): ReactElement {
     return Math.max(1, Math.ceil(wordCount / 200));
   };
 
-  const { data: relatedArticles } = useQuery({
-    queryKey: ["related", articleId],
-    queryFn: async () => {
-      const articles = await apiClient.getRelatedArticles(articleId, 3);
-      return articles.map((a: Article) => ({
-        ...a,
-        readingTime: a.readingTime || calculateReadingTime(a),
-      }));
-    },
-    enabled: !!article,
-  });
-
-  const handleBookmark = () => {
-    const newState = !isBookmarked;
-    setIsBookmarked(newState);
-    if (article) {
-      apiClient.toggleBookmark(article.id, newState);
-    }
-  };
-
-  const handleShare = async () => {
-    if (navigator.share && article) {
-      try {
-        await navigator.share({
-          title: article.title,
-          text: article.summary || "",
-          url: window.location.href,
-        });
-      } catch {
-        console.log("Share cancelled");
-      }
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-    }
-  };
-
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-light-bg dark:bg-dark-bg">
-        <Header />
+      <div className="max-w-[1200px] mx-auto w-full px-6 py-8">
         <ArticleSkeleton />
       </div>
     );
@@ -93,161 +51,61 @@ export default function ArticlePage(): ReactElement {
 
   if (isError || !article) {
     return (
-      <div className="min-h-screen bg-light-bg dark:bg-dark-bg">
-        <Header />
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-2xl font-bold text-foreground mb-4">Article not found</h1>
-          <Link href="/" className="text-accent hover:text-accent-dark">
-            Return to feed
-          </Link>
-        </div>
+      <div className="container mx-auto px-4 py-16 text-center">
+        <h1 className="text-2xl font-bold text-foreground mb-4">Article not found</h1>
+        <Link href="/" className="text-accent hover:text-accent/80 font-medium">
+          Return to feed
+        </Link>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-light-bg dark:bg-dark-bg">
-      <Header />
+    <div className="max-w-[1200px] mx-auto w-full px-6 py-8 flex flex-col lg:flex-row gap-12 items-start relative">
+      {/* Main Content */}
+      <div className="flex-1 min-w-0">
+        {/* Back Button */}
+        <Link
+          href="/"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          &larr; Feed
+        </Link>
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          {/* Back Button */}
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-2 text-muted hover:text-accent transition-colors mb-6"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span>Back to feed</span>
-          </button>
+        {/* Article Meta */}
+        <ArticleMeta article={article} readingTime={article.readingTime} />
 
-          {/* Article Header */}
-          <article className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border overflow-hidden">
-            {/* Tags */}
-            <div className="p-6 pb-4">
-              <div className="flex flex-wrap gap-2 mb-4">
-                {article.tags.map((tag: string) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1 text-sm font-medium rounded-lg bg-accent/10 text-accent border border-accent/20"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+        {/* Hero Image */}
+        {article.imageUrl && (
+          <img
+            src={article.imageUrl}
+            alt={article.title}
+            className="w-full max-h-80 object-cover rounded-xl mt-6 bg-zinc-100"
+          />
+        )}
 
-              {/* Title */}
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
-                {article.title}
-              </h1>
+        {/* Article Prose Body */}
+        <ArticleBody article={article} />
 
-              {/* Meta */}
-              <div className="flex flex-wrap items-center gap-4 text-sm text-muted">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">{article.source}</span>
-                </div>
-                {article.author && (
-                  <>
-                    <span>•</span>
-                    <span>By {article.author}</span>
-                  </>
-                )}
-                <span>•</span>
-                <time dateTime={article.publishedAt}>
-                  {formatRelativeTime(article.publishedAt)}
-                </time>
-                {article.readingTime && (
-                  <>
-                    <span>•</span>
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      <span>{article.readingTime} min read</span>
-                    </div>
-                  </>
-                )}
-              </div>
+        {/* Tags Row */}
+        {article.tags && article.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-border">
+            {article.tags.map((tag) => (
+              <Badge key={tag} variant="outline" className="font-normal text-muted-foreground">
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        )}
+      </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-2 mt-6">
-                <button
-                  onClick={handleBookmark}
-                  className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all",
-                    isBookmarked
-                      ? "bg-accent2 text-white"
-                      : "bg-light-bg dark:bg-dark-bg text-muted hover:text-accent hover:bg-accent/10 border border-light-border dark:border-dark-border"
-                  )}
-                >
-                  <Bookmark className={cn("h-4 w-4", isBookmarked && "fill-current")} />
-                  {isBookmarked ? "Bookmarked" : "Bookmark"}
-                </button>
-
-                <button
-                  onClick={handleShare}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium bg-light-bg dark:bg-dark-bg text-muted hover:text-accent hover:bg-accent/10 border border-light-border dark:border-dark-border transition-all"
-                >
-                  <Share2 className="h-4 w-4" />
-                  Share
-                </button>
-
-                <a
-                  href={article.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium bg-accent text-white hover:bg-accent-dark transition-all"
-                >
-                  <ExternalLink className="h-4 w-4" />
-                  Read Original
-                </a>
-              </div>
-            </div>
-
-            {/* Hero Image */}
-            {article.imageUrl && (
-              <div className="relative w-full h-96 bg-muted/10">
-                <Image
-                  src={article.imageUrl}
-                  alt={article.title}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            )}
-
-            {/* Content */}
-            <div className="p-6 md:p-8">
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p className="text-xl text-muted leading-relaxed mb-6">
-                  {article.summary}
-                </p>
-                <div
-                  className="text-foreground leading-relaxed space-y-4"
-                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content || "") }}
-                />
-              </div>
-            </div>
-          </article>
-
-          {/* Related Articles */}
-          {relatedArticles && relatedArticles.length > 0 && (
-            <div className="mt-12">
-              <h2 className="text-2xl font-bold text-foreground mb-6">Related Articles</h2>
-              <div className="space-y-4">
-                {relatedArticles.map((relatedArticle: Article, index: number) => (
-                  <FeedCard
-                    key={relatedArticle.id}
-                    article={relatedArticle}
-                    index={index}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </main>
+      {/* Right Rail */}
+      <div className="w-full lg:w-72 shrink-0 lg:sticky lg:top-8">
+        <RelatedArticles articleId={articleId} />
+      </div>
 
       {/* Read tracker — fires recordRead on unmount */}
-      {article && <ReadTracker articleId={article.id} isAuthenticated={isAuthenticated} />}
+      <ReadTracker articleId={articleId} isAuthenticated={isAuthenticated} />
     </div>
   );
 }

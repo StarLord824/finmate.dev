@@ -11,37 +11,34 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#0f172a", // Slate-900 (Deep Black/Navy)
-          dark: "#020617",
-          light: "#334155",
+          DEFAULT: "var(--primary)",
+          foreground: "var(--primary-foreground)",
         },
         accent: {
-          DEFAULT: "#0f172a", // Monochrome accent (Black) for minimal look
-          dark: "#000000",
-          light: "#334155",
+          DEFAULT: "var(--accent)",
+          foreground: "var(--accent-foreground)",
         },
         muted: {
-          DEFAULT: "#64748b", // Slate-500
-          dark: "#94a3b8",
-          light: "#cbd5e1",
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)",
         },
         // Semantic overrides
-        background: "#ffffff",
-        foreground: "#020617",
-        card: "#ffffff",
-        "card-foreground": "#020617",
-        border: "#e2e8f0", // Slate-200
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        card: "var(--card)",
+        "card-foreground": "var(--card-foreground)",
+        border: "var(--border)",
         
         // Retain legacy aliases for compatibility but ensuring they map to new theme
         dark: {
-          bg: "#ffffff", // Force light even in "dark" classes for now
-          card: "#ffffff",
-          border: "#e2e8f0",
+          bg: "var(--background)", 
+          card: "var(--card)",
+          border: "var(--border)",
         },
         light: {
-          bg: "#ffffff",
-          card: "#ffffff",
-          border: "#e2e8f0",
+          bg: "var(--background)",
+          card: "var(--card)",
+          border: "var(--border)",
         },
       },
       fontFamily: {
@@ -60,6 +57,8 @@ const config: Config = {
         "slide-in": "slideIn 0.3s ease-out",
         "shimmer": "shimmer 2s infinite",
         "lift": "lift 0.2s ease-out",
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
       keyframes: {
         fadeIn: {
@@ -82,6 +81,14 @@ const config: Config = {
           "0%": { transform: "translateY(0) scale(1)" },
           "100%": { transform: "translateY(-6px) scale(1.01)" },
         },
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
       },
       boxShadow: {
         card: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
@@ -91,7 +98,10 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("tailwindcss-animate"),
+  ],
 };
 
 export default config;

@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { Header } from "@/components/Header";
-import { BentoGrid } from "@/components/BentoGrid";
-import { FiltersPanel } from "@/components/FiltersPanel";
-import { FeedSkeleton } from "@/components/Skeletons";
+import { MarketBar } from "@/components/feed/MarketBar";
+import { FilterBar } from "@/components/feed/FilterBar";
+import { ArticleGrid } from "@/components/feed/ArticleGrid";
+import { FeedSidebar } from "@/components/feed/FeedSidebar";
 import { EmptyState } from "@/components/EmptyState";
-import { TrendingTopics } from "@/components/TrendingTopics";
 import { apiClient } from "@/lib/api-client";
 import { useLiveFeed } from "@/hooks/useLiveFeed";
 import type { Category, Article } from "@/lib/types";
@@ -64,11 +63,11 @@ export default function Home(): ReactElement {
     return Math.max(1, Math.ceil(wordCount / 200));
   };
 
-  const handleCategoryToggle = (category: Category) => {
+  const handleCategoryToggle = (category: string) => {
     setSelectedCategories((prev) => {
-      const newCategories = prev.includes(category)
+      const newCategories = prev.includes(category as Category)
         ? prev.filter((c) => c !== category)
-        : [...prev, category];
+        : [...prev, category as Category];
       return newCategories;
     });
   };
@@ -106,86 +105,94 @@ export default function Home(): ReactElement {
   const allArticles = data?.pages.flatMap((page) => page.articles) || [];
 
   return (
-    <div className="min-h-screen bg-light-bg dark:bg-dark-bg">
-      <Header />
-
-      <main className="container mx-auto px-4 py-6">
-        {/* Live feed refresh banner */}
-        {newCount > 0 && (
-          <div className="sticky top-16 z-20 flex justify-center pointer-events-none mb-4">
-            <button
+    <div className="flex flex-col min-h-full">
+      {/* Topbar */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-background sticky top-0 z-20">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Feed</h1>
+        {/* Live indicator */}
+        <div className="flex items-center gap-2">
+          {newCount > 0 ? (
+            <button 
               onClick={() => {
                 reset();
                 window.scrollTo({ top: 0, behavior: "smooth" });
                 queryClient.invalidateQueries({ queryKey: ["feed"] });
               }}
-              className="pointer-events-auto bg-accent text-white text-sm font-medium px-5 py-2 rounded-full shadow-lg hover:bg-accent-dark transition-all animate-bounce"
+              className="flex items-center gap-2 bg-zinc-100 hover:bg-zinc-200 px-3 py-1.5 rounded-full transition-colors text-sm font-medium"
             >
-              ↑ {newCount} new {newCount === 1 ? "article" : "articles"} — click to refresh
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-positive opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-positive"></span>
+              </span>
+              {newCount} new
             </button>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
-          {/* Feed - Bento Grid */}
-          <div>
-            {/* Trending topics bar */}
-            <div className="mb-4">
-              <TrendingTopics
-                onTagClick={(tag) => {
-                  setSelectedCategories((prev) =>
-                    prev.includes(tag as Category)
-                      ? prev.filter((t) => t !== tag)
-                      : [...prev, tag as Category]
-                  );
-                }}
-                selectedTags={selectedCategories}
-              />
+          ) : (
+            <div className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-muted-foreground">
+              <span className="relative flex h-2 w-2">
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-muted-foreground"></span>
+              </span>
+              Live
             </div>
-            {isLoading ? (
-              <FeedSkeleton count={8} />
-            ) : isError ? (
-              <EmptyState
-                title="Failed to load articles"
-                description="There was an error loading the feed. Please try again later."
-                actionLabel="Retry"
-                actionHref="/"
-              />
-            ) : allArticles.length === 0 ? (
-              <EmptyState />
-            ) : (
-              <BentoGrid
-                articles={allArticles}
-                onBookmarkToggle={handleBookmarkToggle}
-              />
-            )}
-
-            {isFetchingNextPage && (
-              <div className="flex justify-center py-8">
-                <Loader2 className="h-8 w-8 animate-spin text-accent" />
-              </div>
-            )}
-
-            {!hasNextPage && allArticles.length > 0 && (
-              <div className="text-center py-8 text-muted text-sm">
-                {"You've reached the end of the feed"}
-              </div>
-            )}
-          </div>
-
-          {/* Sidebar */}
-          <div className="hidden lg:block">
-            <div className="sticky top-20">
-              <FiltersPanel
-                selectedCategories={selectedCategories}
-                onCategoryToggle={handleCategoryToggle}
-                selectedSources={selectedSources}
-                onSourceToggle={handleSourceToggle}
-              />
-            </div>
-          </div>
+          )}
         </div>
-      </main>
+      </div>
+
+      <MarketBar />
+
+      <div className="border-b border-border px-6">
+        <FilterBar 
+          selectedCategories={selectedCategories}
+          onCategoryToggle={handleCategoryToggle}
+          selectedSources={selectedSources}
+          onSourceToggle={handleSourceToggle}
+          onClearAll={() => {
+            setSelectedCategories([]);
+            setSelectedSources([]);
+          }}
+        />
+      </div>
+
+      <div className="flex-1 max-w-[1280px] mx-auto w-full px-6 py-8 flex gap-8">
+        {/* Main Content */}
+        <div className="flex-1 min-w-0">
+          {isError ? (
+            <EmptyState
+              title="Failed to load articles"
+              description="There was an error loading the feed. Please try again later."
+              actionLabel="Retry"
+              actionHref="/"
+            />
+          ) : allArticles.length === 0 && !isLoading ? (
+            <EmptyState />
+          ) : (
+            <ArticleGrid
+              articles={allArticles}
+              isLoading={isLoading}
+              onBookmarkToggle={handleBookmarkToggle}
+            />
+          )}
+
+          {isFetchingNextPage && (
+            <div className="flex justify-center py-8">
+              <Loader2 className="h-8 w-8 animate-spin text-accent" />
+            </div>
+          )}
+
+          {!hasNextPage && allArticles.length > 0 && (
+            <div className="text-center py-8 text-muted-foreground text-sm">
+              You've reached the end of the feed
+            </div>
+          )}
+        </div>
+
+        {/* Right Rail */}
+        <FeedSidebar 
+          onTagClick={handleCategoryToggle}
+          onSourceClick={handleSourceToggle}
+          selectedTags={selectedCategories}
+          selectedSources={selectedSources}
+        />
+      </div>
     </div>
   );
 }

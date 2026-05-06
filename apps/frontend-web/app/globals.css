@@ -1,33 +1,53 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #020617; /* Slate-950 */
+  --background: #fafafa;
+  --foreground: #18181b;
   --card: #ffffff;
-  --card-foreground: #020617;
-  --primary: #0f172a; /* Slate-900 */
-  --primary-foreground: #ffffff;
-  --accent: #0f172a;
+  --card-foreground: #18181b;
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #2563eb;
   --accent-foreground: #ffffff;
-  --muted: #64748b; /* Slate-500 */
-  --muted-foreground: #64748b;
-  --border: #e2e8f0; /* Slate-200 */
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
+  --positive: #10b981;
+  --positive-foreground: #ffffff;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #2563eb;
   --radius: 0.5rem;
 }
 
 .dark {
-  /* Enforce light mode look even if class is present */
-  --background: #ffffff;
-  --foreground: #020617;
+  /* Enforce light mode look even if class is present as per spec (light mode only) */
+  --background: #fafafa;
+  --foreground: #18181b;
   --card: #ffffff;
-  --card-foreground: #020617;
-  --primary: #0f172a;
-  --primary-foreground: #ffffff;
-  --accent: #0f172a;
+  --card-foreground: #18181b;
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #2563eb;
   --accent-foreground: #ffffff;
-  --muted: #64748b;
-  --muted-foreground: #64748b;
-  --border: #e2e8f0;
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
+  --positive: #10b981;
+  --positive-foreground: #ffffff;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #2563eb;
 }
 
 body {
