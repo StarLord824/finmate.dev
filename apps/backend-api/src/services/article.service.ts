@@ -11,8 +11,9 @@ export async function getArticles(options: {
   before?: string | null; // ISO timestamp: return publishedAt < before
   tags?: string[] | null;
   sources?: string[] | null;
+  sentiment?: string | null;
 }) {
-  const { limit, before, tags, sources } = options;
+  const { limit, before, tags, sources, sentiment } = options;
   const where: any = {};
 
   if (before) {
@@ -26,6 +27,10 @@ export async function getArticles(options: {
   if (tags && tags.length) {
     // tags is stored as string[] in Prisma
     where.tags = { hasSome: tags }; // Prisma hasSome operator
+  }
+
+  if (sentiment && ["positive", "negative", "neutral"].includes(sentiment)) {
+    where.sentiment = sentiment;
   }
 
   const items = await prisma.article.findMany({

@@ -19,6 +19,7 @@ export async function getFeed(options: {
   tags?: string[] | null;
   sources?: string[] | null;
   preferredTags?: string[] | null;
+  sentiment?: string | null;
 }) {
   const limit = options.limit ?? 20;
   const raw = await getArticles({
@@ -26,6 +27,7 @@ export async function getFeed(options: {
     before: options.before ?? null,
     tags: options.tags ?? null,
     sources: options.sources ?? null,
+    sentiment: options.sentiment ?? null,
   });
 
   // Score & sort

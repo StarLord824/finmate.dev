@@ -20,8 +20,9 @@ router.get("/", async (req, res, next) => {
     const tags = req.query.tags ? String(req.query.tags).split(",").map(s => s.trim()).filter(Boolean) : undefined;
     const sources = req.query.sources ? String(req.query.sources).split(",").map(s => s.trim()).filter(Boolean) : undefined;
     const preferredTags = req.query.preferredTags ? String(req.query.preferredTags).split(",").map(s => s.trim().toLowerCase()).filter(Boolean) : undefined;
+    const sentiment = req.query.sentiment ? String(req.query.sentiment) : undefined;
 
-    const items = await getFeed({ limit, before, tags: tags ?? null, sources: sources ?? null, preferredTags: preferredTags ?? null });
+    const items = await getFeed({ limit, before, tags: tags ?? null, sources: sources ?? null, preferredTags: preferredTags ?? null, sentiment: sentiment ?? null });
     res.json({ data: items });
   } catch (err) {
     next(err);
