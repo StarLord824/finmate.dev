@@ -67,6 +67,10 @@ async function processArticle(id: string): Promise<void> {
     logger.info({ id, sentiment: sentimentResult.sentiment, tags: aiTags }, "Article enriched");
   } catch (err) {
     logger.error({ err, id }, "Enrichment failed — marking article as failed");
-    await markFailed(id);
+    try {
+      await markFailed(id);
+    } catch (dbErr) {
+      logger.error({ dbErr, id }, "markFailed DB write failed — article stuck in processing");
+    }
   }
 }
