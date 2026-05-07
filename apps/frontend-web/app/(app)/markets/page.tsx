@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { apiClient } from "@/lib/api-client";
@@ -23,7 +23,7 @@ const CATEGORIES = [
   { label: "Commodities", value: "commodities" },
 ];
 
-export default function MarketsPage(): ReactElement {
+function MarketsPageContent(): ReactElement {
   const searchParams = useSearchParams();
   const initialSymbol = searchParams.get("symbol") ?? "BTC-USD";
 
@@ -31,13 +31,18 @@ export default function MarketsPage(): ReactElement {
   const [selectedRange, setSelectedRange] = useState("1d");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
+  useEffect(() => {
+    const sym = searchParams.get("symbol");
+    if (sym) setSelectedSymbol(sym);
+  }, [searchParams]);
+
   const { data: symbols } = useQuery<MarketSymbol[]>({
     queryKey: ["market-symbols"],
     queryFn: () => apiClient.getMarketSymbols(),
     staleTime: Infinity,
   });
 
-  const { data: quotes } = useQuery({
+  const { data: quotes, isError: quotesError } = useQuery({
     queryKey: ["market"],
     queryFn: () => apiClient.getMarket(),
     refetchInterval: 60000,
@@ -48,14 +53,23 @@ export default function MarketsPage(): ReactElement {
     queryKey: ["market-history", selectedSymbol, selectedRange],
     queryFn: () => apiClient.getMarketHistory(selectedSymbol, selectedRange),
     staleTime: 300000,
+    enabled: !!selectedSymbol,
   });
 
   const currentQuote = quotes?.find((q) => q.symbol === selectedSymbol);
   const isPositive = (currentQuote?.change ?? history?.change ?? 0) >= 0;
 
-  const filteredSymbols = (symbols ?? []).filter(
-    (s) => selectedCategory === "all" || s.category === selectedCategory
+  const filteredSymbols = useMemo(
+    () => (symbols ?? []).filter((s) => selectedCategory === "all" || s.category === selectedCategory),
+    [symbols, selectedCategory]
   );
+
+  useEffect(() => {
+    if (filteredSymbols.length > 0 && !filteredSymbols.find((s) => s.symbol === selectedSymbol)) {
+      setSelectedSymbol(filteredSymbols[0]!.symbol);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory]);
 
   return (
     <div className="max-w-7xl mx-auto w-full px-6 py-8">
@@ -87,6 +101,9 @@ export default function MarketsPage(): ReactElement {
             ))}
           </div>
 
+          {quotesError && (
+            <p className="text-xs text-[#4a6890] mb-2">Unable to load prices.</p>
+          )}
           <div className="space-y-1">
             {filteredSymbols.map((sym) => {
               const quote = quotes?.find((q) => q.symbol === sym.symbol);
@@ -214,5 +231,13 @@ export default function MarketsPage(): ReactElement {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function MarketsPage(): ReactElement {
+  return (
+    <Suspense>
+      <MarketsPageContent />
+    </Suspense>
   );
 }

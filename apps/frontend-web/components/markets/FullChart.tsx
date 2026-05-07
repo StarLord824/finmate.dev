@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "recharts";
 import { format } from "date-fns";
+import { useId } from "react";
 import type { HistoryPoint } from "@/lib/types";
 import type { ReactElement } from "react";
 
@@ -32,8 +33,9 @@ function tickCount(range: string): number {
 }
 
 export function FullChart({ points, isPositive, range }: FullChartProps): ReactElement {
+  const uid = useId();
   const color = isPositive ? "#10b981" : "#ef4444";
-  const fillId = `fill-${isPositive ? "green" : "red"}`;
+  const fillId = `fill-${isPositive ? "green" : "red"}-${uid}`;
 
   return (
     <ResponsiveContainer width="100%" height={320}>
