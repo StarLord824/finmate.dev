@@ -9,13 +9,15 @@ interface ArticleGridProps {
   showRemoveBookmark?: boolean;
 }
 
+import type { ReactElement } from "react";
+
 export function ArticleGrid({ 
   articles, 
   isLoading, 
   skeletonCount = 6,
   onBookmarkToggle,
   showRemoveBookmark 
-}: ArticleGridProps) {
+}: ArticleGridProps): ReactElement {
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

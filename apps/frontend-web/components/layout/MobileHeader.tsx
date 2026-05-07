@@ -14,6 +14,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import type { ReactElement } from "react";
 
 const navItems = [
   { label: "Feed", href: "/", icon: Home },
@@ -23,18 +24,20 @@ const navItems = [
   { label: "Arena", href: "/arena", icon: Swords },
 ];
 
-export function MobileHeader() {
+export function MobileHeader(): ReactElement {
   const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-background px-4 sm:hidden">
       <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="-ml-2 h-9 w-9 text-foreground">
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
+        <SheetTrigger
+          render={
+            <Button variant="ghost" size="icon" className="-ml-2 h-9 w-9 text-foreground">
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle navigation menu</span>
+            </Button>
+          }
+        />
         <SheetContent side="left" className="w-[280px] p-0 flex flex-col">
           <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
           <SheetDescription className="sr-only">Access different pages of FinMate</SheetDescription>

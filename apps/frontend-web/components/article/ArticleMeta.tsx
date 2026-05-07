@@ -2,13 +2,14 @@ import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Clock } from "lucide-react";
 import type { Article } from "@/lib/types";
+import type { ReactElement } from "react";
 
 interface ArticleMetaProps {
   article: Article;
   readingTime: number;
 }
 
-export function ArticleMeta({ article, readingTime }: ArticleMetaProps) {
+export function ArticleMeta({ article, readingTime }: ArticleMetaProps): ReactElement {
   const publishedDate = article.publishedAt 
     ? format(new Date(article.publishedAt), "MMM d, yyyy • h:mm a")
     : "";

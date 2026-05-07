@@ -40,12 +40,14 @@ const buttonVariants = cva(
   }
 )
 
+import type { ReactElement } from "react"
+
 function Button({
   className,
   variant = "default",
   size = "default",
   ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>): ReactElement {
   return (
     <ButtonPrimitive
       data-slot="button"

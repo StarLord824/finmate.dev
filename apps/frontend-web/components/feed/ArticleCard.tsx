@@ -12,7 +12,9 @@ interface ArticleCardProps {
   showRemoveBookmark?: boolean;
 }
 
-export function ArticleCard({ article, onBookmarkToggle, showRemoveBookmark }: ArticleCardProps) {
+import type { ReactElement } from "react";
+
+export function ArticleCard({ article, onBookmarkToggle, showRemoveBookmark }: ArticleCardProps): ReactElement {
   const publishedDate = article.publishedAt 
     ? formatDistanceToNow(new Date(article.publishedAt), { addSuffix: true })
     : "";
@@ -92,7 +94,7 @@ export function ArticleCard({ article, onBookmarkToggle, showRemoveBookmark }: A
   );
 }
 
-export function ArticleCardSkeleton() {
+export function ArticleCardSkeleton(): ReactElement {
   return (
     <Card className="overflow-hidden border-border bg-card">
       <Skeleton className="aspect-video w-full rounded-none" />

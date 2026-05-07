@@ -14,7 +14,9 @@ interface RelatedArticlesProps {
   articleId: string;
 }
 
-export function RelatedArticles({ articleId }: RelatedArticlesProps) {
+import type { ReactElement } from "react";
+
+export function RelatedArticles({ articleId }: RelatedArticlesProps): ReactElement {
   const [copied, setCopied] = useState(false);
 
   const { data: related, isLoading } = useQuery({
@@ -87,15 +89,17 @@ export function RelatedArticles({ articleId }: RelatedArticlesProps) {
       <Separator />
 
       <Tooltip>
-        <TooltipTrigger asChild>
-          <Button 
-            variant="outline" 
-            className="w-full justify-center gap-2"
-            onClick={handleShare}
-          >
-            {copied ? <Check className="h-4 w-4 text-positive" /> : <Share2 className="h-4 w-4" />}
-            {copied ? "Copied to clipboard" : "Share Article"}
-          </Button>
+        <TooltipTrigger
+          render={
+            <Button 
+              variant="outline" 
+              className="w-full justify-center gap-2"
+              onClick={handleShare}
+            />
+          }
+        >
+          {copied ? <Check className="h-4 w-4 text-positive" /> : <Share2 className="h-4 w-4" />}
+          {copied ? "Copied to clipboard" : "Share Article"}
         </TooltipTrigger>
         <TooltipContent>
           <p>Copy link</p>

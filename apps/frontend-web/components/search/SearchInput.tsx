@@ -2,7 +2,7 @@
 
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useEffect, useRef } from "react";
+import { ReactElement, useEffect, useRef } from "react";
 
 interface SearchInputProps {
   value: string;
@@ -10,7 +10,7 @@ interface SearchInputProps {
   onClear: () => void;
 }
 
-export function SearchInput({ value, onChange, onClear }: SearchInputProps) {
+export function SearchInput({ value, onChange, onClear }: SearchInputProps): ReactElement {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {

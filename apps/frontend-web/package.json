@@ -11,6 +11,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@base-ui/react": "^1.4.1",
     "@prisma/client": "6.16.1",
     "@repo/db": "workspace:*",
     "@repo/ui": "workspace:*",
@@ -19,6 +20,7 @@
     "@types/dompurify": "^3.2.0",
     "autoprefixer": "^10.4.22",
     "better-auth": "^1.4.5",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dompurify": "^3.3.1",

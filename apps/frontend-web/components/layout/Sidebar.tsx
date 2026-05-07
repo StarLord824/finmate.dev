@@ -11,6 +11,7 @@ import {
   Settings 
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ReactElement } from "react";
 
 const navItems = [
   { label: "Feed", href: "/", icon: Home },
@@ -20,7 +21,7 @@ const navItems = [
   { label: "Arena", href: "/arena", icon: Swords },
 ];
 
-export function Sidebar() {
+export function Sidebar(): ReactElement {
   const pathname = usePathname();
 
   return (

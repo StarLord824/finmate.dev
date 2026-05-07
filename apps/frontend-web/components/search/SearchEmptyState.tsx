@@ -1,5 +1,6 @@
 import { Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { ReactElement } from "react";
 
 interface SearchEmptyStateProps {
   query: string;
@@ -8,7 +9,7 @@ interface SearchEmptyStateProps {
 
 const suggestions = ["Inflation", "Federal Reserve", "Apple", "Bitcoin"];
 
-export function SearchEmptyState({ query, onSuggestionClick }: SearchEmptyStateProps) {
+export function SearchEmptyState({ query, onSuggestionClick }: SearchEmptyStateProps): ReactElement {
   if (query.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">

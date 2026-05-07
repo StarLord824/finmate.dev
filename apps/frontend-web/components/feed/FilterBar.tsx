@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { apiClient } from "@/lib/api-client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ReactElement } from "react";
 
 interface FilterBarProps {
   selectedCategories: string[];
@@ -20,7 +21,7 @@ export function FilterBar({
   selectedSources,
   onSourceToggle,
   onClearAll,
-}: FilterBarProps) {
+}: FilterBarProps): ReactElement {
   const { data: sources, isLoading: isLoadingSources } = useQuery({
     queryKey: ["sources"],
     queryFn: () => apiClient.getSources(),

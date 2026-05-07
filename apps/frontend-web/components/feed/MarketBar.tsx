@@ -2,8 +2,9 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
+import type { ReactElement } from "react";
 
-export function MarketBar() {
+export function MarketBar(): ReactElement | null {
   const { data: marketData, isLoading } = useQuery({
     queryKey: ["market"],
     queryFn: () => apiClient.getMarket(),

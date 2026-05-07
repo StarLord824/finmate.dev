@@ -14,12 +14,14 @@ interface FeedSidebarProps {
   selectedSources: string[];
 }
 
+import type { ReactElement } from "react";
+
 export function FeedSidebar({
   onTagClick,
   onSourceClick,
   selectedTags,
   selectedSources,
-}: FeedSidebarProps) {
+}: FeedSidebarProps): ReactElement {
   const { data: trending, isLoading: isLoadingTrending } = useQuery({
     queryKey: ["trending"],
     queryFn: () => apiClient.getTrending(24),

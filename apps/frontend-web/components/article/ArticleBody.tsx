@@ -1,11 +1,12 @@
 import DOMPurify from "dompurify";
+import type { ReactElement } from "react";
 import type { Article } from "@/lib/types";
 
 interface ArticleBodyProps {
   article: Article;
 }
 
-export function ArticleBody({ article }: ArticleBodyProps) {
+export function ArticleBody({ article }: ArticleBodyProps): ReactElement | null {
   // If we only have summary and no content, show summary
   const content = article.content || article.summary;
 

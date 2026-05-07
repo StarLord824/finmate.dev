@@ -94,7 +94,7 @@ function SearchContent(): ReactElement {
   );
 }
 
-export function SearchSkeleton() {
+export function SearchSkeleton(): ReactElement {
   return (
     <main className="flex-1 w-full max-w-[1000px] mx-auto px-6 py-8">
       <div className="mb-8 max-w-2xl mx-auto">
