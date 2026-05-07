@@ -73,7 +73,9 @@ export async function getTrending(hours = 24, topN = 12) {
 /**
  * Get live market quotes — delegates to market service
  */
-export async function getMarketData() {
+export async function getMarketData(): Promise<Array<{
+  label: string; symbol: string; price: number; change: number; changePercent: number;
+}>> {
   const { getMarketQuotes } = await import("./market.service.js");
   return getMarketQuotes();
 }

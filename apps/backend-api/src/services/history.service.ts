@@ -47,7 +47,7 @@ export async function getReadHistory(
 
   return {
     items: data,
-    nextCursor: hasMore ? data[data.length - 1].id : null,
+    nextCursor: hasMore ? (data.at(-1)?.id ?? null) : null,
   };
 }
 

@@ -11,14 +11,21 @@ export interface AuthRequest extends Request {
   };
 }
 
+function extractToken(req: AuthRequest): string | null {
+  // Authorization: Bearer <token> header (cross-origin clients)
+  const authHeader = req.headers.authorization;
+  if (authHeader?.startsWith("Bearer ")) return authHeader.slice(7);
+  // Cookie fallback (same-origin / SSR)
+  return req.cookies?.["finmate.session_token"] ?? null;
+}
+
 export async function authMiddleware(
   req: AuthRequest,
   res: Response,
   next: NextFunction
 ) {
   try {
-    // Get session token from cookie
-    const sessionToken = req.cookies?.["finmate.session_token"];
+    const sessionToken = extractToken(req);
 
     if (!sessionToken) {
       return res.status(401).json({ error: "Unauthorized" });
@@ -61,7 +68,7 @@ export async function optionalAuthMiddleware(
   next: NextFunction
 ) {
   try {
-    const sessionToken = req.cookies?.["finmate.session_token"];
+    const sessionToken = extractToken(req);
 
     if (sessionToken) {
       const session = await prisma.session.findUnique({

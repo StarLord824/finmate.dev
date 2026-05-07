@@ -4,17 +4,27 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 class ApiClient {
   private baseUrl: string;
+  private sessionToken: string | null = null;
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
   }
 
+  setSessionToken(token: string | null) {
+    this.sessionToken = token;
+  }
+
   private async fetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
+    const authHeaders: Record<string, string> = this.sessionToken
+      ? { Authorization: `Bearer ${this.sessionToken}` }
+      : {};
+
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       ...options,
-      credentials: "include", // Include cookies for authentication
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        ...authHeaders,
         ...options?.headers,
       },
     });

@@ -119,7 +119,6 @@ function DropdownMenuSubTrigger({
       {...props}
     >
       {children}
-      {/* @ts-expect-error lucide-react types compatibility */}
       <ChevronRight className="ml-auto" />
     </MenuPrimitive.SubmenuTrigger>
   )
@@ -171,7 +170,6 @@ function DropdownMenuCheckboxItem({
         data-slot="dropdown-menu-checkbox-item-indicator"
       >
         <MenuPrimitive.CheckboxItemIndicator>
-          {/* @ts-expect-error lucide-react types compatibility */}
           <Check />
         </MenuPrimitive.CheckboxItemIndicator>
       </span>
@@ -212,7 +210,6 @@ function DropdownMenuRadioItem({
         data-slot="dropdown-menu-radio-item-indicator"
       >
         <MenuPrimitive.RadioItemIndicator>
-          {/* @ts-expect-error lucide-react types compatibility */}
           <Check />
         </MenuPrimitive.RadioItemIndicator>
       </span>

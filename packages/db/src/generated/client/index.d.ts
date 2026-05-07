@@ -2239,8 +2239,18 @@ export namespace Prisma {
 
   export type AggregateArticle = {
     _count: ArticleCountAggregateOutputType | null
+    _avg: ArticleAvgAggregateOutputType | null
+    _sum: ArticleSumAggregateOutputType | null
     _min: ArticleMinAggregateOutputType | null
     _max: ArticleMaxAggregateOutputType | null
+  }
+
+  export type ArticleAvgAggregateOutputType = {
+    sentimentScore: number | null
+  }
+
+  export type ArticleSumAggregateOutputType = {
+    sentimentScore: number | null
   }
 
   export type ArticleMinAggregateOutputType = {
@@ -2257,6 +2267,11 @@ export namespace Prisma {
     fingerprint: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    sentiment: string | null
+    sentimentScore: number | null
+    aiSummary: string | null
+    enrichStatus: string | null
+    enrichedAt: Date | null
   }
 
   export type ArticleMaxAggregateOutputType = {
@@ -2273,6 +2288,11 @@ export namespace Prisma {
     fingerprint: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    sentiment: string | null
+    sentimentScore: number | null
+    aiSummary: string | null
+    enrichStatus: string | null
+    enrichedAt: Date | null
   }
 
   export type ArticleCountAggregateOutputType = {
@@ -2290,9 +2310,23 @@ export namespace Prisma {
     tags: number
     createdAt: number
     updatedAt: number
+    sentiment: number
+    sentimentScore: number
+    aiSummary: number
+    aiTags: number
+    enrichStatus: number
+    enrichedAt: number
     _all: number
   }
 
+
+  export type ArticleAvgAggregateInputType = {
+    sentimentScore?: true
+  }
+
+  export type ArticleSumAggregateInputType = {
+    sentimentScore?: true
+  }
 
   export type ArticleMinAggregateInputType = {
     id?: true
@@ -2308,6 +2342,11 @@ export namespace Prisma {
     fingerprint?: true
     createdAt?: true
     updatedAt?: true
+    sentiment?: true
+    sentimentScore?: true
+    aiSummary?: true
+    enrichStatus?: true
+    enrichedAt?: true
   }
 
   export type ArticleMaxAggregateInputType = {
@@ -2324,6 +2363,11 @@ export namespace Prisma {
     fingerprint?: true
     createdAt?: true
     updatedAt?: true
+    sentiment?: true
+    sentimentScore?: true
+    aiSummary?: true
+    enrichStatus?: true
+    enrichedAt?: true
   }
 
   export type ArticleCountAggregateInputType = {
@@ -2341,6 +2385,12 @@ export namespace Prisma {
     tags?: true
     createdAt?: true
     updatedAt?: true
+    sentiment?: true
+    sentimentScore?: true
+    aiSummary?: true
+    aiTags?: true
+    enrichStatus?: true
+    enrichedAt?: true
     _all?: true
   }
 
@@ -2382,6 +2432,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: ArticleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ArticleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ArticleMinAggregateInputType
@@ -2412,6 +2474,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ArticleCountAggregateInputType | true
+    _avg?: ArticleAvgAggregateInputType
+    _sum?: ArticleSumAggregateInputType
     _min?: ArticleMinAggregateInputType
     _max?: ArticleMaxAggregateInputType
   }
@@ -2431,7 +2495,15 @@ export namespace Prisma {
     tags: string[]
     createdAt: Date
     updatedAt: Date
+    sentiment: string | null
+    sentimentScore: number | null
+    aiSummary: string | null
+    aiTags: string[]
+    enrichStatus: string
+    enrichedAt: Date | null
     _count: ArticleCountAggregateOutputType | null
+    _avg: ArticleAvgAggregateOutputType | null
+    _sum: ArticleSumAggregateOutputType | null
     _min: ArticleMinAggregateOutputType | null
     _max: ArticleMaxAggregateOutputType | null
   }
@@ -2465,6 +2537,12 @@ export namespace Prisma {
     tags?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    sentiment?: boolean
+    sentimentScore?: boolean
+    aiSummary?: boolean
+    aiTags?: boolean
+    enrichStatus?: boolean
+    enrichedAt?: boolean
     readHistory?: boolean | Article$readHistoryArgs<ExtArgs>
     _count?: boolean | ArticleCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["article"]>
@@ -2484,6 +2562,12 @@ export namespace Prisma {
     tags?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    sentiment?: boolean
+    sentimentScore?: boolean
+    aiSummary?: boolean
+    aiTags?: boolean
+    enrichStatus?: boolean
+    enrichedAt?: boolean
   }, ExtArgs["result"]["article"]>
 
   export type ArticleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2501,6 +2585,12 @@ export namespace Prisma {
     tags?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    sentiment?: boolean
+    sentimentScore?: boolean
+    aiSummary?: boolean
+    aiTags?: boolean
+    enrichStatus?: boolean
+    enrichedAt?: boolean
   }, ExtArgs["result"]["article"]>
 
   export type ArticleSelectScalar = {
@@ -2518,9 +2608,15 @@ export namespace Prisma {
     tags?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    sentiment?: boolean
+    sentimentScore?: boolean
+    aiSummary?: boolean
+    aiTags?: boolean
+    enrichStatus?: boolean
+    enrichedAt?: boolean
   }
 
-  export type ArticleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "link" | "source" | "author" | "publishedAt" | "ingestedAt" | "summary" | "content" | "imageUrl" | "fingerprint" | "tags" | "createdAt" | "updatedAt", ExtArgs["result"]["article"]>
+  export type ArticleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "link" | "source" | "author" | "publishedAt" | "ingestedAt" | "summary" | "content" | "imageUrl" | "fingerprint" | "tags" | "createdAt" | "updatedAt" | "sentiment" | "sentimentScore" | "aiSummary" | "aiTags" | "enrichStatus" | "enrichedAt", ExtArgs["result"]["article"]>
   export type ArticleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     readHistory?: boolean | Article$readHistoryArgs<ExtArgs>
     _count?: boolean | ArticleCountOutputTypeDefaultArgs<ExtArgs>
@@ -2548,6 +2644,12 @@ export namespace Prisma {
       tags: string[]
       createdAt: Date
       updatedAt: Date
+      sentiment: string | null
+      sentimentScore: number | null
+      aiSummary: string | null
+      aiTags: string[]
+      enrichStatus: string
+      enrichedAt: Date | null
     }, ExtArgs["result"]["article"]>
     composites: {}
   }
@@ -2986,6 +3088,12 @@ export namespace Prisma {
     readonly tags: FieldRef<"Article", 'String[]'>
     readonly createdAt: FieldRef<"Article", 'DateTime'>
     readonly updatedAt: FieldRef<"Article", 'DateTime'>
+    readonly sentiment: FieldRef<"Article", 'String'>
+    readonly sentimentScore: FieldRef<"Article", 'Float'>
+    readonly aiSummary: FieldRef<"Article", 'String'>
+    readonly aiTags: FieldRef<"Article", 'String[]'>
+    readonly enrichStatus: FieldRef<"Article", 'String'>
+    readonly enrichedAt: FieldRef<"Article", 'DateTime'>
   }
     
 
@@ -18154,7 +18262,13 @@ export namespace Prisma {
     fingerprint: 'fingerprint',
     tags: 'tags',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    sentiment: 'sentiment',
+    sentimentScore: 'sentimentScore',
+    aiSummary: 'aiSummary',
+    aiTags: 'aiTags',
+    enrichStatus: 'enrichStatus',
+    enrichedAt: 'enrichedAt'
   };
 
   export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
@@ -18441,6 +18555,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -18473,20 +18601,6 @@ export namespace Prisma {
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
-
-
-  /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
   /**
    * Deep Input Types
    */
@@ -18510,6 +18624,12 @@ export namespace Prisma {
     tags?: StringNullableListFilter<"Article">
     createdAt?: DateTimeFilter<"Article"> | Date | string
     updatedAt?: DateTimeFilter<"Article"> | Date | string
+    sentiment?: StringNullableFilter<"Article"> | string | null
+    sentimentScore?: FloatNullableFilter<"Article"> | number | null
+    aiSummary?: StringNullableFilter<"Article"> | string | null
+    aiTags?: StringNullableListFilter<"Article">
+    enrichStatus?: StringFilter<"Article"> | string
+    enrichedAt?: DateTimeNullableFilter<"Article"> | Date | string | null
     readHistory?: ReadHistoryListRelationFilter
   }
 
@@ -18528,6 +18648,12 @@ export namespace Prisma {
     tags?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    sentiment?: SortOrderInput | SortOrder
+    sentimentScore?: SortOrderInput | SortOrder
+    aiSummary?: SortOrderInput | SortOrder
+    aiTags?: SortOrder
+    enrichStatus?: SortOrder
+    enrichedAt?: SortOrderInput | SortOrder
     readHistory?: ReadHistoryOrderByRelationAggregateInput
   }
 
@@ -18549,6 +18675,12 @@ export namespace Prisma {
     tags?: StringNullableListFilter<"Article">
     createdAt?: DateTimeFilter<"Article"> | Date | string
     updatedAt?: DateTimeFilter<"Article"> | Date | string
+    sentiment?: StringNullableFilter<"Article"> | string | null
+    sentimentScore?: FloatNullableFilter<"Article"> | number | null
+    aiSummary?: StringNullableFilter<"Article"> | string | null
+    aiTags?: StringNullableListFilter<"Article">
+    enrichStatus?: StringFilter<"Article"> | string
+    enrichedAt?: DateTimeNullableFilter<"Article"> | Date | string | null
     readHistory?: ReadHistoryListRelationFilter
   }, "id" | "link" | "fingerprint">
 
@@ -18567,9 +18699,17 @@ export namespace Prisma {
     tags?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    sentiment?: SortOrderInput | SortOrder
+    sentimentScore?: SortOrderInput | SortOrder
+    aiSummary?: SortOrderInput | SortOrder
+    aiTags?: SortOrder
+    enrichStatus?: SortOrder
+    enrichedAt?: SortOrderInput | SortOrder
     _count?: ArticleCountOrderByAggregateInput
+    _avg?: ArticleAvgOrderByAggregateInput
     _max?: ArticleMaxOrderByAggregateInput
     _min?: ArticleMinOrderByAggregateInput
+    _sum?: ArticleSumOrderByAggregateInput
   }
 
   export type ArticleScalarWhereWithAggregatesInput = {
@@ -18590,6 +18730,12 @@ export namespace Prisma {
     tags?: StringNullableListFilter<"Article">
     createdAt?: DateTimeWithAggregatesFilter<"Article"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Article"> | Date | string
+    sentiment?: StringNullableWithAggregatesFilter<"Article"> | string | null
+    sentimentScore?: FloatNullableWithAggregatesFilter<"Article"> | number | null
+    aiSummary?: StringNullableWithAggregatesFilter<"Article"> | string | null
+    aiTags?: StringNullableListFilter<"Article">
+    enrichStatus?: StringWithAggregatesFilter<"Article"> | string
+    enrichedAt?: DateTimeNullableWithAggregatesFilter<"Article"> | Date | string | null
   }
 
   export type SourceWhereInput = {
@@ -19631,6 +19777,12 @@ export namespace Prisma {
     tags?: ArticleCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    sentiment?: string | null
+    sentimentScore?: number | null
+    aiSummary?: string | null
+    aiTags?: ArticleCreateaiTagsInput | string[]
+    enrichStatus?: string
+    enrichedAt?: Date | string | null
     readHistory?: ReadHistoryCreateNestedManyWithoutArticleInput
   }
 
@@ -19649,6 +19801,12 @@ export namespace Prisma {
     tags?: ArticleCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    sentiment?: string | null
+    sentimentScore?: number | null
+    aiSummary?: string | null
+    aiTags?: ArticleCreateaiTagsInput | string[]
+    enrichStatus?: string
+    enrichedAt?: Date | string | null
     readHistory?: ReadHistoryUncheckedCreateNestedManyWithoutArticleInput
   }
 
@@ -19667,6 +19825,12 @@ export namespace Prisma {
     tags?: ArticleUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: ArticleUpdateaiTagsInput | string[]
+    enrichStatus?: StringFieldUpdateOperationsInput | string
+    enrichedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     readHistory?: ReadHistoryUpdateManyWithoutArticleNestedInput
   }
 
@@ -19685,6 +19849,12 @@ export namespace Prisma {
     tags?: ArticleUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: ArticleUpdateaiTagsInput | string[]
+    enrichStatus?: StringFieldUpdateOperationsInput | string
+    enrichedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     readHistory?: ReadHistoryUncheckedUpdateManyWithoutArticleNestedInput
   }
 
@@ -19703,6 +19873,12 @@ export namespace Prisma {
     tags?: ArticleCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    sentiment?: string | null
+    sentimentScore?: number | null
+    aiSummary?: string | null
+    aiTags?: ArticleCreateaiTagsInput | string[]
+    enrichStatus?: string
+    enrichedAt?: Date | string | null
   }
 
   export type ArticleUpdateManyMutationInput = {
@@ -19720,6 +19896,12 @@ export namespace Prisma {
     tags?: ArticleUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: ArticleUpdateaiTagsInput | string[]
+    enrichStatus?: StringFieldUpdateOperationsInput | string
+    enrichedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ArticleUncheckedUpdateManyInput = {
@@ -19737,6 +19919,12 @@ export namespace Prisma {
     tags?: ArticleUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: ArticleUpdateaiTagsInput | string[]
+    enrichStatus?: StringFieldUpdateOperationsInput | string
+    enrichedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type SourceCreateInput = {
@@ -20931,6 +21119,28 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type ReadHistoryListRelationFilter = {
     every?: ReadHistoryWhereInput
     some?: ReadHistoryWhereInput
@@ -20961,6 +21171,16 @@ export namespace Prisma {
     tags?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    sentiment?: SortOrder
+    sentimentScore?: SortOrder
+    aiSummary?: SortOrder
+    aiTags?: SortOrder
+    enrichStatus?: SortOrder
+    enrichedAt?: SortOrder
+  }
+
+  export type ArticleAvgOrderByAggregateInput = {
+    sentimentScore?: SortOrder
   }
 
   export type ArticleMaxOrderByAggregateInput = {
@@ -20977,6 +21197,11 @@ export namespace Prisma {
     fingerprint?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    sentiment?: SortOrder
+    sentimentScore?: SortOrder
+    aiSummary?: SortOrder
+    enrichStatus?: SortOrder
+    enrichedAt?: SortOrder
   }
 
   export type ArticleMinOrderByAggregateInput = {
@@ -20993,6 +21218,15 @@ export namespace Prisma {
     fingerprint?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    sentiment?: SortOrder
+    sentimentScore?: SortOrder
+    aiSummary?: SortOrder
+    enrichStatus?: SortOrder
+    enrichedAt?: SortOrder
+  }
+
+  export type ArticleSumOrderByAggregateInput = {
+    sentimentScore?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -21043,6 +21277,36 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -21228,17 +21492,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type AccountCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -21285,20 +21538,6 @@ export namespace Prisma {
     password?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type VerificationCountOrderByAggregateInput = {
@@ -21634,17 +21873,6 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type ArenaSimulationScalarRelationFilter = {
     is?: ArenaSimulationWhereInput
     isNot?: ArenaSimulationWhereInput
@@ -21717,22 +21945,6 @@ export namespace Prisma {
     winRate?: SortOrder
     totalTrades?: SortOrder
     rank?: SortOrder
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type ArenaParticipationScalarRelationFilter = {
@@ -21942,6 +22154,10 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type ArticleCreateaiTagsInput = {
+    set: string[]
+  }
+
   export type ReadHistoryCreateNestedManyWithoutArticleInput = {
     create?: XOR<ReadHistoryCreateWithoutArticleInput, ReadHistoryUncheckedCreateWithoutArticleInput> | ReadHistoryCreateWithoutArticleInput[] | ReadHistoryUncheckedCreateWithoutArticleInput[]
     connectOrCreate?: ReadHistoryCreateOrConnectWithoutArticleInput | ReadHistoryCreateOrConnectWithoutArticleInput[]
@@ -21971,6 +22187,23 @@ export namespace Prisma {
   export type ArticleUpdatetagsInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type ArticleUpdateaiTagsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type ReadHistoryUpdateManyWithoutArticleNestedInput = {
@@ -22167,10 +22400,6 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
@@ -22427,14 +22656,6 @@ export namespace Prisma {
     connect?: ArenaTradeWhereUniqueInput | ArenaTradeWhereUniqueInput[]
   }
 
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type ArenaSimulationUpdateOneRequiredWithoutParticipantsNestedInput = {
     create?: XOR<ArenaSimulationCreateWithoutParticipantsInput, ArenaSimulationUncheckedCreateWithoutParticipantsInput>
     connectOrCreate?: ArenaSimulationCreateOrConnectWithoutParticipantsInput
@@ -22560,6 +22781,28 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -22630,6 +22873,36 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -22666,31 +22939,6 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -22705,17 +22953,6 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -22782,22 +23019,6 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type ReadHistoryCreateWithoutArticleInput = {
@@ -23218,6 +23439,12 @@ export namespace Prisma {
     tags?: ArticleCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    sentiment?: string | null
+    sentimentScore?: number | null
+    aiSummary?: string | null
+    aiTags?: ArticleCreateaiTagsInput | string[]
+    enrichStatus?: string
+    enrichedAt?: Date | string | null
   }
 
   export type ArticleUncheckedCreateWithoutReadHistoryInput = {
@@ -23235,6 +23462,12 @@ export namespace Prisma {
     tags?: ArticleCreatetagsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    sentiment?: string | null
+    sentimentScore?: number | null
+    aiSummary?: string | null
+    aiTags?: ArticleCreateaiTagsInput | string[]
+    enrichStatus?: string
+    enrichedAt?: Date | string | null
   }
 
   export type ArticleCreateOrConnectWithoutReadHistoryInput = {
@@ -23307,6 +23540,12 @@ export namespace Prisma {
     tags?: ArticleUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: ArticleUpdateaiTagsInput | string[]
+    enrichStatus?: StringFieldUpdateOperationsInput | string
+    enrichedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ArticleUncheckedUpdateWithoutReadHistoryInput = {
@@ -23324,6 +23563,12 @@ export namespace Prisma {
     tags?: ArticleUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: ArticleUpdateaiTagsInput | string[]
+    enrichStatus?: StringFieldUpdateOperationsInput | string
+    enrichedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ArenaParticipationCreateWithoutAgentInput = {

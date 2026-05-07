@@ -7,7 +7,7 @@ import { markProcessing, saveEnrichment, markFailed } from "./db/update-article"
 import { logger } from "./lib/logger";
 
 const QUEUE_KEY = "enrichment:queue";
-const DRAIN_DELAY_MS = 2000; // 1 article/2s — respects HuggingFace free tier
+const DRAIN_DELAY_MS = 3000; // 1 article/3s — ~20/min, safely under Groq free tier (30/min)
 
 export async function startConsumer(redis: Redis): Promise<never> {
   logger.info("Enrichment queue consumer started");

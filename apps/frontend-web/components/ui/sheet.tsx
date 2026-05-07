@@ -70,7 +70,6 @@ function SheetContent({
               />
             }
           >
-            {/* @ts-expect-error lucide-react types compatibility */}
             <X />
             <span className="sr-only">Close</span>
           </SheetPrimitive.Close>

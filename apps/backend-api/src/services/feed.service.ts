@@ -38,7 +38,17 @@ export async function getFeed(options: {
 
   scored.sort((x, y) => y.score - x.score);
 
-  const selected = scored.slice(0, limit).map(s => s.article);
+  // Source diversity: cap any single source at 5 articles per page
+  const MAX_PER_SOURCE = 5;
+  const sourceCounts: Record<string, number> = {};
+  const selected: typeof scored[0]["article"][] = [];
+  for (const { article } of scored) {
+    const count = sourceCounts[article.source] ?? 0;
+    if (count >= MAX_PER_SOURCE) continue;
+    sourceCounts[article.source] = count + 1;
+    selected.push(article);
+    if (selected.length >= limit) break;
+  }
 
   return selected;
 }

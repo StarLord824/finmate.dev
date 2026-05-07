@@ -6,11 +6,10 @@ node_modules
 .pnp.js
 
 # Local env files
-# .env
-# .env.local
-# .env.development.local
-# .env.test.local
-# .env.production.local
+.env
+.env.*
+!.env.example
+!.env.*.example
 
 # Testing
 coverage
@@ -37,3 +36,10 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# SQL dumps
+*.sql
+
+# Prisma query engine temp files
+*.tmp*
+packages/db/src/generated/client/query_engine-*

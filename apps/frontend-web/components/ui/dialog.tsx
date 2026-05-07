@@ -70,7 +70,6 @@ function DialogContent({
               />
             }
           >
-            {/* @ts-expect-error lucide-react types compatibility */}
             <X />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>

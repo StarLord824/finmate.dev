@@ -17,19 +17,7 @@ export default function BookmarksPage(): React.ReactNode {
   // Fetch bookmarks only if user is logged in
   const { data: bookmarks = [], isLoading, error } = useQuery({
     queryKey: ["bookmarks"],
-    queryFn: async () => {
-      // This endpoint requires authentication
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/bookmarks`, {
-        credentials: "include",
-      });
-      
-      if (!response.ok) {
-        throw new Error("Failed to fetch bookmarks");
-      }
-      
-      const data = await response.json();
-      return data.data as Article[];
-    },
+    queryFn: () => apiClient.getBookmarks(),
     enabled: !!session?.user,
   });
 

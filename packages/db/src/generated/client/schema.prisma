@@ -10,21 +10,28 @@ datasource db {
 }
 
 model Article {
-  id          String        @id @default(uuid())
-  title       String
-  link        String        @unique
-  source      String
-  author      String?
-  publishedAt DateTime
-  ingestedAt  DateTime      @default(now())
-  summary     String?
-  content     String?
-  imageUrl    String?
-  fingerprint String        @unique
-  tags        String[]      @default([])
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  readHistory ReadHistory[]
+  id             String                      @id @default(uuid())
+  title          String
+  link           String                      @unique
+  source         String
+  author         String?
+  publishedAt    DateTime
+  ingestedAt     DateTime                    @default(now())
+  summary        String?
+  content        String?
+  imageUrl       String?
+  fingerprint    String                      @unique
+  tags           String[]                    @default([])
+  createdAt      DateTime                    @default(now())
+  updatedAt      DateTime                    @updatedAt
+  sentiment      String?
+  sentimentScore Float?
+  aiSummary      String?                     @db.Text
+  aiTags         String[]                    @default([])
+  embedding      Unsupported("vector(384)")?
+  enrichStatus   String                      @default("pending")
+  enrichedAt     DateTime?
+  readHistory    ReadHistory[]
   // @@fulltext([title, summary, content], map: "article_fulltext") // Prisma 5+ supports fulltext in some DBs; keep or remove depending on PG version
 
   @@index([publishedAt])

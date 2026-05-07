@@ -1,7 +1,7 @@
 export async function openRouterChat(
   systemPrompt: string,
   userPrompt: string,
-  model = "meta-llama/llama-3.1-8b-instruct:free"
+  model = "mistralai/mistral-7b-instruct:free"
 ): Promise<string> {
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) throw new Error("OPENROUTER_API_KEY not set");

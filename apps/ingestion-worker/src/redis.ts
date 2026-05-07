@@ -2,12 +2,13 @@ import Redis from "ioredis";
 
 let client: Redis | null = null;
 
+const noopStub = { publish: async () => {}, rpush: async () => {} } as unknown as Redis;
+
 export function getRedis(): Redis {
   if (!client) {
     const url = process.env.REDIS_URL;
     if (!url) {
-      // If Redis isn't configured, publish is a no-op — ingestion still works
-      return { publish: async () => {} } as unknown as Redis;
+      return noopStub;
     }
     client = new Redis(url);
     client.on("error", (err: Error) => {

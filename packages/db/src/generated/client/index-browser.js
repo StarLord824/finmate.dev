@@ -134,7 +134,13 @@ exports.Prisma.ArticleScalarFieldEnum = {
   fingerprint: 'fingerprint',
   tags: 'tags',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  sentiment: 'sentiment',
+  sentimentScore: 'sentimentScore',
+  aiSummary: 'aiSummary',
+  aiTags: 'aiTags',
+  enrichStatus: 'enrichStatus',
+  enrichedAt: 'enrichedAt'
 };
 
 exports.Prisma.SourceScalarFieldEnum = {
