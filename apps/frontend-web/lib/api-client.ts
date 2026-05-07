@@ -1,4 +1,4 @@
-import type { Article, FeedResponse, SearchResult, UserPreferences, CategoriesResponse, SourcesResponse } from "./types";
+import type { Article, FeedResponse, SearchResult, UserPreferences, CategoriesResponse, SourcesResponse, MarketQuote, MarketHistory, MarketSymbol } from "./types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
@@ -143,15 +143,15 @@ class ApiClient {
   }
 
   // Market data
-  async getMarket(): Promise<import("./types").MarketQuote[]> {
+  async getMarket(): Promise<MarketQuote[]> {
     return this.fetch("/meta/market");
   }
 
-  async getMarketHistory(symbol: string, range: string): Promise<import("./types").MarketHistory> {
+  async getMarketHistory(symbol: string, range: string): Promise<MarketHistory> {
     return this.fetch(`/meta/market/history?symbol=${encodeURIComponent(symbol)}&range=${range}`);
   }
 
-  async getMarketSymbols(): Promise<import("./types").MarketSymbol[]> {
+  async getMarketSymbols(): Promise<MarketSymbol[]> {
     return this.fetch("/meta/market/symbols");
   }
 }
