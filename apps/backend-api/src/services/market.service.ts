@@ -36,13 +36,11 @@ export interface MarketHistory {
   changePercent: number;
 }
 
-const RANGE_CONFIG: Record<string, { interval: string; range: string; ttl: number } | undefined> = {
+const RANGE_CONFIG: Record<string, { interval: string; range: string; ttl: number }> = {
   "1d": { interval: "5m",  range: "1d",  ttl: 300  },
   "1w": { interval: "1h",  range: "5d",  ttl: 1800 },
   "1m": { interval: "1d",  range: "1mo", ttl: 7200 },
 };
-
-const DEFAULT_RANGE_CFG = { interval: "5m", range: "1d", ttl: 300 } as const;
 
 async function yahooFetch(symbol: string, interval: string, range: string): Promise<any> {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=${interval}&range=${range}`;
@@ -50,7 +48,10 @@ async function yahooFetch(symbol: string, interval: string, range: string): Prom
     headers: { "User-Agent": "Mozilla/5.0" },
     signal: AbortSignal.timeout(8000),
   });
-  if (!res.ok) return null;
+  if (!res.ok) {
+    console.warn(`[market] yahooFetch ${symbol} HTTP ${res.status}`);
+    return null;
+  }
   const json = await res.json();
   return json?.chart?.result?.[0] ?? null;
 }
@@ -96,7 +97,7 @@ export async function getMarketHistory(
   symbol: string,
   range: string
 ): Promise<MarketHistory | null> {
-  const cfg = RANGE_CONFIG[range] ?? DEFAULT_RANGE_CFG;
+  const cfg = RANGE_CONFIG[range]!;
   const cacheKey = `market:history:${symbol}:${range}`;
   const redis = getRedis();
 
@@ -133,7 +134,8 @@ export async function getMarketHistory(
 
     await redis.set(cacheKey, JSON.stringify(history), "EX", cfg.ttl);
     return history;
-  } catch {
+  } catch (err) {
+    console.error(`[market] getMarketHistory ${symbol}:${range} failed`, err);
     return null;
   }
 }

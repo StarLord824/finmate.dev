@@ -70,6 +70,10 @@ router.get("/market/history", async (req, res, next) => {
     if (!allowed.includes(symbol)) {
       return res.status(400).json({ error: "unknown_symbol" });
     }
+    const ALLOWED_RANGES = ["1d", "1w", "1m"];
+    if (!ALLOWED_RANGES.includes(range)) {
+      return res.status(400).json({ error: "unknown_range" });
+    }
     const data = await getMarketHistory(symbol, range);
     if (!data) return res.status(502).json({ error: "upstream_failed" });
     res.json(data);
