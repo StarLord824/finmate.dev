@@ -14,17 +14,19 @@ import {
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
+  BarChart2,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { authClient } from "@/lib/auth-client";
 import type { ReactElement } from "react";
 
 const navItems = [
-  { label: "Feed", href: "/feed", icon: Home },
-  { label: "Search", href: "/search", icon: Search },
-  { label: "Bookmarks", href: "/bookmarks", icon: Bookmark },
-  { label: "History", href: "/history", icon: Clock },
-  { label: "Arena", href: "/arena", icon: Swords },
+  { label: "Feed",      href: "/feed",      icon: Home      },
+  { label: "Markets",   href: "/markets",   icon: BarChart2 },
+  { label: "Search",    href: "/search",    icon: Search    },
+  { label: "Bookmarks", href: "/bookmarks", icon: Bookmark  },
+  { label: "History",   href: "/history",   icon: Clock     },
+  { label: "Arena",     href: "/arena",     icon: Swords    },
 ];
 
 export function Sidebar(): ReactElement {
