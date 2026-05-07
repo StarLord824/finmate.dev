@@ -10,6 +10,7 @@ export function MarketBar(): ReactElement | null {
     queryKey: ["market"],
     queryFn: () => apiClient.getMarket(),
     refetchInterval: 60000,
+    staleTime: 60000,
   });
 
   if (isLoading) {
