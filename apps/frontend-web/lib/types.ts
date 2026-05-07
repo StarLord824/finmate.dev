@@ -3,14 +3,19 @@ export interface Article {
   title: string;
   summary: string | null;
   content?: string | null;
-  source: string; // Backend stores source as string (source name)
-  publishedAt: string; // ISO timestamp
+  source: string;
+  publishedAt: string;
   tags: string[];
+  aiTags?: string[];
+  aiSummary?: string | null;
+  sentiment?: string | null;
+  sentimentScore?: number | null;
+  enrichStatus?: string;
   imageUrl?: string | null;
-  link: string; // Backend uses 'link' not 'originalLink'
+  link: string;
   author?: string | null;
-  isBookmarked?: boolean; // Frontend-only field
-  readingTime?: number; // Computed on frontend
+  isBookmarked?: boolean;
+  readingTime?: number;
 }
 
 export interface FeedResponse {

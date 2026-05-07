@@ -35,11 +35,11 @@ export function FilterBar({
   const hasFilters = selectedCategories.length > 0 || selectedSources.length > 0;
 
   return (
-    <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide py-2">
+    <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide py-2.5">
       {hasFilters && (
         <button
           onClick={onClearAll}
-          className="text-xs font-medium text-muted-foreground hover:text-foreground shrink-0 px-2"
+          className="text-xs font-semibold text-[#007acc] hover:text-[#003366] shrink-0 px-2 transition-colors"
         >
           Clear all
         </button>
@@ -47,8 +47,8 @@ export function FilterBar({
 
       {isLoadingSources ? (
         <>
-          <Skeleton className="h-6 w-16 rounded-full" />
-          <Skeleton className="h-6 w-20 rounded-full" />
+          <Skeleton className="h-6 w-16 rounded-full bg-[#e8f2ff]" />
+          <Skeleton className="h-6 w-20 rounded-full bg-[#e8f2ff]" />
         </>
       ) : (
         sources?.map((source) => {
@@ -57,8 +57,10 @@ export function FilterBar({
             <Badge
               key={`source-${source.id}`}
               variant={isActive ? "default" : "outline"}
-              className={`shrink-0 cursor-pointer transition-colors ${
-                isActive ? "bg-zinc-900 text-white hover:bg-zinc-800" : "bg-transparent hover:bg-zinc-100"
+              className={`shrink-0 cursor-pointer transition-all text-xs font-medium ${
+                isActive
+                  ? "bg-[#003366] text-white hover:bg-[#00509e] border-transparent shadow-sm shadow-blue-900/20"
+                  : "bg-transparent text-[#00509e] border-[#66a3ff] hover:bg-[#e8f2ff] hover:border-[#007acc]"
               }`}
               onClick={() => onSourceToggle(source.id)}
             >
@@ -69,15 +71,15 @@ export function FilterBar({
         })
       )}
 
-      {/* Divider if both exist */}
+      {/* Divider */}
       {(sources?.length || 0) > 0 && (categories?.length || 0) > 0 && (
-        <div className="w-px h-4 bg-border shrink-0 mx-1" />
+        <div className="w-px h-4 bg-[#c8ddf5] shrink-0 mx-1" />
       )}
 
       {isLoadingCategories ? (
         <>
-          <Skeleton className="h-6 w-16 rounded-full" />
-          <Skeleton className="h-6 w-24 rounded-full" />
+          <Skeleton className="h-6 w-16 rounded-full bg-[#e8f2ff]" />
+          <Skeleton className="h-6 w-24 rounded-full bg-[#e8f2ff]" />
         </>
       ) : (
         categories?.map((category) => {
@@ -86,8 +88,10 @@ export function FilterBar({
             <Badge
               key={`category-${category}`}
               variant={isActive ? "default" : "outline"}
-              className={`shrink-0 cursor-pointer transition-colors ${
-                isActive ? "bg-zinc-900 text-white hover:bg-zinc-800" : "bg-transparent hover:bg-zinc-100"
+              className={`shrink-0 cursor-pointer transition-all text-xs font-medium ${
+                isActive
+                  ? "bg-[#007acc] text-white hover:bg-[#00509e] border-transparent shadow-sm shadow-blue-800/20"
+                  : "bg-transparent text-[#4a6890] border-[#c8ddf5] hover:bg-[#e8f2ff] hover:text-[#003366] hover:border-[#66a3ff]"
               }`}
               onClick={() => onCategoryToggle(category)}
             >

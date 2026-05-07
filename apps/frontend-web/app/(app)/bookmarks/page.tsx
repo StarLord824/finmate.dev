@@ -46,7 +46,7 @@ export default function BookmarksPage(): React.ReactNode {
     return (
       <div className="flex-1 w-full max-w-[1280px] mx-auto px-6 py-8">
         <div className="flex items-center justify-center min-h-[60vh]">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loader2 className="h-8 w-8 animate-spin text-[#007acc]" />
         </div>
       </div>
     );
@@ -56,20 +56,26 @@ export default function BookmarksPage(): React.ReactNode {
     return (
       <div className="flex-1 w-full max-w-[1280px] mx-auto px-6 py-8">
         <div className="flex flex-col items-center justify-center min-h-[60vh] text-center max-w-md mx-auto">
-          <div className="h-16 w-16 bg-zinc-100 rounded-full flex items-center justify-center mb-6">
-            <Lock className="h-8 w-8 text-zinc-400" />
+          <div className="h-20 w-20 bg-gradient-to-br from-[#e8f2ff] to-[#cce0ff] rounded-full flex items-center justify-center mb-6 shadow-lg shadow-blue-900/10">
+            <Lock className="h-9 w-9 text-[#007acc]" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground mb-4">
+          <h1 className="text-2xl font-bold text-[#003366] mb-4">
             Sign in to view bookmarks
           </h1>
-          <p className="text-muted-foreground mb-8">
+          <p className="text-[#4a6890] mb-8 leading-relaxed">
             Create an account or sign in to save and access your bookmarked articles.
           </p>
           <div className="flex gap-4 w-full">
-            <Link href="/login" className={buttonVariants({ variant: "default", className: "flex-1" })}>
+            <Link
+              href="/login"
+              className="flex-1 text-center px-6 py-3 rounded-xl bg-[#003366] text-white font-semibold text-sm hover:bg-[#00509e] transition-colors shadow-md shadow-blue-900/20"
+            >
               Sign In
             </Link>
-            <Link href="/signup" className={buttonVariants({ variant: "outline", className: "flex-1" })}>
+            <Link
+              href="/signup"
+              className="flex-1 text-center px-6 py-3 rounded-xl border border-[#c8ddf5] text-[#003366] font-semibold text-sm hover:bg-[#e8f2ff] hover:border-[#66a3ff] transition-colors"
+            >
               Sign Up
             </Link>
           </div>
@@ -81,12 +87,15 @@ export default function BookmarksPage(): React.ReactNode {
   return (
     <main className="flex-1 w-full max-w-[1280px] mx-auto px-6 py-8">
       {/* Topbar */}
-      <div className="flex items-center justify-between mb-8 pb-4 border-b border-border">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Bookmarks</h1>
+      <div className="flex items-center justify-between mb-8 pb-5 border-b border-[#c8ddf5]">
+        <div>
+          <h1 className="text-3xl font-extrabold tracking-tight text-[#003366]">Bookmarks</h1>
+          <p className="text-sm text-[#4a6890] mt-1">Your saved articles</p>
+        </div>
         {!isLoading && !error && bookmarks.length > 0 && (
-          <Badge variant="secondary" className="bg-zinc-100 text-zinc-700 font-medium px-3 py-1">
+          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#e8f2ff] text-[#00509e] text-sm font-bold">
             {bookmarks.length} {bookmarks.length === 1 ? "Article" : "Articles"}
-          </Badge>
+          </span>
         )}
       </div>
 
@@ -97,26 +106,27 @@ export default function BookmarksPage(): React.ReactNode {
 
       {/* Error State */}
       {error && (
-        <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 rounded-lg p-6 text-center">
-          <p className="text-red-600 dark:text-red-400">
-            Failed to load bookmarks. Please try again.
-          </p>
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
+          <p className="text-red-600 font-medium">Failed to load bookmarks. Please try again.</p>
         </div>
       )}
 
       {/* Empty State */}
       {!isLoading && !error && bookmarks.length === 0 && (
         <div className="flex flex-col items-center justify-center py-24 text-center">
-          <div className="h-16 w-16 bg-zinc-50 rounded-full flex items-center justify-center mb-6 border border-zinc-100">
-            <Bookmark className="h-8 w-8 text-zinc-300" />
+          <div className="h-20 w-20 bg-gradient-to-br from-[#e8f2ff] to-[#cce0ff] rounded-full flex items-center justify-center mb-6 shadow-lg shadow-blue-900/10">
+            <Bookmark className="h-9 w-9 text-[#007acc]" />
           </div>
-          <h3 className="text-xl font-semibold text-foreground mb-2">
+          <h3 className="text-xl font-bold text-[#003366] mb-2">
             No bookmarks yet
           </h3>
-          <p className="text-muted-foreground mb-8 max-w-sm">
+          <p className="text-[#4a6890] mb-8 max-w-sm leading-relaxed">
             Start bookmarking articles to read them later.
           </p>
-          <Link href="/" className={buttonVariants({ variant: "default" })}>
+          <Link
+            href="/feed"
+            className="px-6 py-3 rounded-xl bg-[#003366] text-white font-semibold text-sm hover:bg-[#00509e] transition-colors shadow-md shadow-blue-900/20"
+          >
             Browse Feed
           </Link>
         </div>

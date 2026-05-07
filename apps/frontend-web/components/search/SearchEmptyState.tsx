@@ -1,5 +1,4 @@
 import { Search } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { ReactElement } from "react";
 
 interface SearchEmptyStateProps {
@@ -7,32 +6,31 @@ interface SearchEmptyStateProps {
   onSuggestionClick?: (suggestion: string) => void;
 }
 
-const suggestions = ["Inflation", "Federal Reserve", "Apple", "Bitcoin"];
+const suggestions = ["Inflation", "Federal Reserve", "Apple", "Bitcoin", "S&P 500", "Oil Prices"];
 
 export function SearchEmptyState({ query, onSuggestionClick }: SearchEmptyStateProps): ReactElement {
   if (query.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
-        <div className="h-16 w-16 bg-zinc-100 rounded-full flex items-center justify-center mb-6">
-          <Search className="h-8 w-8 text-zinc-400" />
+        <div className="h-20 w-20 bg-gradient-to-br from-[#e8f2ff] to-[#cce0ff] rounded-full flex items-center justify-center mb-6 shadow-lg shadow-blue-900/10">
+          <Search className="h-9 w-9 text-[#007acc]" />
         </div>
-        <h2 className="text-xl font-semibold text-foreground mb-2">
+        <h2 className="text-2xl font-bold text-[#003366] mb-2">
           Discover what's moving the markets
         </h2>
-        <p className="text-muted-foreground mb-8 max-w-sm">
+        <p className="text-[#4a6890] mb-8 max-w-sm leading-relaxed">
           Search for articles, topics, companies, or specific news sources.
         </p>
-        
+
         <div className="flex flex-wrap justify-center gap-2">
           {suggestions.map((suggestion) => (
-            <Badge 
-              key={suggestion} 
-              variant="secondary"
-              className="cursor-pointer bg-zinc-100 text-zinc-700 hover:bg-zinc-200 hover:text-zinc-900 transition-colors py-1.5 px-3"
+            <button
+              key={suggestion}
+              className="px-4 py-2 rounded-xl text-sm font-medium bg-white border border-[#c8ddf5] text-[#00509e] hover:bg-[#e8f2ff] hover:border-[#66a3ff] hover:text-[#003366] transition-all shadow-sm shadow-blue-900/4"
               onClick={() => onSuggestionClick?.(suggestion)}
             >
               {suggestion}
-            </Badge>
+            </button>
           ))}
         </div>
       </div>
@@ -41,14 +39,14 @@ export function SearchEmptyState({ query, onSuggestionClick }: SearchEmptyStateP
 
   return (
     <div className="flex flex-col items-center justify-center py-24 text-center">
-      <div className="h-16 w-16 bg-zinc-50 rounded-full flex items-center justify-center mb-6 border border-zinc-100">
-        <Search className="h-8 w-8 text-zinc-300" />
+      <div className="h-20 w-20 bg-[#f8fafd] border border-[#c8ddf5] rounded-full flex items-center justify-center mb-6">
+        <Search className="h-9 w-9 text-[#c8ddf5]" />
       </div>
-      <h2 className="text-xl font-semibold text-foreground mb-2">
+      <h2 className="text-2xl font-bold text-[#003366] mb-2">
         No results for &quot;{query}&quot;
       </h2>
-      <p className="text-muted-foreground max-w-sm">
-        We couldn't find anything matching your search. Try adjusting your keywords or using a broader search term.
+      <p className="text-[#4a6890] max-w-sm leading-relaxed">
+        We couldn&apos;t find anything matching your search. Try adjusting your keywords or using a broader term.
       </p>
     </div>
   );

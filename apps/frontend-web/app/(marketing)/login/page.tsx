@@ -4,77 +4,52 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
-import { Mail, Lock, User, Github, Loader2 } from "lucide-react";
+import { Mail, Lock, Github, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export default function SignupPage(): React.ReactNode {
+export default function LoginPage(): React.ReactNode {
   const router = useRouter();
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleEmailSignup = async (e: React.FormEvent) => {
+  const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
-    // Validation
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters");
-      return;
-    }
-
     setIsLoading(true);
 
     try {
-      await authClient.signUp.email({
+      await authClient.signIn.email({
         email,
         password,
-        name,
-        callbackURL: "/",
+        callbackURL: "/feed",
       });
-      router.push("/");
+      router.push("/feed");
       router.refresh();
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-        console.error("Signup error:", err);
-      } else {
-        setError("Failed to create account");
-        console.error("Signup error (unknown):", err);
-      }
+    } catch (err) {
+      setError("Invalid email or password");
+      console.error("Login error:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleGoogleSignup = async () => {
+  const handleGoogleLogin = async () => {
     setIsLoading(true);
     try {
       await authClient.signIn.social({
         provider: "google",
         callbackURL: "/",
       });
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-        console.error("Google signup error:", err);
-      } else {
-        setError("Failed to sign up with Google");
-        console.error("Google signup error (unknown):", err);
-      }
+    } catch (err) {
+      setError("Failed to sign in with Google");
+      console.error("Google login error:", err);
       setIsLoading(false);
     }
   };
 
-  const handleGithubSignup = async () => {
+  const handleGithubLogin = async () => {
     setIsLoading(true);
     try {
       await authClient.signIn.social({
@@ -82,14 +57,14 @@ export default function SignupPage(): React.ReactNode {
         callbackURL: "/",
       });
     } catch (err) {
-      setError("Failed to sign up with GitHub");
-      console.error("GitHub signup error:", err);
+      setError("Failed to sign in with GitHub");
+      console.error("GitHub login error:", err);
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-light-bg dark:bg-dark-bg flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-light-bg dark:bg-dark-bg flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -98,7 +73,7 @@ export default function SignupPage(): React.ReactNode {
               FinMate
             </h1>
           </Link>
-          <p className="text-muted mt-2">Create your account</p>
+          <p className="text-muted mt-2">Sign in to your account</p>
         </div>
 
         {/* Card */}
@@ -111,25 +86,7 @@ export default function SignupPage(): React.ReactNode {
           )}
 
           {/* Email/Password Form */}
-          <form onSubmit={handleEmailSignup} className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
-                Name
-              </label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted" />
-                <input
-                  id="name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="John Doe"
-                  required
-                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-light-border dark:border-dark-border bg-light-bg dark:bg-dark-bg focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
-                />
-              </div>
-            </div>
-
+          <form onSubmit={handleEmailLogin} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
                 Email
@@ -161,26 +118,6 @@ export default function SignupPage(): React.ReactNode {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  minLength={8}
-                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-light-border dark:border-dark-border bg-light-bg dark:bg-dark-bg focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
-                />
-              </div>
-              <p className="text-xs text-muted mt-1">Must be at least 8 characters</p>
-            </div>
-
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-foreground mb-2">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted" />
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
                   className="w-full pl-10 pr-4 py-3 rounded-lg border border-light-border dark:border-dark-border bg-light-bg dark:bg-dark-bg focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
                 />
               </div>
@@ -199,10 +136,10 @@ export default function SignupPage(): React.ReactNode {
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <Loader2 className="h-5 w-5 animate-spin" />
-                  Creating account...
+                  Signing in...
                 </span>
               ) : (
-                "Create Account"
+                "Sign In"
               )}
             </button>
           </form>
@@ -212,7 +149,7 @@ export default function SignupPage(): React.ReactNode {
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-light-border dark:border-dark-border"></div>
             </div>
-            <div className="relative flex justify-center text-sm">
+            <div className="relative flex justify-center text-sm bg-white">
               <span className="px-2 bg-light-card dark:bg-dark-card text-muted">Or continue with</span>
             </div>
           </div>
@@ -220,7 +157,7 @@ export default function SignupPage(): React.ReactNode {
           {/* OAuth Buttons */}
           <div className="grid grid-cols-2 gap-3">
             <button
-              onClick={handleGoogleSignup}
+              onClick={handleGoogleLogin}
               disabled={isLoading}
               className="flex items-center justify-center gap-2 py-3 px-4 border border-light-border dark:border-dark-border rounded-lg hover:bg-accent/5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -246,7 +183,7 @@ export default function SignupPage(): React.ReactNode {
             </button>
 
             <button
-              onClick={handleGithubSignup}
+              onClick={handleGithubLogin}
               disabled={isLoading}
               className="flex items-center justify-center gap-2 py-3 px-4 border border-light-border dark:border-dark-border rounded-lg hover:bg-accent/5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -255,11 +192,11 @@ export default function SignupPage(): React.ReactNode {
             </button>
           </div>
 
-          {/* Sign In Link */}
+          {/* Sign Up Link */}
           <p className="text-center text-sm text-muted mt-6">
-            Already have an account?{" "}
-            <Link href="/login" className="text-accent hover:text-accent-dark font-medium">
-              Sign in
+            Don&apos;t have an account?{" "}
+            <Link href="/signup" className="text-accent hover:text-accent-dark font-medium">
+              Sign up
             </Link>
           </p>
         </div>

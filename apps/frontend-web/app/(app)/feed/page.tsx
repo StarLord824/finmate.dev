@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { MarketBar } from "@/components/feed/MarketBar";
 import { FilterBar } from "@/components/feed/FilterBar";
@@ -13,7 +13,7 @@ import type { Category, Article } from "@/lib/types";
 import { Loader2 } from "lucide-react";
 import type { ReactElement } from "react";
 
-export default function Home(): ReactElement {
+export default function FeedPage(): ReactElement {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const [selectedSources, setSelectedSources] = useState<string[]>([]);
   const queryClient = useQueryClient();
@@ -36,27 +36,21 @@ export default function Home(): ReactElement {
         sources: selectedSources.length > 0 ? selectedSources : undefined,
       });
 
-      // Calculate reading time for articles that don't have it (based on summary + content length)
       const articlesWithReadingTime = response.data.map((article: Article) => ({
         ...article,
         readingTime: article.readingTime || calculateReadingTime(article),
       }));
 
-      // Derive nextCursor from the last article's publishedAt
-      const nextCursor = articlesWithReadingTime.length > 0 
-        ? articlesWithReadingTime[articlesWithReadingTime.length - 1]?.publishedAt 
+      const nextCursor = articlesWithReadingTime.length > 0
+        ? articlesWithReadingTime[articlesWithReadingTime.length - 1]?.publishedAt
         : undefined;
 
-      return {
-        articles: articlesWithReadingTime,
-        nextCursor,
-      };
+      return { articles: articlesWithReadingTime, nextCursor };
     },
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: undefined,
   });
 
-  // Helper function to calculate reading time (average 200 words per minute)
   const calculateReadingTime = (article: { summary: string | null; content?: string | null }): number => {
     const text = `${article.summary || ""} ${article.content ?? ""}`;
     const wordCount = text.split(/\s+/).length;
@@ -86,50 +80,50 @@ export default function Home(): ReactElement {
     }
   };
 
-  // Infinite scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 1000 &&
-        hasNextPage &&
-        !isFetchingNextPage
-      ) {
-        fetchNextPage();
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+  // IntersectionObserver sentinel — works with the layout's overflow-y-auto <main>
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const fetchNextPageStable = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) fetchNextPage();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => { if (entries[0].isIntersecting) fetchNextPageStable(); },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [fetchNextPageStable]);
 
   const allArticles = data?.pages.flatMap((page) => page.articles) || [];
 
   return (
     <div className="flex flex-col min-h-full">
       {/* Topbar */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-background sticky top-0 z-20">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Feed</h1>
-        {/* Live indicator */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-[#c8ddf5] bg-white sticky top-0 z-20 shadow-sm shadow-blue-900/4">
+        <h1 className="text-2xl font-bold tracking-tight text-[#003366]">Feed</h1>
         <div className="flex items-center gap-2">
           {newCount > 0 ? (
-            <button 
+            <button
               onClick={() => {
                 reset();
                 window.scrollTo({ top: 0, behavior: "smooth" });
                 queryClient.invalidateQueries({ queryKey: ["feed"] });
               }}
-              className="flex items-center gap-2 bg-zinc-100 hover:bg-zinc-200 px-3 py-1.5 rounded-full transition-colors text-sm font-medium"
+              className="flex items-center gap-2 bg-[#003366] hover:bg-[#00509e] text-white px-4 py-1.5 rounded-full transition-colors text-sm font-semibold shadow-sm shadow-blue-900/20"
             >
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-positive opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-positive"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#66a3ff] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#cce0ff]"></span>
               </span>
               {newCount} new
             </button>
           ) : (
-            <div className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-muted-foreground">
+            <div className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-[#4a6890]">
               <span className="relative flex h-2 w-2">
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-muted-foreground"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#c8ddf5]"></span>
               </span>
               Live
             </div>
@@ -139,8 +133,8 @@ export default function Home(): ReactElement {
 
       <MarketBar />
 
-      <div className="border-b border-border px-6">
-        <FilterBar 
+      <div className="border-b border-[#c8ddf5] px-6 bg-white">
+        <FilterBar
           selectedCategories={selectedCategories}
           onCategoryToggle={handleCategoryToggle}
           selectedSources={selectedSources}
@@ -160,7 +154,7 @@ export default function Home(): ReactElement {
               title="Failed to load articles"
               description="There was an error loading the feed. Please try again later."
               actionLabel="Retry"
-              actionHref="/"
+              actionHref="/feed"
             />
           ) : allArticles.length === 0 && !isLoading ? (
             <EmptyState />
@@ -172,6 +166,9 @@ export default function Home(): ReactElement {
             />
           )}
 
+          {/* Sentinel for IntersectionObserver — must stay in layout scroll context */}
+          <div ref={sentinelRef} className="h-4" />
+
           {isFetchingNextPage && (
             <div className="flex justify-center py-8">
               <Loader2 className="h-8 w-8 animate-spin text-accent" />
@@ -179,14 +176,16 @@ export default function Home(): ReactElement {
           )}
 
           {!hasNextPage && allArticles.length > 0 && (
-            <div className="text-center py-8 text-muted-foreground text-sm">
-              You've reached the end of the feed
+            <div className="text-center py-8">
+              <span className="inline-block px-4 py-1.5 rounded-full text-sm text-[#4a6890] bg-[#e8f2ff] font-medium">
+                You've reached the end of the feed
+              </span>
             </div>
           )}
         </div>
 
         {/* Right Rail */}
-        <FeedSidebar 
+        <FeedSidebar
           onTagClick={handleCategoryToggle}
           onSourceClick={handleSourceToggle}
           selectedTags={selectedCategories}
@@ -196,4 +195,3 @@ export default function Home(): ReactElement {
     </div>
   );
 }
-

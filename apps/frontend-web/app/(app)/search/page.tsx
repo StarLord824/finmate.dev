@@ -36,22 +36,30 @@ function SearchContent(): ReactElement {
   });
 
   return (
-    <main className="flex-1 w-full max-w-[1000px] mx-auto px-6 py-8">
+    <main className="flex-1 w-full max-w-[1000px] mx-auto px-6 py-10">
       {/* Search Header */}
-      <div className="mb-8 max-w-2xl mx-auto text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground mb-6">Search</h1>
-        
+      <div className="mb-10 max-w-2xl mx-auto text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#e8f2ff] text-[#007acc] text-sm font-semibold mb-4">
+          <span className="h-2 w-2 rounded-full bg-[#007acc] animate-pulse" />
+          Search
+        </div>
+        <h1 className="text-3xl font-extrabold tracking-tight text-[#003366] mb-6">
+          What are you looking for?
+        </h1>
+
         {/* Search Input */}
-        <SearchInput 
-          value={searchQuery} 
-          onChange={setSearchQuery} 
-          onClear={() => setSearchQuery("")} 
+        <SearchInput
+          value={searchQuery}
+          onChange={setSearchQuery}
+          onClear={() => setSearchQuery("")}
         />
-        
+
         {/* Results Count */}
         {debouncedQuery.length >= 2 && data && !isLoading && (
-          <p className="text-sm text-muted-foreground mt-4 text-left px-2">
-            {data.total} result{data.total !== 1 ? "s" : ""} for &quot;{debouncedQuery}&quot;
+          <p className="text-sm text-[#4a6890] mt-4 text-left px-1">
+            <span className="font-semibold text-[#003366]">{data.total}</span>
+            {" "}result{data.total !== 1 ? "s" : ""} for{" "}
+            <span className="font-semibold text-[#007acc]">&quot;{debouncedQuery}&quot;</span>
           </p>
         )}
       </div>
@@ -64,16 +72,16 @@ function SearchContent(): ReactElement {
             onSuggestionClick={(suggestion) => setSearchQuery(suggestion)} 
           />
         ) : isLoading ? (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="flex gap-4 p-4 border border-border rounded-xl">
-                <Skeleton className="w-24 h-16 sm:w-32 sm:h-20 rounded-md shrink-0" />
-                <div className="flex-1 space-y-2">
-                  <Skeleton className="h-5 w-full" />
-                  <Skeleton className="h-5 w-2/3" />
+              <div key={i} className="flex gap-4 p-4 border border-[#c8ddf5] bg-white rounded-2xl">
+                <div className="w-24 h-20 sm:w-32 sm:h-24 rounded-xl bg-[#e8f2ff] shrink-0" />
+                <div className="flex-1 space-y-2 pt-1">
+                  <div className="h-5 bg-[#e8f2ff] rounded-lg w-full" />
+                  <div className="h-5 bg-[#e8f2ff] rounded-lg w-2/3" />
                   <div className="flex gap-2 mt-4">
-                    <Skeleton className="h-4 w-16" />
-                    <Skeleton className="h-4 w-20" />
+                    <div className="h-4 bg-[#e8f2ff] rounded-full w-16" />
+                    <div className="h-4 bg-[#e8f2ff] rounded-full w-20" />
                   </div>
                 </div>
               </div>
@@ -96,10 +104,11 @@ function SearchContent(): ReactElement {
 
 export function SearchSkeleton(): ReactElement {
   return (
-    <main className="flex-1 w-full max-w-[1000px] mx-auto px-6 py-8">
-      <div className="mb-8 max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground mb-6 text-center">Search</h1>
-        <Skeleton className="h-14 w-full rounded-xl" />
+    <main className="flex-1 w-full max-w-[1000px] mx-auto px-6 py-10">
+      <div className="mb-10 max-w-2xl mx-auto text-center">
+        <div className="h-7 w-32 mx-auto bg-[#e8f2ff] rounded-full mb-4" />
+        <div className="h-10 w-64 mx-auto bg-[#e8f2ff] rounded-lg mb-6" />
+        <div className="h-14 w-full bg-[#e8f2ff] rounded-2xl" />
       </div>
     </main>
   );

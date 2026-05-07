@@ -52,10 +52,15 @@ export default function ArticlePage(): ReactElement {
   if (isError || !article) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold text-foreground mb-4">Article not found</h1>
-        <Link href="/" className="text-accent hover:text-accent/80 font-medium">
-          Return to feed
-        </Link>
+        <div className="max-w-md mx-auto">
+          <div className="h-16 w-16 bg-gradient-to-br from-[#e8f2ff] to-[#cce0ff] rounded-full flex items-center justify-center mx-auto mb-6">
+            <span className="text-[#007acc] font-bold text-2xl">?</span>
+          </div>
+          <h1 className="text-2xl font-bold text-[#003366] mb-4">Article not found</h1>
+          <Link href="/feed" className="text-[#007acc] hover:text-[#003366] font-semibold transition-colors">
+            ← Return to feed
+          </Link>
+        </div>
       </div>
     );
   }
@@ -66,10 +71,10 @@ export default function ArticlePage(): ReactElement {
       <div className="flex-1 min-w-0">
         {/* Back Button */}
         <Link
-          href="/"
-          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          href="/feed"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-[#4a6890] hover:text-[#007acc] transition-colors"
         >
-          &larr; Feed
+          ← Back to Feed
         </Link>
 
         {/* Article Meta */}
@@ -80,23 +85,31 @@ export default function ArticlePage(): ReactElement {
           <img
             src={article.imageUrl}
             alt={article.title}
-            className="w-full max-h-80 object-cover rounded-xl mt-6 bg-zinc-100"
+            className="w-full max-h-[420px] object-cover rounded-2xl mt-6 shadow-lg shadow-blue-900/10"
           />
         )}
 
         {/* Article Prose Body */}
         <ArticleBody article={article} />
 
-        {/* Tags Row */}
-        {article.tags && article.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-border">
-            {article.tags.map((tag) => (
-              <Badge key={tag} variant="outline" className="font-normal text-muted-foreground">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        )}
+        {/* Tags Row — prefer AI tags when enriched */}
+        {(() => {
+          const displayTags = article.aiTags?.length ? article.aiTags : (article.tags ?? []);
+          if (!displayTags.length) return null;
+          return (
+            <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-[#c8ddf5]">
+              {displayTags.map((tag) => (
+                <Badge
+                  key={tag}
+                  variant="outline"
+                  className="font-medium text-[#00509e] border-[#c8ddf5] bg-[#e8f2ff]/50 hover:bg-[#e8f2ff] transition-colors"
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          );
+        })()}
       </div>
 
       {/* Right Rail */}
