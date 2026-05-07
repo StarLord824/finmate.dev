@@ -1,6 +1,5 @@
 {
   "buildCommand": "turbo run build --filter=frontend-web",
   "outputDirectory": "apps/frontend-web/.next",
-  "framework": "nextjs",
   "installCommand": "pnpm install"
 }
