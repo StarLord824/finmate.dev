@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { apiClient } from "@/lib/api-client";
 import { TrendingUp, Newspaper } from "lucide-react";
 import type { ReactElement } from "react";
+import { MarketSidebarWidget } from "@/components/markets/MarketSidebarWidget";
 
 interface FeedSidebarProps {
   onTagClick: (tag: string) => void;
@@ -105,6 +106,11 @@ export function FeedSidebar({
           </div>
         )}
       </div>
+
+      <Separator className="bg-[#c8ddf5]" />
+
+      {/* Markets widget */}
+      <MarketSidebarWidget />
     </aside>
   );
 }
