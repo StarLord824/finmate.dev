@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { apiClient } from "@/lib/api-client";
@@ -7,26 +8,27 @@ import { SparklineChart } from "./SparklineChart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BarChart2 } from "lucide-react";
 import type { ReactElement } from "react";
+import type { MarketHistory } from "@/lib/types";
 
 export function MarketSidebarWidget(): ReactElement {
   const router = useRouter();
 
-  const { data: quotes, isLoading: quotesLoading } = useQuery({
+  const { data: quotes, isLoading: quotesLoading, isError: quotesError } = useQuery({
     queryKey: ["market"],
     queryFn: () => apiClient.getMarket(),
     refetchInterval: 60000,
-    staleTime: 30000,
+    staleTime: 60000,
   });
 
   // Fetch 1d history for all symbols in parallel (only when quotes loaded)
-  const symbols = quotes?.map((q) => q.symbol) ?? [];
+  const symbols = useMemo(() => quotes?.map((q) => q.symbol) ?? [], [quotes]);
   const { data: histories } = useQuery({
     queryKey: ["market-sparklines", symbols],
     queryFn: async () => {
       const results = await Promise.all(
         symbols.map((s) => apiClient.getMarketHistory(s, "1d").catch(() => null))
       );
-      const map: Record<string, typeof results[0]> = {};
+      const map: Record<string, MarketHistory> = {};
       symbols.forEach((s, i) => { if (results[i]) map[s] = results[i]; });
       return map;
     },
@@ -43,10 +45,12 @@ export function MarketSidebarWidget(): ReactElement {
 
       {quotesLoading ? (
         <div className="space-y-3">
-          {[1, 2, 3, 4].map((i) => (
+          {[1, 2, 3, 4, 5, 6].map((i) => (
             <Skeleton key={i} className="h-14 w-full rounded-xl bg-[#e8f2ff]" />
           ))}
         </div>
+      ) : quotesError ? (
+        <p className="text-xs text-[#4a6890] py-2 text-center">Unable to load market data.</p>
       ) : (
         <div className="space-y-2">
           {(quotes ?? []).slice(0, 6).map((quote) => {
