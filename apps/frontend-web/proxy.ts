@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 const PROTECTED = ["/feed", "/search", "/bookmarks", "/history", "/arena", "/settings"];
 const AUTH_ROUTES = ["/login", "/signup"];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Check for session cookie set by better-auth (cookiePrefix: "finmate")
