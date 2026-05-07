@@ -1,6 +1,7 @@
 // src/routes/meta.ts
 import express from "express";
 import { getCategories, getSources, getTrending, getMarketData } from "../services/meta.service";
+import { getMarketHistory, SYMBOLS } from "../services/market.service";
 
 const router: express.Router = express.Router();
 
@@ -57,5 +58,34 @@ router.get("/market", async (req, res, next) => {
   }
 });
 
+/**
+ * GET /meta/market/history?symbol=BTC-USD&range=1d
+ * range: "1d" | "1w" | "1m"
+ */
+router.get("/market/history", async (req, res, next) => {
+  try {
+    const symbol = String(req.query.symbol || "BTC-USD");
+    const range = String(req.query.range || "1d");
+    const allowed = SYMBOLS.map((s) => s.symbol);
+    if (!allowed.includes(symbol)) {
+      return res.status(400).json({ error: "unknown_symbol" });
+    }
+    const data = await getMarketHistory(symbol, range);
+    if (!data) return res.status(502).json({ error: "upstream_failed" });
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /meta/market/symbols
+ * Returns list of tracked symbols with labels and categories
+ */
+router.get("/market/symbols", async (_req, res) => {
+  res.json(SYMBOLS);
+});
+
 export default router;
+
 
