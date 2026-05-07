@@ -54,3 +54,33 @@ export interface SourcesResponse {
 
 // Category is now a string (dynamic from backend)
 export type Category = string;
+
+export interface MarketQuote {
+  label: string;
+  symbol: string;
+  category: string;
+  price: number;
+  change: number;
+  changePercent: number;
+}
+
+export interface HistoryPoint {
+  t: number; // unix ms
+  c: number; // close price
+}
+
+export interface MarketHistory {
+  symbol: string;
+  label: string;
+  range: string;
+  points: HistoryPoint[];
+  currentPrice: number;
+  change: number;
+  changePercent: number;
+}
+
+export interface MarketSymbol {
+  symbol: string;
+  label: string;
+  category: string;
+}

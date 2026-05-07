@@ -143,16 +143,16 @@ class ApiClient {
   }
 
   // Market data
-  async getMarket(): Promise<
-    Array<{
-      label: string;
-      symbol: string;
-      price: number;
-      change: number;
-      changePercent: number;
-    }>
-  > {
+  async getMarket(): Promise<import("./types").MarketQuote[]> {
     return this.fetch("/meta/market");
+  }
+
+  async getMarketHistory(symbol: string, range: string): Promise<import("./types").MarketHistory> {
+    return this.fetch(`/meta/market/history?symbol=${encodeURIComponent(symbol)}&range=${range}`);
+  }
+
+  async getMarketSymbols(): Promise<import("./types").MarketSymbol[]> {
+    return this.fetch("/meta/market/symbols");
   }
 }
 
