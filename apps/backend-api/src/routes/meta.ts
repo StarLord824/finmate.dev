@@ -4,7 +4,7 @@ import { getCategories, getSources, getTrending, getMarketData } from "../servic
 import { getMarketHistory, SYMBOLS } from "../services/market.service";
 import { getCategoryQuotes, getMovers } from "../services/market.service";
 import { getTopCrypto } from "../services/coingecko.service";
-import { CATEGORY_MAP } from "../services/market-catalog";
+import { CATEGORY_MAP, ALL_YAHOO_SYMBOLS } from "../services/market-catalog";
 
 const router: express.Router = express.Router();
 
@@ -69,8 +69,11 @@ router.get("/market/history", async (req, res, next) => {
   try {
     const symbol = String(req.query.symbol || "BTC-USD");
     const range = String(req.query.range || "1d");
-    const allowed = SYMBOLS.map((s) => s.symbol);
-    if (!allowed.includes(symbol)) {
+    const allowed = new Set([
+      ...SYMBOLS.map((s) => s.symbol),
+      ...ALL_YAHOO_SYMBOLS.map((s) => s.symbol),
+    ]);
+    if (!allowed.has(symbol)) {
       return res.status(400).json({ error: "unknown_symbol" });
     }
     const ALLOWED_RANGES = ["1d", "1w", "1m"];
