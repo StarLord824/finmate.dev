@@ -29,8 +29,9 @@ export function TopGainerRow(): ReactElement | null {
           <p className="text-xs font-bold text-emerald-700 truncate">
             🔥 Top Gainer · {top.label}
           </p>
-          <p className="text-xs font-mono text-emerald-600 mt-0.5">
-            +{top.changePercent.toFixed(2)}%
+          <p className={`text-xs font-mono mt-0.5 ${top.changePercent >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+            {top.changePercent >= 0 ? "+" : ""}
+            {top.changePercent.toFixed(2)}%
           </p>
         </div>
       </div>

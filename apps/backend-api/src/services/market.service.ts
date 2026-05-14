@@ -121,7 +121,9 @@ export async function getMarketHistory(
     const change = price - prevClose;
     const changePercent = prevClose !== 0 ? (change / prevClose) * 100 : 0;
 
-    const sym = SYMBOLS.find((s) => s.symbol === symbol);
+    const sym =
+      SYMBOLS.find((s) => s.symbol === symbol) ??
+      ALL_YAHOO_SYMBOLS.find((s) => s.symbol === symbol);
     const history: MarketHistory = {
       symbol,
       label: sym?.label ?? symbol,
@@ -140,7 +142,7 @@ export async function getMarketHistory(
   }
 }
 
-const CATEGORY_TTL = 60; // seconds — category list quotes refresh on the same rhythm as the marquee
+const CATEGORY_TTL = 300; // 5 min — matches frontend staleTime and spec
 
 export async function getCategoryQuotes(category: string): Promise<Quote[]> {
   const entries = CATEGORY_MAP[category];
