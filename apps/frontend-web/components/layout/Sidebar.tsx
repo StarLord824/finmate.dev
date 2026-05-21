@@ -15,6 +15,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   BarChart2,
+  Landmark,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { authClient } from "@/lib/auth-client";
@@ -23,6 +24,7 @@ import type { ReactElement } from "react";
 const navItems = [
   { label: "Feed",      href: "/feed",      icon: Home      },
   { label: "Markets",   href: "/markets",   icon: BarChart2 },
+  { label: "FundLens",  href: "/fundlens",  icon: Landmark  },
   { label: "Search",    href: "/search",    icon: Search    },
   { label: "Bookmarks", href: "/bookmarks", icon: Bookmark  },
   { label: "History",   href: "/history",   icon: Clock     },
