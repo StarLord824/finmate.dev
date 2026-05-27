@@ -479,6 +479,15 @@ importers:
         specifier: ^8.37.0
         version: 8.37.0(eslint@9.31.0(jiti@2.6.1))(typescript@5.8.2)
 
+  packages/fundlens-types:
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:^
+        version: link:../typescript-config
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
   packages/shared-types:
     devDependencies:
       '@repo/eslint-config':
