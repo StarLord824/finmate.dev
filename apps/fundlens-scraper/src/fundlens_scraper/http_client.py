@@ -28,14 +28,19 @@ def build_client(transport: httpx.AsyncBaseTransport | None = None) -> httpx.Asy
     )
 
 
-async def fetch_bytes(url: str, *, client: httpx.AsyncClient | None = None) -> bytes:
+async def fetch_bytes(
+    url: str,
+    *,
+    client: httpx.AsyncClient | None = None,
+    max_retries: int | None = None,
+) -> bytes:
     """GET `url` with retries on transient failures. Returns response.content."""
-    s = get_settings()
+    retries = max_retries if max_retries is not None else get_settings().http_max_retries
     own_client = client is None
     c = client or build_client()
     try:
         async for attempt in AsyncRetrying(
-            stop=stop_after_attempt(s.http_max_retries),
+            stop=stop_after_attempt(retries),
             wait=wait_exponential(multiplier=1, min=1, max=10),
             retry=retry_if_exception_type((httpx.TransportError, httpx.HTTPStatusError)),
             reraise=True,
