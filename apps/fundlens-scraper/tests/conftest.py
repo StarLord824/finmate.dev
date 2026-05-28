@@ -33,3 +33,21 @@ def pg_container() -> Iterator[PostgresContainer]:
         yield pg
     finally:
         pg.stop()
+
+
+@pytest.fixture(autouse=False)
+def clean_db(pg_container):
+    """Truncate all fundlens tables after each test to prevent state leakage.
+
+    Opt-in via `clean_db` parameter — only tests that modify DB data need this.
+    """
+    yield
+    import psycopg
+    url = pg_container.get_connection_url().replace("postgresql+psycopg2://", "postgresql://")
+    with psycopg.connect(url) as conn:
+        conn.execute(
+            "TRUNCATE fundlens.nav, fundlens.holding_diff, fundlens.holding, "
+            "fundlens.holdings_snapshot, fundlens.scheme, fundlens.fund_manager, "
+            "fundlens.isin_master, fundlens.amc RESTART IDENTITY CASCADE"
+        )
+        conn.commit()

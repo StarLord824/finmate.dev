@@ -34,7 +34,10 @@ async def save_snapshot(
     sha = hashlib.sha256(raw_file_bytes).hexdigest()
 
     async with session_factory() as session:
-        # Idempotency check
+        # Application-level fast path. Under concurrent workers the DB unique index
+        # (snapshot_sha256_per_scheme_idx) is the authoritative guard; an
+        # IntegrityError from a concurrent race is intentionally not caught —
+        # the caller's task retry handles it.
         existing = await session.execute(
             select(HoldingsSnapshot.id)
             .where(HoldingsSnapshot.scheme_id == scheme_id)
