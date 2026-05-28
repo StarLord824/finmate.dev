@@ -16,3 +16,17 @@ def test_settings_load_with_overrides(monkeypatch) -> None:  # type: ignore[no-u
     s = Settings()  # type: ignore[call-arg]
     assert s.database_url == "postgresql://test/test"
     assert s.redis_url == "redis://test:6379/1"
+
+
+def test_models_import_and_tablenames():
+    from fundlens_scraper.models import (
+        Amc, FundManager, Scheme, HoldingsSnapshot,
+        Holding, HoldingDiff, IsinMaster, Nav,
+    )
+    assert Amc.__tablename__ == "amc"
+    assert Amc.__table_args__ == {"schema": "fundlens"}
+    assert Scheme.__tablename__ == "scheme"
+    assert HoldingsSnapshot.__tablename__ == "holdings_snapshot"
+    assert HoldingDiff.__tablename__ == "holding_diff"
+    assert IsinMaster.__tablename__ == "isin_master"
+    assert Nav.__tablename__ == "nav"
