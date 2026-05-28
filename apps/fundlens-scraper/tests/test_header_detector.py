@@ -29,3 +29,16 @@ def test_matches_alternate_column_names():
     idx, mapping = find_header_row(rows)
     assert idx == 0
     assert mapping.name == 0 and mapping.isin == 1 and mapping.qty == 2
+    assert mapping.value == 3 and mapping.pct == 4
+
+
+def test_optional_columns_absent_returns_sentinel():
+    rows = [
+        ["Name of Instrument", "ISIN", "Quantity"],
+        ["Foo Corp", "INE111A01011", "10"],
+    ]
+    idx, mapping = find_header_row(rows)
+    assert idx == 0
+    assert mapping is not None
+    assert mapping.value == -1
+    assert mapping.pct == -1

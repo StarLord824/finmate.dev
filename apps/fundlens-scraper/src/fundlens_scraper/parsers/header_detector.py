@@ -9,8 +9,8 @@ from dataclasses import dataclass
 
 NAME_SYNONYMS = {"name of instrument", "instrument", "issuer name", "security name", "company name"}
 ISIN_SYNONYMS = {"isin", "isin code", "isin number"}
-QTY_SYNONYMS = {"quantity", "no. of units", "no of units", "qty", "face value"}
-VALUE_SYNONYMS = {"market value", "market cap", "value", "market value (rs. in lakhs)", "market value (₹ lakhs)", "market value (rs. lakhs)"}
+QTY_SYNONYMS = {"quantity", "no. of units", "no of units", "qty"}
+VALUE_SYNONYMS = {"market value", "market cap", "market value (rs. in lakhs)", "market value (₹ lakhs)", "market value (rs. lakhs)"}
 PCT_SYNONYMS = {"% to net assets", "% of net assets", "% of nav", "% to nav", "% of net asset value"}
 
 
