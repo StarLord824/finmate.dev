@@ -45,6 +45,7 @@ def extract_holdings_from_pdf(pdf_bytes: bytes) -> list[RawHolding]:
         raise ValueError(f"PDF extraction failed: {exc}") from exc
 
     if not holdings:
+        # TODO: camelot fallback for scanned/image-heavy PDFs (Phase 1)
         raise ValueError("no holdings extracted — pdfplumber found no parseable tables")
 
     return holdings
