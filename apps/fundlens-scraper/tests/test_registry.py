@@ -8,7 +8,14 @@ from fundlens_scraper.scrapers.base import AbstractAmcScraper, PortfolioRef, Raw
 from fundlens_scraper.scrapers.registry import SCRAPER_REGISTRY, register
 
 
-def test_register_and_lookup():
+@pytest.fixture()
+def clean_registry():
+    """Remove test entries from the registry after each test."""
+    yield
+    SCRAPER_REGISTRY.pop("fake-mf", None)
+
+
+def test_register_and_lookup(clean_registry):
     """A registered scraper class is retrievable by slug."""
 
     class FakeScraper:
@@ -27,6 +34,8 @@ def test_register_and_lookup():
 
     register("fake-mf", FakeScraper)
     assert SCRAPER_REGISTRY["fake-mf"] is FakeScraper
+    # Verify FakeScraper structurally conforms to AbstractAmcScraper protocol
+    assert isinstance(FakeScraper(), AbstractAmcScraper)
 
 
 def test_portfolio_ref_is_frozen():
