@@ -15,7 +15,11 @@ from decimal import Decimal, InvalidOperation
 from .header_detector import ColumnMap
 
 _NULL_TOKENS = {"-", "n.a.", "na", "n/a", ""}
-_NAME_SUFFIXES = (" equity shares", " equity", " - equity", " debentures", " bonds", " ncd", " - ncd")
+_NAME_SUFFIXES = tuple(sorted(
+    (" equity shares", " equity", " - equity", " debentures", " bonds", " ncd", " - ncd"),
+    key=len,
+    reverse=True,
+))
 _TOTAL_PREFIXES = ("total ", "sub total", "subtotal", "grand total")
 
 
@@ -73,7 +77,7 @@ def normalize_rows(rows: list[list[object]], cm: ColumnMap) -> list[RawHolding]:
             continue
         name = _clean_name(str(row[cm.name]))
         isin_raw = row[cm.isin] if cm.isin < len(row) else None
-        isin = re.sub(r"\s+", "", str(isin_raw)) if isin_raw else None
+        isin = re.sub(r"\s+", "", str(isin_raw)).upper() if isin_raw else None
         if isin and not re.match(r"^[A-Z0-9]{12}$", isin):
             isin = None
         qty = parse_indian_number(row[cm.qty] if cm.qty < len(row) else None)

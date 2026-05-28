@@ -40,3 +40,19 @@ def test_normalize_rows_skips_blank_and_total_rows():
     )
     assert result[1].company_name_raw == "HDFC Bank Ltd"  # "Equity Shares" suffix stripped
     assert result[1].quantity == Decimal("5678")
+
+
+def test_normalize_uppercases_lowercase_isin():
+    cm = ColumnMap(name=0, isin=1, qty=2, value=-1, pct=-1)
+    data = [["Foo Corp", "ine002a01018", "100"]]
+    result = normalize_rows(data, cm)
+    assert len(result) == 1
+    assert result[0].isin == "INE002A01018"
+
+
+def test_normalize_strips_whitespace_inside_isin():
+    cm = ColumnMap(name=0, isin=1, qty=2, value=-1, pct=-1)
+    data = [["Foo Corp", "INE 002 A01018", "100"]]
+    result = normalize_rows(data, cm)
+    assert len(result) == 1
+    assert result[0].isin == "INE002A01018"
