@@ -11,8 +11,8 @@ from .nse_master import NseRecord
 
 class IsinResolver:
     def __init__(self, records: list[NseRecord]) -> None:
-        self._index: dict[str, NseRecord] = {r.isin: r for r in records}
+        self._index: dict[str, NseRecord] = {r.isin.upper(): r for r in records}
 
     def lookup(self, isin: str) -> NseRecord | None:
         """Return the NseRecord for this ISIN, or None if not in master."""
-        return self._index.get(isin)
+        return self._index.get(isin.upper())

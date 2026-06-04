@@ -2,8 +2,6 @@
 from decimal import Decimal
 from pathlib import Path
 
-import pytest
-
 from fundlens_scraper.amfi.nav_parser import NavRecord, parse_nav_text
 
 FIXTURE = Path(__file__).parent / "fixtures" / "navall_sample.txt"
@@ -44,3 +42,12 @@ def test_parse_nav_text_skips_header_and_section_rows():
 def test_parse_nav_text_empty_input():
     records = parse_nav_text("")
     assert records == []
+
+
+def test_parse_nav_text_dash_isin_becomes_none():
+    """'-' in ISIN columns produces None, not the string '-'."""
+    text = Path(__file__).parent / "fixtures" / "navall_sample.txt"
+    records = parse_nav_text(text.read_text(encoding="utf-8"))
+    # scheme 120504 has '-' in col[2] (isin_growth) per fixture
+    record_120504 = next(r for r in records if r.scheme_code == "120504")
+    assert record_120504.isin_growth is None

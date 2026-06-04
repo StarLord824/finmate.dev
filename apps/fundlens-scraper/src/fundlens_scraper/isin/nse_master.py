@@ -31,7 +31,7 @@ def parse_equity_csv(text: str) -> list[NseRecord]:
         isin = row.get("ISIN NUMBER", "").strip()
         ticker = row.get("SYMBOL", "").strip()
         name = row.get("NAME OF COMPANY", "").strip()
-        if not isin or not ticker:
+        if not isin:
             continue
         records.append(NseRecord(isin=isin, ticker_nse=ticker, company_name=name))
     return records
