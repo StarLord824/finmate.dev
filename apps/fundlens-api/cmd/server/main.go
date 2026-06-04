@@ -61,6 +61,19 @@ func main() {
 	v1 := app.Group("/fundlens/api/v1")
 	v1.Get("/health", handlers.Health(pool, rdb))
 
+	// AMC routes
+	v1.Get("/amcs", handlers.ListAmcs(pool, rdb))
+	v1.Get("/amcs/:slug", handlers.GetAmc(pool, rdb))
+
+	// Scheme routes
+	v1.Get("/schemes/:slug", handlers.GetScheme(pool, rdb))
+	v1.Get("/schemes/:slug/holdings", handlers.ListHoldings(pool, rdb))
+	v1.Get("/schemes/:slug/diffs", handlers.ListDiffs(pool, rdb))
+	v1.Get("/schemes/:slug/nav", handlers.ListNav(pool, rdb))
+
+	// Stock routes
+	v1.Get("/stocks/:isin/holders", handlers.ListStockHolders(pool, rdb))
+
 	// Top-level /health for orchestrators that probe the root
 	app.Get("/health", handlers.Health(pool, rdb))
 
