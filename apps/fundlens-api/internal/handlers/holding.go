@@ -9,6 +9,7 @@ import (
 
 	"github.com/finmate-dev/fundlens-api/internal/cache"
 	"github.com/finmate-dev/fundlens-api/internal/db"
+	"github.com/finmate-dev/fundlens-api/internal/dto"
 )
 
 func ListHoldings(pool *pgxpool.Pool, rdb *redis.Client) fiber.Handler {
@@ -29,8 +30,16 @@ func ListHoldings(pool *pgxpool.Pool, rdb *redis.Client) fiber.Handler {
 		}
 
 		key := "fundlens:scheme:" + slug + ":holdings:latest:v1"
-		holdings, cached, err := cache.GetOrSet(c.Context(), rdb, key, 300*time.Second, func() ([]db.ListHoldingsBySnapshotRow, error) {
-			return q.ListHoldingsBySnapshot(c.Context(), snap.ID)
+		holdings, cached, err := cache.GetOrSet(c.Context(), rdb, key, 300*time.Second, func() ([]dto.Holding, error) {
+			rows, err := q.ListHoldingsBySnapshot(c.Context(), snap.ID)
+			if err != nil {
+				return nil, err
+			}
+			result := make([]dto.Holding, len(rows))
+			for i, row := range rows {
+				result[i] = dto.FromListHoldingsBySnapshotRow(row)
+			}
+			return result, nil
 		})
 		if err != nil {
 			return Err(c, fiber.StatusInternalServerError, "db_error", err.Error())

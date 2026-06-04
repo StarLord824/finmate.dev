@@ -9,6 +9,7 @@ import (
 
 	"github.com/finmate-dev/fundlens-api/internal/cache"
 	"github.com/finmate-dev/fundlens-api/internal/db"
+	"github.com/finmate-dev/fundlens-api/internal/dto"
 )
 
 func ListDiffs(pool *pgxpool.Pool, rdb *redis.Client) fiber.Handler {
@@ -28,11 +29,19 @@ func ListDiffs(pool *pgxpool.Pool, rdb *redis.Client) fiber.Handler {
 
 		key := "fundlens:scheme:" + slug + ":diffs:latest:v1"
 		snapID := snap.ID
-		diffs, cached, err := cache.GetOrSet(c.Context(), rdb, key, 300*time.Second, func() ([]db.ListDiffsBySchemeRow, error) {
-			return q.ListDiffsByScheme(c.Context(), db.ListDiffsBySchemeParams{
+		diffs, cached, err := cache.GetOrSet(c.Context(), rdb, key, 300*time.Second, func() ([]dto.HoldingDiff, error) {
+			rows, err := q.ListDiffsByScheme(c.Context(), db.ListDiffsBySchemeParams{
 				SchemeID:       scheme.ID,
 				CurrSnapshotID: &snapID,
 			})
+			if err != nil {
+				return nil, err
+			}
+			result := make([]dto.HoldingDiff, len(rows))
+			for i, row := range rows {
+				result[i] = dto.FromListDiffsBySchemeRow(row)
+			}
+			return result, nil
 		})
 		if err != nil {
 			return Err(c, fiber.StatusInternalServerError, "db_error", err.Error())

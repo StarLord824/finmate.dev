@@ -10,6 +10,7 @@ import (
 
 	"github.com/finmate-dev/fundlens-api/internal/cache"
 	"github.com/finmate-dev/fundlens-api/internal/db"
+	"github.com/finmate-dev/fundlens-api/internal/dto"
 )
 
 func ListNav(pool *pgxpool.Pool, rdb *redis.Client) fiber.Handler {
@@ -30,12 +31,20 @@ func ListNav(pool *pgxpool.Pool, rdb *redis.Client) fiber.Handler {
 		toDate := pgtype.Date{Time: toTime, Valid: true}
 
 		key := "fundlens:scheme:" + slug + ":nav:90d:v1"
-		navPoints, cached, err := cache.GetOrSet(c.Context(), rdb, key, 300*time.Second, func() ([]db.ListNavBySchemeRow, error) {
-			return q.ListNavByScheme(c.Context(), db.ListNavBySchemeParams{
+		navPoints, cached, err := cache.GetOrSet(c.Context(), rdb, key, 300*time.Second, func() ([]dto.NavPoint, error) {
+			rows, err := q.ListNavByScheme(c.Context(), db.ListNavBySchemeParams{
 				SchemeID: scheme.ID,
 				Date:     fromDate,
 				Date_2:   toDate,
 			})
+			if err != nil {
+				return nil, err
+			}
+			result := make([]dto.NavPoint, len(rows))
+			for i, row := range rows {
+				result[i] = dto.FromListNavBySchemeRow(row)
+			}
+			return result, nil
 		})
 		if err != nil {
 			return Err(c, fiber.StatusInternalServerError, "db_error", err.Error())
