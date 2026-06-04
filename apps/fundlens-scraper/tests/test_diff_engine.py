@@ -22,6 +22,7 @@ from fundlens_scraper.diff_engine import (
     (Decimal("100"), Decimal("97"), "HOLD"),   # -3% within ±5%
     (Decimal("100"), Decimal("105"), "HOLD"),  # exactly +5% → boundary is HOLD
     (Decimal("100"), Decimal("95"), "HOLD"),   # exactly -5% → boundary is HOLD
+    (None, None, "HOLD"),                      # both quantities missing — data quality gap, not a new position
 ])
 def test_classify_action(prev_qty, curr_qty, expected):
     assert classify_action(prev_qty, curr_qty) == expected

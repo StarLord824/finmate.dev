@@ -10,6 +10,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from decimal import Decimal
+from typing import Literal
+
+Action = Literal["NEW", "ADD", "TRIM", "EXIT", "HOLD"]
 
 _ADD_THRESHOLD = Decimal("1.05")   # +5%
 _TRIM_THRESHOLD = Decimal("0.95")  # -5%
@@ -23,14 +26,16 @@ class DiffRow:
     qty_delta: Decimal | None
     prev_value_cr: Decimal | None
     curr_value_cr: Decimal | None
-    action: str  # NEW | ADD | TRIM | EXIT | HOLD
+    action: Action  # NEW | ADD | TRIM | EXIT | HOLD
 
 
 def classify_action(
     prev_qty: Decimal | None,
     curr_qty: Decimal | None,
-) -> str:
+) -> Action:
     """Classify a position change into one of five actions."""
+    if prev_qty is None and curr_qty is None:
+        return "HOLD"  # both quantities missing — data quality gap, treat as no change
     if prev_qty is None:
         return "NEW"
     if curr_qty is None:
