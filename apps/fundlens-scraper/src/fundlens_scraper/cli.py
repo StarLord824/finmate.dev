@@ -89,15 +89,14 @@ async def _run_async(amc_slug: str) -> None:
             continue
 
         log.info("persist.start", scheme=ref.scheme_slug, holdings=len(holdings))
-        try:
-            scheme_id = _resolve_scheme_id(ref.scheme_slug)
-        except NotImplementedError as exc:
+        scheme_id = await _resolve_scheme_id_from_db(session_factory, ref.scheme_slug)
+        if scheme_id is None:
             log.error(
-                "persist.scheme_not_seeded",
+                "persist.scheme_not_found",
                 scheme=ref.scheme_slug,
-                hint="Run the seed migration (Task 25) to create AMC/scheme rows",
+                hint="Run the seed migration to create AMC/scheme rows first",
             )
-            break  # All schemes will fail the same way; stop iterating
+            continue  # skip this scheme, try the next one
 
         try:
             snapshot_id = await save_snapshot(
@@ -115,17 +114,16 @@ async def _run_async(amc_slug: str) -> None:
             continue
 
 
-def _resolve_scheme_id(scheme_slug: str) -> int:
-    """Look up a scheme's DB id by slug.
 
-    Phase 0: raises NotImplementedError — schemes must be seeded via migration
-    before ingestion. The seed migration (Task 25) creates the AMC/scheme rows.
-    This function is a placeholder until the DB is bootstrapped.
-    """
-    raise NotImplementedError(
-        f"Scheme '{scheme_slug}' not found. "
-        "Run the seed migration (Task 25) to create AMC/scheme rows first."
-    )
+async def _resolve_scheme_id_from_db(session_factory, scheme_slug: str) -> int | None:
+    """Look up a scheme's DB id by slug. Returns None if not found."""
+    from sqlalchemy import select
+    from .models import Scheme as SchemeModel
+    async with session_factory() as session:
+        result = await session.execute(
+            select(SchemeModel.id).where(SchemeModel.slug == scheme_slug)
+        )
+        return result.scalar_one_or_none()
 
 
 if __name__ == "__main__":

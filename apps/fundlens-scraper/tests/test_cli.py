@@ -62,8 +62,11 @@ async def test_run_command_invokes_pipeline(monkeypatch):
     save_mock = AsyncMock(return_value=42)
     monkeypatch.setattr("fundlens_scraper.persistence.save_snapshot", save_mock)
 
-    # Mock _resolve_scheme_id so it returns a valid int instead of raising
-    monkeypatch.setattr("fundlens_scraper.cli._resolve_scheme_id", lambda slug: 1)
+    # Mock _resolve_scheme_id_from_db so it returns a valid int without hitting the DB
+    monkeypatch.setattr(
+        "fundlens_scraper.cli._resolve_scheme_id_from_db",
+        AsyncMock(return_value=1),
+    )
 
     # Mock _get_session_factory so no DB connection is needed
     monkeypatch.setattr(

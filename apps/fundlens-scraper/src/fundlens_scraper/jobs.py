@@ -49,22 +49,51 @@ async def _run_refresh_isin_master() -> None:
 async def _run_scrape_ppfas() -> None:
     """Run the PPFAS scraper — discover + fetch + parse + persist."""
     from .scrapers.registry import SCRAPER_REGISTRY
-    from .scrapers import ppfas as _  # ensure ppfas module is loaded and registered  # noqa: F401
+    from .scrapers import ppfas as _  # ensure module loaded and registered  # noqa: F401
     from .db import get_session_factory
     from .persistence import save_snapshot
+    from .models import Scheme as SchemeModel
+    from sqlalchemy import select
+
     log.info("scrape.start", amc="ppfas-mf")
     try:
         scraper = SCRAPER_REGISTRY["ppfas-mf"]()
         refs = await scraper.discover_portfolios()
         session_factory = get_session_factory()
+
         for ref in refs:
+            # Resolve scheme ID
+            async with session_factory() as session:
+                result = await session.execute(
+                    select(SchemeModel.id).where(SchemeModel.slug == ref.scheme_slug)
+                )
+                scheme_id = result.scalar_one_or_none()
+
+            if scheme_id is None:
+                log.warning("scrape.scheme_not_found", scheme=ref.scheme_slug)
+                continue
+
             try:
                 file_bytes = await scraper.fetch_portfolio(ref)
                 holdings = scraper.parse(file_bytes, ref.file_ext)
-                # scheme_id lookup placeholder — will be replaced when seed migration runs
-                log.info("scrape.scheme_ready", scheme=ref.scheme_slug, holdings=len(holdings))
+                snapshot_id = await save_snapshot(
+                    session_factory,
+                    scheme_id=scheme_id,
+                    disclosure_date=ref.disclosure_date,
+                    raw_file_url=ref.file_url,
+                    raw_file_bytes=file_bytes,
+                    parser_version=scraper.parser_version,
+                    holdings=holdings,
+                )
+                log.info(
+                    "scrape.scheme_done",
+                    scheme=ref.scheme_slug,
+                    holdings=len(holdings),
+                    snapshot_id=snapshot_id,
+                )
             except Exception as exc:
                 log.warning("scrape.scheme_failed", scheme=ref.scheme_slug, error=str(exc))
+
         log.info("scrape.done", amc="ppfas-mf")
     except Exception as exc:
         log.error("scrape.failed", amc="ppfas-mf", error=str(exc))
