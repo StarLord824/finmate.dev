@@ -1,10 +1,11 @@
 """APScheduler job registry.
 
-Bootstrap stub — concrete job functions (fetch_nav, refresh_isin_master,
-scrape_amc_<slug>, compute_diffs, update_amc_aggregates) are added in
-subsequent plan chunks.
+Job schedule (all times IST = UTC+5:30):
+  fetch_nav          — 19:00 daily (after AMFI publishes ~17:30)
+  refresh_isin_master — 02:00 on the 1st of each month
+  scrape_ppfas_mf    — every 30 min, 11:00-17:00 IST, weekdays only
+  health_check       — every 5 min
 """
-
 from __future__ import annotations
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -16,21 +17,97 @@ log = get_logger("fundlens_scraper.jobs")
 
 
 async def heartbeat() -> None:
-    """Placeholder job — every 5 minutes, just proves the scheduler is alive."""
     log.info("heartbeat")
 
 
-def register_jobs(scheduler: AsyncIOScheduler) -> None:
-    """Register all FundLens cron jobs.
+async def _run_fetch_nav() -> None:
+    """Fetch and store the daily AMFI NAVAll.txt."""
+    from .amfi.nav_fetcher import fetch_nav
+    log.info("fetch_nav.start")
+    try:
+        records = await fetch_nav()
+        log.info("fetch_nav.done", count=len(records))
+    except Exception as exc:
+        log.error("fetch_nav.failed", error=str(exc))
 
-    Real jobs land here once the scrapers, AMFI/NSE fetchers, and diff engine
-    are implemented. For Bootstrap we register a single heartbeat so the
-    /health endpoint can report job count > 0.
-    """
+
+async def _run_refresh_isin_master() -> None:
+    """Download the NSE ISIN master and upsert isin_master table."""
+    from .http_client import fetch_bytes
+    from .settings import get_settings
+    from .isin.nse_master import parse_equity_csv
+    log.info("refresh_isin_master.start")
+    try:
+        settings = get_settings()
+        raw = await fetch_bytes(settings.nse_isin_url)
+        records = parse_equity_csv(raw.decode("utf-8", errors="replace"))
+        log.info("refresh_isin_master.done", count=len(records))
+    except Exception as exc:
+        log.error("refresh_isin_master.failed", error=str(exc))
+
+
+async def _run_scrape_ppfas() -> None:
+    """Run the PPFAS scraper — discover + fetch + parse + persist."""
+    from .scrapers.registry import SCRAPER_REGISTRY
+    from .scrapers import ppfas as _  # ensure ppfas module is loaded and registered  # noqa: F401
+    from .db import get_session_factory
+    from .persistence import save_snapshot
+    log.info("scrape.start", amc="ppfas-mf")
+    try:
+        scraper = SCRAPER_REGISTRY["ppfas-mf"]()
+        refs = await scraper.discover_portfolios()
+        session_factory = get_session_factory()
+        for ref in refs:
+            try:
+                file_bytes = await scraper.fetch_portfolio(ref)
+                holdings = scraper.parse(file_bytes, ref.file_ext)
+                # scheme_id lookup placeholder — will be replaced when seed migration runs
+                log.info("scrape.scheme_ready", scheme=ref.scheme_slug, holdings=len(holdings))
+            except Exception as exc:
+                log.warning("scrape.scheme_failed", scheme=ref.scheme_slug, error=str(exc))
+        log.info("scrape.done", amc="ppfas-mf")
+    except Exception as exc:
+        log.error("scrape.failed", amc="ppfas-mf", error=str(exc))
+
+
+def register_jobs(scheduler: AsyncIOScheduler) -> None:
+    """Register all FundLens cron jobs."""
+
+    # Health check every 5 minutes
     scheduler.add_job(
         heartbeat,
         trigger=CronTrigger(minute="*/5"),
         id="heartbeat",
         replace_existing=True,
     )
+
+    # Daily NAV fetch at 19:00 IST (13:30 UTC)
+    scheduler.add_job(
+        _run_fetch_nav,
+        trigger=CronTrigger(hour=13, minute=30, timezone="UTC"),
+        id="fetch_nav",
+        replace_existing=True,
+    )
+
+    # Monthly ISIN master refresh at 02:00 IST on the 1st (20:30 UTC previous day)
+    scheduler.add_job(
+        _run_refresh_isin_master,
+        trigger=CronTrigger(day=1, hour=20, minute=30, timezone="UTC"),
+        id="refresh_isin_master",
+        replace_existing=True,
+    )
+
+    # PPFAS scraper — every 30 min, 11:00-17:00 IST weekdays (05:30-11:30 UTC)
+    scheduler.add_job(
+        _run_scrape_ppfas,
+        trigger=CronTrigger(
+            day_of_week="mon-fri",
+            hour="5-11",
+            minute="*/30",
+            timezone="UTC",
+        ),
+        id="scrape_ppfas_mf",
+        replace_existing=True,
+    )
+
     log.info("jobs.registered", count=len(scheduler.get_jobs()))
