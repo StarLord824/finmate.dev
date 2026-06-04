@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"errors"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
@@ -20,7 +22,10 @@ func ListNav(pool *pgxpool.Pool, rdb *redis.Client) fiber.Handler {
 
 		scheme, err := q.GetSchemeBySlug(c.Context(), slug)
 		if err != nil {
-			return Err(c, fiber.StatusNotFound, "scheme_not_found", "unknown scheme: "+slug)
+			if errors.Is(err, pgx.ErrNoRows) {
+				return Err(c, fiber.StatusNotFound, "scheme_not_found", "unknown scheme: "+slug)
+			}
+			return Err(c, fiber.StatusInternalServerError, "db_error", err.Error())
 		}
 
 		// Default: last 90 days
