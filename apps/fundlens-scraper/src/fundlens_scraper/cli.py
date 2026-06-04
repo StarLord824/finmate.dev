@@ -90,9 +90,19 @@ async def _run_async(amc_slug: str) -> None:
 
         log.info("persist.start", scheme=ref.scheme_slug, holdings=len(holdings))
         try:
+            scheme_id = _resolve_scheme_id(ref.scheme_slug)
+        except NotImplementedError as exc:
+            log.error(
+                "persist.scheme_not_seeded",
+                scheme=ref.scheme_slug,
+                hint="Run the seed migration (Task 25) to create AMC/scheme rows",
+            )
+            break  # All schemes will fail the same way; stop iterating
+
+        try:
             snapshot_id = await save_snapshot(
                 session_factory,
-                scheme_id=_resolve_scheme_id(ref.scheme_slug),
+                scheme_id=scheme_id,
                 disclosure_date=ref.disclosure_date,
                 raw_file_url=ref.file_url,
                 raw_file_bytes=file_bytes,
