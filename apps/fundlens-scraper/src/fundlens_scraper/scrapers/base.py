@@ -25,6 +25,13 @@ class PortfolioRef:
 
 @runtime_checkable
 class AbstractAmcScraper(Protocol):
+    """Protocol that every AMC scraper must satisfy.
+
+    Scrapers may accept ``*, _today: datetime.date | None = None`` in
+    ``discover_portfolios`` as a test hook — outside the Protocol surface
+    but a supported convention for deterministic testing.
+    """
+
     slug: str
     portfolio_index_url: str
     parser_version: str

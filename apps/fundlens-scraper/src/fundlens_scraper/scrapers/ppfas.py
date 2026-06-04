@@ -31,6 +31,7 @@ _SCHEMES: dict[str, str] = {
     "ppfas-conservative-hybrid-fund": "ConservativeHybrid",
     "ppfas-arbitrage-fund": "Arbitrage",
     "ppfas-dynamic-asset-allocation-fund": "DynamicAssetAllocation",
+    # TODO: verify URL key for "ppfas-large-cap-fund" on amc.ppfas.com and add here
 }
 
 

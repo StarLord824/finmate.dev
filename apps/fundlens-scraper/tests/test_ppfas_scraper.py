@@ -22,7 +22,7 @@ def test_ppfas_registered():
 
 
 @pytest.mark.asyncio
-async def test_discover_portfolios_returns_refs_for_current_month(monkeypatch):
+async def test_discover_portfolios_returns_refs_for_current_month():
     """discover_portfolios returns PortfolioRef objects for each PPFAS scheme."""
     scraper = PpfasScraper()
     refs = await scraper.discover_portfolios(_today=datetime.date(2026, 5, 10))
