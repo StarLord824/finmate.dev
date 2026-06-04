@@ -27,8 +27,8 @@ def test_parse_nav_text_record_fields():
 
     assert first.scheme_name == "Parag Parikh Flexi Cap Fund - Regular Plan - Growth Option"
     assert first.nav == Decimal("68.5432")
-    assert first.isin_growth is None  # "-" sentinel
-    assert first.isin_idcw == "INE0..."
+    assert first.isin_growth == "INE0GROW..."   # col[2] = reinvestment = growth
+    assert first.isin_idcw == "INE0IDCW..."     # col[1] = payout = IDCW
     assert first.date_str == "04-Jun-2026"
 
 

@@ -1,8 +1,8 @@
 Scheme Code;ISIN Div Payout/ IDCW;ISIN Div Reinvestment;Scheme Name;Net Asset Value;Repurchase Price;Sale Price;Date
 Open Ended Schemes(Equity)
 Parag Parikh Mutual Fund
-120503;-;INE0...;Parag Parikh Flexi Cap Fund - Regular Plan - Growth Option;68.5432;68.5432;68.5432;04-Jun-2026
-120504;INE1...;-;Parag Parikh Flexi Cap Fund - Regular Plan - IDCW Option;38.1200;38.1200;38.1200;04-Jun-2026
+120503;INE0IDCW...;INE0GROW...;Parag Parikh Flexi Cap Fund - Regular Plan - Growth Option;68.5432;68.5432;68.5432;04-Jun-2026
+120504;INE1IDCW...;-;Parag Parikh Flexi Cap Fund - Regular Plan - IDCW Option;38.1200;38.1200;38.1200;04-Jun-2026
 Open Ended Schemes(Debt)
 SBI Mutual Fund
-119551;INE2...;INE3...;SBI Liquid Fund - Regular Plan - Growth;3821.4567;3821.4567;3821.4567;04-Jun-2026
+119551;INE2IDCW...;INE3GROW...;SBI Liquid Fund - Regular Plan - Growth;3821.4567;3821.4567;3821.4567;04-Jun-2026

@@ -56,8 +56,8 @@ def parse_nav_text(text: str) -> list[NavRecord]:
         records.append(
             NavRecord(
                 scheme_code=scheme_code,
-                isin_growth=_parse_isin(parts[1]),
-                isin_idcw=_parse_isin(parts[2]),
+                isin_growth=_parse_isin(parts[2]),   # col[2] = ISIN Div Reinvestment = growth
+                isin_idcw=_parse_isin(parts[1]),     # col[1] = ISIN Div Payout/IDCW
                 scheme_name=parts[3].strip(),
                 nav=_parse_nav(parts[4]),
                 date_str=parts[7].strip(),
