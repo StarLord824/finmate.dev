@@ -10,7 +10,9 @@ import type {
   NavPoint,
 } from "@repo/fundlens-types";
 
-const BASE = "/fundlens-api";
+const BASE =
+  (process.env.NEXT_PUBLIC_FUNDLENS_API_URL ?? "http://localhost:5000") +
+  "/fundlens/api/v1";
 
 async function get<T>(path: string): Promise<T> {
   const res = await fetch(`${BASE}${path}`, { next: { revalidate: 60 } });

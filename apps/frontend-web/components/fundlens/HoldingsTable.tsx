@@ -1,5 +1,3 @@
-"use client";
-
 import type { Holding } from "@repo/fundlens-types";
 import type { ReactElement } from "react";
 

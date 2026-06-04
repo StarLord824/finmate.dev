@@ -1,7 +1,8 @@
 import type { ReactElement } from "react";
+import type { ScraperStatus } from "@repo/fundlens-types";
 
 interface Props {
-  status: string;
+  status: ScraperStatus;
   lastScrapedAt?: string | null;
 }
 

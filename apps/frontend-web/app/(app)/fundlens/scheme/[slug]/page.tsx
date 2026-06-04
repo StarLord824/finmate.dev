@@ -12,14 +12,17 @@ interface Props {
 export default async function SchemePage({ params }: Props): Promise<ReactElement> {
   const { slug } = await params;
   let scheme: Awaited<ReturnType<typeof fundlensApi.getScheme>>;
-  let holdings: Awaited<ReturnType<typeof fundlensApi.listHoldings>>;
+  let holdings: import("@repo/fundlens-types").Holding[] = [];
   try {
-    [scheme, holdings] = await Promise.all([
-      fundlensApi.getScheme(slug),
-      fundlensApi.listHoldings(slug),
-    ]);
+    scheme = await fundlensApi.getScheme(slug);
   } catch {
     notFound();
+    return null as never; // unreachable, satisfies TS
+  }
+  try {
+    holdings = await fundlensApi.listHoldings(slug);
+  } catch {
+    // holdings not yet available — show empty table
   }
 
   return (
@@ -52,7 +55,7 @@ export default async function SchemePage({ params }: Props): Promise<ReactElemen
             View diffs →
           </Link>
         </div>
-        <HoldingsTable holdings={holdings ?? []} />
+        <HoldingsTable holdings={holdings} />
       </div>
     </div>
   );
