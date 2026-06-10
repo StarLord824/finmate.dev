@@ -15,6 +15,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   BarChart2,
+  Landmark,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { authClient } from "@/lib/auth-client";
@@ -23,6 +24,7 @@ import type { ReactElement } from "react";
 const navItems = [
   { label: "Feed",      href: "/feed",      icon: Home      },
   { label: "Markets",   href: "/markets",   icon: BarChart2 },
+  { label: "FundLens",  href: "/fundlens",  icon: Landmark  },
   { label: "Search",    href: "/search",    icon: Search    },
   { label: "Bookmarks", href: "/bookmarks", icon: Bookmark  },
   { label: "History",   href: "/history",   icon: Clock     },
@@ -35,8 +37,16 @@ export function Sidebar(): ReactElement {
   const { data: session } = authClient.useSession();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [disableHover, setDisableHover] = useState(false);
 
-  const isExpanded = !isCollapsed || isHovered;
+  const isExpanded = !isCollapsed || (isHovered && !disableHover);
+
+  const handleToggle = () => {
+    if (!isCollapsed) {
+      setDisableHover(true);
+    }
+    setIsCollapsed(!isCollapsed);
+  };
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -59,7 +69,10 @@ export function Sidebar(): ReactElement {
         isCollapsed ? "w-20" : "w-64"
       }`}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setDisableHover(false);
+      }}
     >
       <aside
         className={`fixed top-0 bottom-0 left-0 flex-col border-r border-[#c8ddf5] bg-white transition-all duration-300 flex overflow-y-auto scrollbar-hide ${
@@ -82,7 +95,7 @@ export function Sidebar(): ReactElement {
 
         {/* Toggle button */}
         <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          onClick={handleToggle}
           className={`absolute top-4 right-[-14px] bg-white border border-[#c8ddf5] rounded-full p-1 text-[#007acc] hover:bg-[#e8f2ff] hover:text-[#003366] shadow-sm z-50 transition-transform ${
             isExpanded ? "opacity-100" : "opacity-0"
           }`}

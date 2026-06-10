@@ -84,3 +84,21 @@ export interface MarketSymbol {
   label: string;
   category: string;
 }
+
+export interface CryptoQuote {
+  symbol: string;
+  label: string;
+  category: "crypto";
+  price: number;
+  change: number;
+  changePercent: number;
+  marketCap: number;
+  image: string;
+}
+
+export interface Movers {
+  gainers: MarketQuote[];
+  losers: MarketQuote[];
+}
+
+export type MarketCategory = "nse" | "us" | "indices" | "commodities" | "forex";

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C \"C:/Users/MY NOTEBOOK/Desktop/finmate.dev\" show 994b8ae --stat)",
+      "WebFetch(domain:amc.ppfas.com)"
+    ]
+  }
+}

@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { apiClient } from "@/lib/api-client";
 import { SparklineChart } from "./SparklineChart";
+import { TopGainerRow } from "./TopGainerRow";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BarChart2 } from "lucide-react";
 import type { ReactElement } from "react";
@@ -42,6 +43,8 @@ export function MarketSidebarWidget(): ReactElement {
         <BarChart2 className="h-4 w-4 text-[#007acc]" />
         Markets
       </h3>
+
+      <TopGainerRow />
 
       {quotesLoading ? (
         <div className="space-y-3">

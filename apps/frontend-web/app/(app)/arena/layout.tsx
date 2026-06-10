@@ -1,67 +1,60 @@
-import type { ReactElement } from 'react';
-import Link from 'next/link';
+"use client";
 
-export default function ArenaLayout(props: any): ReactElement {
-  const { children } = props;
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Swords, Settings, Play, Trophy, LayoutDashboard } from "lucide-react";
+import type { ReactElement } from "react";
+
+const tabs = [
+  { label: "Overview",     href: "/arena",              icon: LayoutDashboard, exact: true },
+  { label: "Admin",        href: "/arena/admin",        icon: Settings },
+  { label: "Replays",      href: "/arena/replay",       icon: Play },
+  { label: "Leaderboards", href: "/arena/leaderboards", icon: Trophy },
+];
+
+export default function ArenaLayout({ children }: { children: React.ReactNode }): ReactElement {
+  const pathname = usePathname();
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Arena Header */}
-      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-sm">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-6">
-              <Link href="/arena" className="flex items-center gap-2">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <span className="text-xl font-bold text-slate-900">Traders Arena</span>
-              </Link>
-              
-              <nav className="hidden md:flex items-center gap-4">
-                <Link 
-                  href="/arena" 
-                  className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
-                >
-                  Overview
-                </Link>
-                <Link 
-                  href="/arena/admin" 
-                  className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
-                >
-                  Admin
-                </Link>
-                <Link 
-                  href="/arena/replay" 
-                  className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
-                >
-                  Replays
-                </Link>
-                <Link 
-                  href="/arena/leaderboards" 
-                  className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
-                >
-                  Leaderboards
-                </Link>
-              </nav>
+    <div className="min-h-full">
+      {/* Sub-nav strip */}
+      <div className="sticky top-0 z-30 border-b border-[#c8ddf5] bg-white/95 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex h-14 items-center gap-4">
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[#003366] to-[#007acc] flex items-center justify-center shadow-sm shadow-blue-900/20">
+                <Swords className="h-4 w-4 text-white" />
+              </div>
+              <span className="font-extrabold text-lg text-[#003366]">Arena</span>
             </div>
-            
-            <Link 
-              href="/" 
-              className="text-sm text-slate-500 hover:text-slate-700 transition-colors"
-            >
-              ← Back to FinMate
-            </Link>
+
+            <nav className="flex items-center gap-1 ml-4">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = tab.exact
+                  ? pathname === tab.href
+                  : pathname === tab.href || pathname.startsWith(tab.href + "/");
+                return (
+                  <Link
+                    key={tab.href}
+                    href={tab.href}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${
+                      isActive
+                        ? "bg-[#003366] text-white"
+                        : "text-[#4a6890] hover:text-[#003366] hover:bg-[#e8f2ff]"
+                    }`}
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                    {tab.label}
+                  </Link>
+                );
+              })}
+            </nav>
           </div>
         </div>
-      </header>
-      
-      {/* Main Content */}
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {children}
-      </main>
+      </div>
+
+      <main className="max-w-7xl mx-auto px-6 py-8">{children}</main>
     </div>
   );
 }

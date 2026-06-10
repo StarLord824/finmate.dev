@@ -23,6 +23,64 @@ services:
     volumes:
       - redisdata:/data
 
+  # ---- FundLens ----
+  fundlens-scraper:
+    build:
+      context: ./apps/fundlens-scraper
+      dockerfile: Dockerfile
+    container_name: finmate-fundlens-scraper
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      FUNDLENS_DATABASE_URL: postgresql://postgres:password@postgres:5432/finmate
+      FUNDLENS_REDIS_URL: redis://redis:6379/0
+      FUNDLENS_LOG_LEVEL: INFO
+      FUNDLENS_HTTP_PORT: "8001"
+    depends_on:
+      - postgres
+      - redis
+    profiles:
+      - fundlens
+
+  fundlens-celery-worker:
+    build:
+      context: ./apps/fundlens-scraper
+      dockerfile: Dockerfile
+    container_name: finmate-fundlens-celery
+    restart: unless-stopped
+    command: ["celery", "-A", "fundlens_scraper.celery_app", "worker", "--loglevel=info"]
+    environment:
+      FUNDLENS_DATABASE_URL: postgresql://postgres:password@postgres:5432/finmate
+      FUNDLENS_REDIS_URL: redis://redis:6379/0
+      FUNDLENS_LOG_LEVEL: INFO
+    depends_on:
+      - postgres
+      - redis
+      - fundlens-scraper
+    profiles:
+      - fundlens
+
+  fundlens-api:
+    build:
+      context: ./apps/fundlens-api
+      dockerfile: Dockerfile
+    container_name: finmate-fundlens-api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      FUNDLENS_API_PORT: "5000"
+      FUNDLENS_DATABASE_URL: postgresql://postgres:password@postgres:5432/finmate
+      FUNDLENS_REDIS_URL: redis://redis:6379/0
+      FUNDLENS_FRONTEND_URL: http://localhost:3000
+      FUNDLENS_LOG_LEVEL: info
+    depends_on:
+      - postgres
+      - redis
+    profiles:
+      - fundlens
+
   # Commenting out arena services for now - they need shared packages
   # To run them, use: pnpm dev (which runs them locally with access to monorepo)
   

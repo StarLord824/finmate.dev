@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-const PROTECTED = ["/feed", "/search", "/bookmarks", "/history", "/arena", "/settings"];
+// const PROTECTED = ["/feed", "/search", "/bookmarks", "/history", "/arena", "/settings"];
+const PROTECTED: string[] = [];
 const AUTH_ROUTES = ["/login", "/signup"];
 
 export function proxy(request: NextRequest) {

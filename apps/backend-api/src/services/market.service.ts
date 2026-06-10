@@ -1,13 +1,13 @@
 import { getRedis } from "../lib/redis";
+import {
+  MARQUEE_SYMBOLS,
+  CATEGORY_MAP,
+  ALL_YAHOO_SYMBOLS,
+  type CatalogEntry,
+} from "./market-catalog";
+import { getTopCrypto } from "./coingecko.service";
 
-export const SYMBOLS = [
-  { symbol: "BTC-USD",  label: "Bitcoin",  category: "crypto" },
-  { symbol: "ETH-USD",  label: "Ethereum", category: "crypto" },
-  { symbol: "^GSPC",   label: "S&P 500",   category: "stocks" },
-  { symbol: "^IXIC",   label: "Nasdaq",    category: "stocks" },
-  { symbol: "GC=F",    label: "Gold",      category: "commodities" },
-  { symbol: "SI=F",    label: "Silver",    category: "commodities" },
-];
+export const SYMBOLS: CatalogEntry[] = MARQUEE_SYMBOLS;
 
 const QUOTE_CACHE_KEY = "market:quotes";
 const QUOTE_TTL = 60; // seconds
@@ -121,7 +121,9 @@ export async function getMarketHistory(
     const change = price - prevClose;
     const changePercent = prevClose !== 0 ? (change / prevClose) * 100 : 0;
 
-    const sym = SYMBOLS.find((s) => s.symbol === symbol);
+    const sym =
+      SYMBOLS.find((s) => s.symbol === symbol) ??
+      ALL_YAHOO_SYMBOLS.find((s) => s.symbol === symbol);
     const history: MarketHistory = {
       symbol,
       label: sym?.label ?? symbol,
@@ -138,4 +140,72 @@ export async function getMarketHistory(
     console.error(`[market] getMarketHistory ${symbol}:${range} failed`, err);
     return null;
   }
+}
+
+const CATEGORY_TTL = 300; // 5 min — matches frontend staleTime and spec
+
+export async function getCategoryQuotes(category: string): Promise<Quote[]> {
+  const entries = CATEGORY_MAP[category];
+  if (!entries) return [];
+
+  const cacheKey = `market:category:${category}`;
+  const redis = getRedis();
+  const cached = await redis.get(cacheKey);
+  if (cached) return JSON.parse(cached) as Quote[];
+
+  const results = await Promise.all(
+    entries.map(async ({ symbol, label, category: cat }) => {
+      const data = await fetchQuote(symbol);
+      if (!data) return null;
+      return { label, symbol, category: cat, ...data } as Quote;
+    })
+  );
+
+  const quotes = results.filter((q): q is Quote => q !== null);
+  if (quotes.length > 0) {
+    await redis.set(cacheKey, JSON.stringify(quotes), "EX", CATEGORY_TTL);
+  }
+  return quotes;
+}
+
+const MOVERS_TTL = 60;
+
+export interface Movers {
+  gainers: Quote[];
+  losers: Quote[];
+}
+
+export async function getMovers(): Promise<Movers> {
+  const cacheKey = "market:movers";
+  const redis = getRedis();
+  const cached = await redis.get(cacheKey);
+  if (cached) return JSON.parse(cached) as Movers;
+
+  const yahooResults = await Promise.all(
+    ALL_YAHOO_SYMBOLS.map(async ({ symbol, label, category }) => {
+      const data = await fetchQuote(symbol);
+      if (!data) return null;
+      return { label, symbol, category, ...data } as Quote;
+    })
+  );
+  const yahooQuotes = yahooResults.filter((q): q is Quote => q !== null);
+
+  const crypto = await getTopCrypto(50);
+  const cryptoQuotes: Quote[] = crypto.map((c) => ({
+    label: c.label,
+    symbol: c.symbol,
+    category: "crypto",
+    price: c.price,
+    change: c.change,
+    changePercent: c.changePercent,
+  }));
+
+  const all = [...yahooQuotes, ...cryptoQuotes];
+  const sorted = [...all].sort((a, b) => b.changePercent - a.changePercent);
+  const gainers = sorted.slice(0, 5);
+  const losers = sorted.slice(-5).reverse();
+
+  const movers: Movers = { gainers, losers };
+  await redis.set(cacheKey, JSON.stringify(movers), "EX", MOVERS_TTL);
+  return movers;
 }
