@@ -1,11 +1,33 @@
 services:
+  # ── Backend API (Web Service — has /health for uptime ping) ────────────────
   - type: web
     name: finmate-api
-    runtime: node
+    runtime: docker
+    dockerfilePath: apps/backend-api/Dockerfile
     region: singapore
     plan: free
-    buildCommand: pnpm install && pnpm turbo run build --filter=backend-api
-    startCommand: node apps/backend-api/dist/server.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+
+  # ── Ingestion Worker (Background Worker — no HTTP, runs 24/7) ──────────────
+  - type: worker
+    name: finmate-ingestion
+    runtime: docker
+    dockerfilePath: apps/ingestion-worker/Dockerfile
+    region: singapore
+    plan: free
     envVars:
       - key: NODE_ENV
         value: production
@@ -15,9 +37,26 @@ services:
         sync: false
       - key: REDIS_URL
         sync: false
-      - key: FRONTEND_URL
+
+  # ── Enrichment Worker (Background Worker — queue consumer, runs 24/7) ──────
+  - type: worker
+    name: finmate-enrichment
+    runtime: docker
+    dockerfilePath: apps/enrichment-worker/Dockerfile
+    region: singapore
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: GROQ_API_KEY
         sync: false
       - key: HUGGINGFACE_API_KEY
         sync: false
-      - key: GROQ_API_KEY
+      - key: OPENROUTER_API_KEY
         sync: false
