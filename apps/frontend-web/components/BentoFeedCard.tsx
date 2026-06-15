@@ -69,7 +69,7 @@ export function BentoFeedCard({ article, index = 0, onBookmarkToggle }: BentoFee
           
           {/* Tags on Image */}
           <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-            {article.tags.slice(0, 2).map((tag: string) => (
+            {[...new Set(article.tags)].slice(0, 2).map((tag: string) => (
               <span
                 key={tag}
                 className="px-2 py-1 text-xs font-medium rounded-md bg-accent text-white backdrop-blur-sm"

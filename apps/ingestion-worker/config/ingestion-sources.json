@@ -25,10 +25,10 @@
       "schedule": "*/15 * * * *"
     },
     {
-      "name": "Investopedia - Markets",
+      "name": "The Guardian - Business",
       "type": "rss",
-      "url": "https://www.investopedia.com/feedbuilder/feed/getfeed/?feedName=market-news",
-      "tags": ["education", "markets"],
+      "url": "https://www.theguardian.com/us/business/rss",
+      "tags": ["markets", "business", "economy"],
       "active": true,
       "schedule": "*/30 * * * *"
     },
@@ -49,9 +49,9 @@
       "schedule": "*/20 * * * *"
     },
     {
-      "name": "MoneyControl (India)",
+      "name": "Economic Times (India)",
       "type": "rss",
-      "url": "https://www.moneycontrol.com/rss/latestnews.xml",
+      "url": "https://economictimes.indiatimes.com/rssfeedsdefault.cms",
       "tags": ["india", "markets", "stocks"],
       "active": true,
       "schedule": "*/20 * * * *"
@@ -105,10 +105,10 @@
       "schedule": "*/180 * * * *"
     },
     {
-      "name": "CFA Institute Blog",
+      "name": "Forbes - Money",
       "type": "rss",
-      "url": "https://blogs.cfainstitute.org/feed/",
-      "tags": ["macro", "analysis"],
+      "url": "https://www.forbes.com/money/feed/",
+      "tags": ["investing", "analysis", "macro"],
       "active": true,
       "schedule": "*/180 * * * *"
     },
@@ -137,10 +137,10 @@
       "schedule": "*/240 * * * *"
     },
     {
-      "name": "IMF Blog",
+      "name": "World Bank Blogs",
       "type": "rss",
-      "url": "https://blogs.imf.org/feed/",
-      "tags": ["macro", "global finance"],
+      "url": "https://blogs.worldbank.org/en/rss.xml",
+      "tags": ["macro", "global finance", "development"],
       "active": true,
       "schedule": "*/240 * * * *"
     }

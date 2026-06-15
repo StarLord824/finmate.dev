@@ -1,5 +1,6 @@
 // src/services/meta.service.ts
 import prisma from "@repo/db/prismaClient";
+import { getMarketQuotes } from "./market.service";
 
 /**
  * Get all unique categories from articles
@@ -15,7 +16,11 @@ export async function getCategories(): Promise<string[]> {
 
   // Flatten and deduplicate tags
   const allTags = articles.flatMap((article) => article.tags);
-  const uniqueTags = Array.from(new Set(allTags));
+  
+  // Filter out UUIDs that might have accidentally been saved as tags
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  
+  const uniqueTags = Array.from(new Set(allTags)).filter(tag => !UUID_RE.test(tag));
 
   // Sort alphabetically
   return uniqueTags.sort();
@@ -76,7 +81,6 @@ export async function getTrending(hours = 24, topN = 12) {
 export async function getMarketData(): Promise<Array<{
   label: string; symbol: string; category: string; price: number; change: number; changePercent: number;
 }>> {
-  const { getMarketQuotes } = await import("./market.service.js");
   return getMarketQuotes();
 }
 

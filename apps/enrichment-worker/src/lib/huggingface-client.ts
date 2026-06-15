@@ -1,5 +1,4 @@
-const HF_MODELS = "https://router.huggingface.co/hf-inference/models";
-const HF_PIPELINE = "https://router.huggingface.co/hf-inference/pipeline";
+const HF_ROUTER = "https://router.huggingface.co/hf-inference";
 
 async function hfRequest(url: string, body: unknown, retries = 1): Promise<any> {
   const apiKey = process.env.HUGGINGFACE_API_KEY;
@@ -29,17 +28,15 @@ async function hfRequest(url: string, body: unknown, retries = 1): Promise<any> 
 export async function hfSentiment(
   text: string
 ): Promise<Array<{ label: string; score: number }>> {
-  const url = `${HF_MODELS}/ProsusAI/finbert`;
+  const url = `${HF_ROUTER}/models/ProsusAI/finbert`;
   const result = await hfRequest(url, { inputs: text.slice(0, 2000) });
-  // FinBERT returns [[{label, score}, ...]] — unwrap outer array
   return Array.isArray(result[0]) ? result[0] : result;
 }
 
 export async function hfEmbed(text: string): Promise<number[]> {
-  // Use explicit feature-extraction pipeline — all-MiniLM-L6-v2 is registered
-  // as sentence-similarity on /models, which requires a different input format.
-  const url = `${HF_PIPELINE}/feature-extraction/sentence-transformers/all-MiniLM-L6-v2`;
+  // Use /models/ path — /pipeline/ path is not supported for this model on hf-inference
+  const url = `${HF_ROUTER}/models/sentence-transformers/all-MiniLM-L6-v2`;
   const result = await hfRequest(url, { inputs: text.slice(0, 1000) });
-  // Returns number[] directly for single string input
-  return result as number[];
+  // Response is [[...384 floats...]] for a single string — flatten one level
+  return Array.isArray(result[0]) ? result[0] : result;
 }

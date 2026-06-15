@@ -77,7 +77,7 @@ export function ArticleCard({ article, onBookmarkToggle, showRemoveBookmark }: A
 
           {/* Tags — prefer AI-extracted tags when enriched */}
           {(() => {
-            const displayTags = article.aiTags?.length ? article.aiTags : (article.tags ?? []);
+            const displayTags = [...new Set(article.aiTags?.length ? article.aiTags : (article.tags ?? []))];
             if (!displayTags.length) return null;
             return (
               <div className="flex flex-wrap gap-1 mt-4">
