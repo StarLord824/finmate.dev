@@ -38,8 +38,9 @@ app.use(cors({
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser()); // Parse cookies
 
-// Health check (no logging needed)
-app.get("/health", (req, res) => res.json({ status: "ok" }));
+// Root + health — used by uptime monitors
+app.get("/", (_req, res) => res.json({ name: "finmate-api", status: "ok" }));
+app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
 // Routes
 app.use("/feed", feedRouter);
