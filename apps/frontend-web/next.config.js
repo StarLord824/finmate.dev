@@ -5,10 +5,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    serverExternalPackages: ["@prisma/client", "@repo/db"],
     outputFileTracingRoot: join(__dirname, "../../"),
-    outputFileTracingIncludes: {
-        "/api/auth/**": ["../../packages/db/src/generated/client/**/*"],
-    },
     images: {
         remotePatterns: [
             {
