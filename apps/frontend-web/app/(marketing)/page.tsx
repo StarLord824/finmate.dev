@@ -131,8 +131,8 @@ const faqs = [
 
 const stats = [
   { value: "200+", label: "Trusted Sources" },
-  { value: "50K+", label: "Active Users" },
-  { value: "2M+", label: "Articles Indexed" },
+  // { value: "50K+", label: "Active Users" },
+  { value: "20K+", label: "Articles Indexed" },
   { value: "99.9%", label: "Uptime" },
 ];
 
@@ -200,7 +200,7 @@ export default function LandingPage(): ReactElement {
             </div>
 
             {/* Trust badges */}
-            <div className="flex flex-wrap items-center gap-6 mt-12">
+            {/* <div className="flex flex-wrap items-center gap-6 mt-12">
               {["No credit card required", "Free tier available", "Cancel anytime"].map(
                 (item) => (
                   <div key={item} className="flex items-center gap-2 text-sm text-white/60">
@@ -209,13 +209,13 @@ export default function LandingPage(): ReactElement {
                   </div>
                 )
               )}
-            </div>
+            </div> */}
           </div>
         </div>
 
         {/* Stats bar */}
         <div className="absolute bottom-0 inset-x-0 bg-white/5 backdrop-blur-sm border-t border-white/10">
-          <div className="max-w-7xl mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="max-w-7xl mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-3 gap-8 ">
             {stats.map((stat) => (
               <div key={stat.label} className="text-center">
                 <p className="text-3xl font-extrabold text-white">{stat.value}</p>
@@ -351,7 +351,7 @@ export default function LandingPage(): ReactElement {
       </section>
 
       {/* ═══ SOCIAL PROOF ═══ */}
-      <section className="py-20 bg-white border-y border-[#c8ddf5]">
+      {/* <section className="py-20 bg-white border-y border-[#c8ddf5]">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-sm font-semibold uppercase tracking-widest text-[#66a3ff] mb-6">
             Trusted by professionals at
@@ -366,7 +366,7 @@ export default function LandingPage(): ReactElement {
             )}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ═══ FAQs ═══ */}
       <section id="faqs" className="py-24 bg-white">

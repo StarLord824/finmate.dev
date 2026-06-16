@@ -1,13 +1,24 @@
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MobileHeader } from "@/components/layout/MobileHeader";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import type { ReactElement } from "react";
 
-export default function AppLayout({
+export default async function AppLayout({
   children,
 }: {
   children: React.ReactNode;
-}): ReactElement {
+}): Promise<ReactElement> {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  if (!session) {
+    redirect("/login");
+  }
+
   return (
     <div className="h-screen overflow-hidden flex bg-background text-foreground">
       <TooltipProvider>
