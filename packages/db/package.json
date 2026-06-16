@@ -10,6 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "echo \"@repo/db ready\"",
+    "postinstall": "prisma generate",
     "build": "prisma generate",
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",

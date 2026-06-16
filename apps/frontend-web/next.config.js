@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    outputFileTracingIncludes: {
+        "/api/auth/**": ["../../packages/db/src/generated/client/**/*"],
+    },
     images: {
         remotePatterns: [
             {
