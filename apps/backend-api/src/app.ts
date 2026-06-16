@@ -23,9 +23,17 @@ app.use(requestIdMiddleware);
 app.use(httpLogger);
 
 app.use(helmet());
+const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:3000")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:3000",
-  credentials: true, // Allow cookies
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+    cb(new Error(`CORS: ${origin} not allowed`));
+  },
+  credentials: true,
 }));
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser()); // Parse cookies
