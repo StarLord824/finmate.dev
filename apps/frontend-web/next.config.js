@@ -1,8 +1,11 @@
-const path = require("path");
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    outputFileTracingRoot: path.join(__dirname, "../../"),
+    outputFileTracingRoot: join(__dirname, "../../"),
     outputFileTracingIncludes: {
         "/api/auth/**": ["../../packages/db/src/generated/client/**/*"],
     },
@@ -24,4 +27,4 @@ const nextConfig = {
     },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
