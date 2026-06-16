@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Bash(git -C \"C:/Users/MY NOTEBOOK/Desktop/finmate.dev\" show 994b8ae --stat)",
-      "WebFetch(domain:amc.ppfas.com)"
+      "WebFetch(domain:amc.ppfas.com)",
+      "Bash(go mod *)",
+      "Bash(go build *)",
+      "Bash(curl -s http://localhost:4000/health)",
+      "Bash(curl -s http://localhost:4000/meta/market)",
+      "Bash(curl -s \"http://localhost:4000/meta/market/movers\")",
+      "Bash(curl -s \"http://localhost:4000/meta/market/category?name=nse\")",
+      "Bash(curl -s http://localhost:4000/meta/market/crypto-top)",
+      "Bash(curl -s http://localhost:4000/meta/sources)"
     ]
   }
 }
