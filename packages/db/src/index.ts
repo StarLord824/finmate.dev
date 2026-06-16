@@ -1,6 +1,6 @@
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "./generated/client/index.js";
+import { PrismaClient } from "@prisma/client";
 
 function createPrismaClient() {
   // In production, DATABASE_URL is the pooled Supabase connection (port 6543).
