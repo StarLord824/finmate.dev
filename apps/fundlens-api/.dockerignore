@@ -3,4 +3,3 @@
 .vscode/
 *.md
 tests/
-internal/db/

@@ -17,15 +17,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# Install deps first for layer caching
 COPY pyproject.toml ./
+COPY src ./src
 RUN pip install --upgrade pip && \
-    pip install -e ".[dev]"
+    pip install ".[dev]"
 
-# Copy source
 COPY alembic.ini ./
 COPY alembic ./alembic
-COPY src ./src
 COPY tests ./tests
 
 EXPOSE 8001

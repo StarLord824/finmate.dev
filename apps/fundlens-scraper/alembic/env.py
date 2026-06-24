@@ -15,8 +15,13 @@ if config.config_file_name is not None:
 db_url = os.environ.get("FUNDLENS_DATABASE_URL")
 if db_url is None:
     raise RuntimeError("FUNDLENS_DATABASE_URL is not set; refusing to run migrations")
-# Alembic uses sync driver; strip any +asyncpg suffix if present
-sync_url = db_url.replace("+asyncpg", "").replace("postgresql+asyncpg", "postgresql")
+# Alembic uses sync psycopg v3 driver
+sync_url = (
+    db_url.replace("+asyncpg", "")
+    .replace("postgresql+asyncpg", "postgresql")
+    .replace("postgresql://", "postgresql+psycopg://")
+    .replace("postgres://", "postgresql+psycopg://")
+)
 config.set_main_option("sqlalchemy.url", sync_url)
 
 # No declarative target_metadata — we write migrations by hand for the fundlens schema
