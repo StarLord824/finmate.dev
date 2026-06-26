@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: finmate
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: finmate
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["/scheduler"]
+    environment:
+      - DATABASE_URL=postgres://finmate:password@postgres:5432/finmate?sslmode=disable
+      - REDIS_ADDR=redis:6379
+      - LOG_LEVEL=debug
+    depends_on:
+      - redis
+      - postgres
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["/worker"]
+    environment:
+      - DATABASE_URL=postgres://finmate:password@postgres:5432/finmate?sslmode=disable
+      - REDIS_ADDR=redis:6379
+      - LOG_LEVEL=debug
+    depends_on:
+      - redis
+      - postgres
+
+volumes:
+  postgres-data:
+  redis-data:

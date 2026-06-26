@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingestion-scheduler
+  labels:
+    app: ingestion-scheduler
+spec:
+  replicas: 1 # Strictly 1 replica to avoid duplicate cron registrations
+  selector:
+    matchLabels:
+      app: ingestion-scheduler
+  template:
+    metadata:
+      labels:
+        app: ingestion-scheduler
+    spec:
+      containers:
+      - name: scheduler
+        image: finmate/ingestion-worker-go:latest
+        command: ["/scheduler"]
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: dsn
+        - name: REDIS_ADDR
+          value: "redis-master.default.svc.cluster.local:6379"
+        - name: LOG_LEVEL
+          value: "info"
+        resources:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            cpu: 100m
+            memory: 64Mi
