@@ -2,10 +2,13 @@ package db
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/finmate/ingestion-worker-go/internal/processor"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -68,7 +71,15 @@ func (p *Pool) UpsertArticle(ctx context.Context, a *processor.Article) (*Upsert
 	).Scan(&insertedID)
 
 	if err != nil {
-		if err.Error() == "no rows in result set" {
+		// ON CONFLICT DO NOTHING returns no rows — this means a fingerprint duplicate, treat as already exists
+		if errors.Is(err, pgx.ErrNoRows) {
+			return &UpsertResult{Inserted: false}, nil
+		}
+		// Catch unique constraint violations on the `link` column.
+		// This happens when a publisher edits a headline (fingerprint changes) but the URL stays the same.
+		// Both cases are valid "already exists" scenarios — not hard errors.
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
 			return &UpsertResult{Inserted: false}, nil
 		}
 		return nil, fmt.Errorf("db: upsert failed for fingerprint %s: %w", a.Fingerprint, err)

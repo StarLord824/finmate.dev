@@ -27,7 +27,7 @@ services:
     command: ["/scheduler"]
     environment:
       - DATABASE_URL=postgres://finmate:password@postgres:5432/finmate?sslmode=disable
-      - REDIS_ADDR=redis:6379
+      - REDIS_URL=redis://redis:6379
       - LOG_LEVEL=debug
     depends_on:
       - redis
@@ -40,7 +40,7 @@ services:
     command: ["/worker"]
     environment:
       - DATABASE_URL=postgres://finmate:password@postgres:5432/finmate?sslmode=disable
-      - REDIS_ADDR=redis:6379
+      - REDIS_URL=redis://redis:6379
       - LOG_LEVEL=debug
     depends_on:
       - redis

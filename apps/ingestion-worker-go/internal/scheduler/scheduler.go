@@ -18,11 +18,10 @@ type Scheduler struct {
 	sources []config.Source
 }
 
-// NewScheduler builds a Scheduler from app config, connecting to Redis via redisAddr.
-func NewScheduler(redisAddr string, sources []config.Source) *Scheduler {
-	redisOpt := asynq.RedisClientOpt{Addr: redisAddr}
+// NewScheduler builds a Scheduler from app config.
+// redisOpt is pre-parsed by the caller (supporting TLS, auth, and plain URLs).
+func NewScheduler(redisOpt asynq.RedisClientOpt, sources []config.Source) *Scheduler {
 	inner := asynq.NewScheduler(redisOpt, &asynq.SchedulerOpts{
-		// Log schedule errors without crashing the process
 		EnqueueErrorHandler: func(task *asynq.Task, opts []asynq.Option, err error) {
 			log.Error().Err(err).Str("task", task.Type()).Msg("scheduler enqueue error")
 		},
@@ -31,7 +30,6 @@ func NewScheduler(redisAddr string, sources []config.Source) *Scheduler {
 }
 
 // Register adds a cron entry for each active source.
-// Each entry enqueues a FetchSourceTask on the configured schedule.
 func (s *Scheduler) Register() error {
 	for _, src := range s.sources {
 		if !src.Active {
@@ -40,7 +38,7 @@ func (s *Scheduler) Register() error {
 
 		cronExpr := src.Schedule
 		if cronExpr == "" {
-			cronExpr = "*/15 * * * *" // default: every 15 minutes
+			cronExpr = "*/15 * * * *"
 		}
 
 		payload := worker.FetchSourcePayload{
@@ -55,7 +53,6 @@ func (s *Scheduler) Register() error {
 			return fmt.Errorf("scheduler: failed to create task for %s: %w", src.Name, err)
 		}
 
-		// Serialize payload for logging
 		payloadBytes, _ := json.Marshal(payload)
 		log.Info().
 			Str("source", src.Name).

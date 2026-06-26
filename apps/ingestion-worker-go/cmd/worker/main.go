@@ -41,23 +41,35 @@ func main() {
 	}
 	defer pool.Close()
 
-	// Init Redis Client for pub/sub & queues
-	opt, err := redis.ParseURL(cfg.RedisAddr)
+	// Parse Redis URL once — shared by both the redis.Client (pub/sub) and asynq (queues).
+	// redis.ParseURL correctly handles redis://, rediss:// (TLS), and auth credentials,
+	// which is required for production providers like Upstash.
+	redisOpts, err := redis.ParseURL(cfg.RedisURL)
 	if err != nil {
-		// fallback to direct address if it's not a URI
-		opt = &redis.Options{Addr: cfg.RedisAddr}
+		// Fallback: treat as a plain host:port address
+		redisOpts = &redis.Options{Addr: cfg.RedisURL}
 	}
-	rdb := redis.NewClient(opt)
+
+	rdb := redis.NewClient(redisOpts)
 	defer rdb.Close()
 	if err := rdb.Ping(ctx).Err(); err != nil {
 		log.Fatal().Err(err).Msg("failed to ping redis")
 	}
 
+	// Build asynq opt from the same parsed values — asynq does NOT accept raw URLs.
+	asynqRedisOpt := asynq.RedisClientOpt{
+		Addr:      redisOpts.Addr,
+		Username:  redisOpts.Username,
+		Password:  redisOpts.Password,
+		DB:        redisOpts.DB,
+		TLSConfig: redisOpts.TLSConfig,
+	}
+
 	// Init Asynq Server
 	srv := asynq.NewServer(
-		asynq.RedisClientOpt{Addr: cfg.RedisAddr},
+		asynqRedisOpt,
 		asynq.Config{
-			Concurrency: 10, // Number of concurrent fetchers
+			Concurrency: 10,
 			ErrorHandler: asynq.ErrorHandlerFunc(func(ctx context.Context, task *asynq.Task, err error) {
 				log.Error().Err(err).Str("type", task.Type()).Msg("task failed")
 			}),

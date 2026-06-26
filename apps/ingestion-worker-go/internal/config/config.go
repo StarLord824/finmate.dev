@@ -25,7 +25,7 @@ type IngestionConfig struct {
 // AppConfig holds all environment-level application configuration.
 type AppConfig struct {
 	PostgresDSN string
-	RedisAddr   string
+	RedisURL    string
 	LogLevel    string
 	Ingestion   IngestionConfig
 }
@@ -33,7 +33,7 @@ type AppConfig struct {
 // Load reads environment variables and the ingestion-sources.json file.
 func Load() (*AppConfig, error) {
 	postgresDSN := os.Getenv("DATABASE_URL")
-	redisAddr := os.Getenv("REDIS_ADDR")
+	redisURL := os.Getenv("REDIS_URL")
 	logLevel := os.Getenv("LOG_LEVEL")
 	if logLevel == "" {
 		logLevel = "info"
@@ -60,7 +60,7 @@ func Load() (*AppConfig, error) {
 
 	return &AppConfig{
 		PostgresDSN: postgresDSN,
-		RedisAddr:   redisAddr,
+		RedisURL:    redisURL,
 		LogLevel:    logLevel,
 		Ingestion:   ingestion,
 	}, nil
